@@ -45,7 +45,7 @@ body {
   z-index: 0;
 
   background-color: var(--bg);
-  background-image: url("/src/assets/noise.svg");
+  background-image: url("/assets/noise.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -371,7 +371,7 @@ body {
   z-index: 0;
   pointer-events: none;
 
-  background-image: url("/src/assets/beat-store-bg.svg");
+  background-image: url("/assets/beat-store-bg.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -586,7 +586,7 @@ body {
   position: absolute;
   inset: 0;
 
-  background-image: url("/src/assets/beat-store-bg.svg");
+  background-image: url("/assets/beat-store-bg.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -636,13 +636,13 @@ body {
   pointer-events: none;
 
   background-color: var(--bg);
-  background-image: url("/src/assets/noise.svg");
+  background-image: url("/assets/noise.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  -webkit-mask-image: url("/src/assets/blood-splatter.png");
-  mask-image: url("/src/assets/blood-splatter.png");
+  -webkit-mask-image: url("/assets/blood-splatter.png");
+  mask-image: url("/assets/blood-splatter.png");
 
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -1055,7 +1055,7 @@ body {
   position:absolute;
   inset:0;
 
-  background-image:url("/src/assets/beat-store-bg.svg");
+  background-image:url("/assets/beat-store-bg.svg");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
@@ -1159,7 +1159,7 @@ body {
   inset: 0;
   z-index: 0;
   background-color: var(--bg);
-  background-image: url("/src/assets/noise.svg");
+  background-image: url("/assets/noise.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

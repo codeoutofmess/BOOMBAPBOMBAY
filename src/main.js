@@ -27,8 +27,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "12/09/2026 / 19:07:29\n\nBY KSHAH & PSYESH / BOOM BAP\n\n84 BPM / E#m KEY",
-    art: "/src/assets/album-art1.svg",
-    preview: "/src/assets/previews/beat1.mp3",
+    art: "/assets/album-art1.svg",
+    preview: "/assets/previews/beat1.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
   },
@@ -42,8 +42,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
-    art: "/src/assets/album-art2.svg",
-    preview: "/src/assets/previews/beat2.mp3",
+    art: "/assets/album-art2.svg",
+    preview: "/assets/previews/beat2.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
   },
@@ -57,8 +57,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/src/assets/album-art3.svg",
-    preview: "/src/assets/previews/beat3.mp3",
+    art: "/assets/album-art3.svg",
+    preview: "/assets/previews/beat3.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
   },
@@ -72,8 +72,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
-    art: "/src/assets/album-art4.svg",
-    preview: "/src/assets/previews/beat4.mp3",
+    art: "/assets/album-art4.svg",
+    preview: "/assets/previews/beat4.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
   },
@@ -87,8 +87,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/src/assets/album-art5.svg",
-    preview: "/src/assets/previews/beat5.mp3",
+    art: "/assets/album-art5.svg",
+    preview: "/assets/previews/beat5.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:11",
   },
@@ -102,8 +102,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/src/assets/album-art6.svg",
-    preview: "/src/assets/previews/beat6.mp3",
+    art: "/assets/album-art6.svg",
+    preview: "/assets/previews/beat6.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:49",
   },
@@ -117,8 +117,8 @@ const BEATS = [
     description: "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/src/assets/album-art7.svg",
-    preview: "/src/assets/previews/beat7.mp3",
+    art: "/assets/album-art7.svg",
+    preview: "/assets/previews/beat7.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:21",
   },
@@ -136,8 +136,8 @@ const MUSIC_BEATS = [
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS.",
     details:
       "12/09/2026 / 19:07:29\n\nBY KSHAH / MUSIC\n\n94 BPM / Em KEY",
-    art: "/src/assets/music-art1.svg",
-    preview: "/src/assets/previews/beat1.mp3",
+    art: "/assets/music-art1.svg",
+    preview: "/assets/previews/beat1.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
   },
@@ -152,8 +152,8 @@ const MUSIC_BEATS = [
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
     details:
       "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n88 BPM / Dm KEY",
-    art: "/src/assets/music-art2.svg",
-    preview: "/src/assets/previews/beat2.mp3",
+    art: "/assets/music-art2.svg",
+    preview: "/assets/previews/beat2.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
   },
@@ -168,8 +168,8 @@ const MUSIC_BEATS = [
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
     details:
       "03/12/2026 / 05:37:13\n\nBY KSHAH / MUSIC\n\n140 BPM / C#m KEY",
-    art: "/src/assets/music-art3.svg",
-    preview: "/src/assets/previews/beat3.mp3",
+    art: "/assets/music-art3.svg",
+    preview: "/assets/previews/beat3.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
   },
@@ -184,8 +184,8 @@ const MUSIC_BEATS = [
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT.",
     details:
       "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n102 BPM / Fm KEY",
-    art: "/src/assets/music-art4.svg",
-    preview: "/src/assets/previews/beat4.mp3",
+    art: "/assets/music-art4.svg",
+    preview: "/assets/previews/beat4.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
   },
@@ -203,7 +203,7 @@ function mountLoader() {
         <img
           class="loader__chamber"
           id="loaderChamber"
-          src="/src/assets/revolver_load.svg"
+          src="/assets/revolver_load.svg"
           alt=""
         />
 
@@ -281,16 +281,16 @@ function createLoaderDriver() {
 
 async function preloadAssets(onProgress) {
   const assets = [
-    "/src/assets/noise.svg",
-    "/src/assets/beat-store-bg.svg",
-    "/src/assets/scene-light.svg",
-    "/src/assets/scene-ground.svg",
-    "/src/assets/scene-good.svg",
-    "/src/assets/scene-car.svg",
-    "/src/assets/scene-tuco.svg",
-    "/src/assets/scene-bcs.svg",
-    "/src/assets/revolver_load.svg",
-    "/src/assets/blood-splatter.png",
+    "/assets/noise.svg",
+    "/assets/beat-store-bg.svg",
+    "/assets/scene-light.svg",
+    "/assets/scene-ground.svg",
+    "/assets/scene-good.svg",
+    "/assets/scene-car.svg",
+    "/assets/scene-tuco.svg",
+    "/assets/scene-bcs.svg",
+    "/assets/revolver_load.svg",
+    "/assets/blood-splatter.png",
     "/models/revolver.glb",
     "/models/WAVES.glb",
     "/models/fl_studio_logo.glb",
@@ -1459,12 +1459,12 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
 
         <div class="scene-layer">
           <div class="stage">
-            <img class="piece light" src="/src/assets/scene-light.svg" alt="" />
-            <img class="piece ground blend" src="/src/assets/scene-ground.svg" alt="" />
-            <img class="piece good blend" src="/src/assets/scene-good.svg" alt="" />
-            <img class="piece car blend" id="car" src="/src/assets/scene-car.svg" alt="" />
-            <img class="piece tuco blend" src="/src/assets/scene-tuco.svg" alt="" />
-            <img class="piece bcs blend" src="/src/assets/scene-bcs.svg" alt="" />
+            <img class="piece light" src="/assets/scene-light.svg" alt="" />
+            <img class="piece ground blend" src="/assets/scene-ground.svg" alt="" />
+            <img class="piece good blend" src="/assets/scene-good.svg" alt="" />
+            <img class="piece car blend" id="car" src="/assets/scene-car.svg" alt="" />
+            <img class="piece tuco blend" src="/assets/scene-tuco.svg" alt="" />
+            <img class="piece bcs blend" src="/assets/scene-bcs.svg" alt="" />
           </div>
         </div>
 
@@ -1472,8 +1472,8 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
 
         <nav class="nav">
           <!-- LEFT SIDE GLYPHS -->
-          <img src="/src/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-left" alt="ब" />
-          <img src="/src/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-left" alt="B" />
+          <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-left" alt="ब" />
+          <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-left" alt="B" />
 
           <!-- CENTER NAV ITEMS -->
           <div class="nav-center">
@@ -1485,8 +1485,8 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
           </div>
 
           <!-- RIGHT SIDE GLYPHS -->
-          <img src="/src/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-right" alt="B" />
-          <img src="/src/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
+          <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-right" alt="B" />
+          <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
         </nav>
 
         <div class="text-layer">
@@ -1502,7 +1502,7 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
             </div>
 
             <div class="reveal hero-logo">
-              <img class="reveal__inner" src="/src/assets/boombap-logo.svg" alt="BOOMBAP BOMBAY" />
+              <img class="reveal__inner" src="/assets/boombap-logo.svg" alt="BOOMBAP BOMBAY" />
             </div>
 
             <div class="desc">
@@ -1581,31 +1581,31 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
             </div>
 
             <div class="bs-arc-item" data-title="GUNS">
-              <img src="/src/assets/album-art1.svg" alt="" />
+              <img src="/assets/album-art1.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="CARS">
-              <img src="/src/assets/album-art2.svg" alt="" />
+              <img src="/assets/album-art2.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="BARS">
-              <img src="/src/assets/album-art3.svg" alt="" />
+              <img src="/assets/album-art3.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="GREENS">
-              <img src="/src/assets/album-art4.svg" alt="" />
+              <img src="/assets/album-art4.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SMOKES">
-              <img src="/src/assets/album-art5.svg" alt="" />
+              <img src="/assets/album-art5.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="PILLS">
-              <img src="/src/assets/album-art6.svg" alt="" />
+              <img src="/assets/album-art6.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="DRINKS">
-              <img src="/src/assets/album-art7.svg" alt="" />
+              <img src="/assets/album-art7.svg" alt="" />
             </div>
           </div>
 
@@ -1636,19 +1636,19 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/src/assets/music-art1.svg" alt="" />
+              <img src="/assets/music-art1.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/src/assets/music-art2.svg" alt="" />
+              <img src="/assets/music-art2.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/src/assets/music-art3.svg" alt="" />
+              <img src="/assets/music-art3.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/src/assets/music-art4.svg" alt="" />
+              <img src="/assets/music-art4.svg" alt="" />
             </div>
           </div>
       
@@ -1659,7 +1659,7 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
   <div class="about-bg"></div>
 
   <div class="about-transition-map" id="aboutTransitionMap">
-  <img src="/src/assets/mumbai-city.svg" />
+  <img src="/assets/mumbai-city.svg" />
 </div>
 
   <div class="about-inner">
@@ -1671,7 +1671,7 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
       <img
         class="about-map"
         id="aboutMap"
-        src="/src/assets/mumbai-city.svg"
+        src="/assets/mumbai-city.svg"
         alt="Mumbai map"
       />
     </div>
