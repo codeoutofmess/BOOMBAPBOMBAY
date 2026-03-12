@@ -1309,7 +1309,3 @@ body {
 .about-btn-reveal {
   overflow: hidden;
 }
-
-.about-transition-map {
-  z-index: 2;
-}

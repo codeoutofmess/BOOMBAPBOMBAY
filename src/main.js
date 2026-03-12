@@ -695,95 +695,141 @@ function setHandoffProgress(rawT) {
   const t = clamp01(rawT);
   const e = easeOutCubic(t);
 
-  const focusedBeat = beatItems[beatItems.length - 1];
-
-  gsap.set(bsTitle, { autoAlpha: 1 - e, y: -20 * e, clearProps: "display" });
-  gsap.set(bsCopy, { autoAlpha: 1 - e, y: -20 * e, clearProps: "display" });
-  gsap.set(bsBtn, { autoAlpha: 1 - e, y: -10 * e, clearProps: "display" });
-  gsap.set(bsGrid, { autoAlpha: 1 - e, clearProps: "display" });
-  gsap.set(bsArc, { autoAlpha: 1 - e, pointerEvents: "none" });
-
-  if (bsTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
-      yPercent: -110 * e,
-    });
-  }
-
-  if (bsCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
-      yPercent: -110 * e,
-    });
-  }
-
-  if (focusedBeat) {
-    gsap.set(focusedBeat, {
-      y: -140 * e,
-      autoAlpha: 1 - e,
-    });
-  }
-
   gsap.set(musicLeft, {
-    autoAlpha: e,
-    visibility: e > 0 ? "visible" : "hidden",
+    autoAlpha: 1 - e,
+    visibility: 1 - e > 0.001 ? "visible" : "hidden",
   });
 
   gsap.set(musicArcOverlay, {
-    autoAlpha: e,
-    visibility: e > 0 ? "visible" : "hidden",
+    autoAlpha: 1 - e,
+    visibility: 1 - e > 0.001 ? "visible" : "hidden",
     pointerEvents: "none",
   });
 
-  gsap.set(musicTitleEl, { autoAlpha: clamp01((t - 0.15) / 0.45) });
-  gsap.set(musicPointerEl, { autoAlpha: clamp01((t - 0.15) / 0.45) });
-
-  const musicTitleT = clamp01((t - 0.08) / 0.55);
-  const musicCopyT = clamp01((t - 0.18) / 0.55);
+  gsap.set(musicTitleEl, { autoAlpha: 1 - e });
+  gsap.set(musicPointerEl, { autoAlpha: 1 - e });
 
   if (musicTitleReveal?.querySelector(".reveal__inner")) {
     gsap.set(musicTitleReveal.querySelector(".reveal__inner"), {
-      yPercent: 120 - 120 * musicTitleT,
+      yPercent: -110 * e,
     });
   }
 
   if (musicCopyReveal?.querySelector(".reveal__inner")) {
     gsap.set(musicCopyReveal.querySelector(".reveal__inner"), {
-      yPercent: 120 - 120 * musicCopyT,
+      yPercent: -110 * e,
     });
   }
 
   if (musicItems[0]) {
     gsap.set(musicItems[0], {
+      x: lerp(0, -84, e),
+      y: lerp(0, -120, e),
+      autoAlpha: 1 - e,
+    });
+  }
+
+  if (musicItems[1]) {
+    gsap.set(musicItems[1], {
+      x: lerp(112, 52, e),
+      y: lerp(146, 18, e),
+      autoAlpha: lerp(0.55, 0, e),
+    });
+  }
+
+  if (musicItems[2]) {
+    gsap.set(musicItems[2], {
+      x: lerp(224, 188, e),
+      y: lerp(292, 172, e),
+      autoAlpha: lerp(0.35, 0, e),
+    });
+  }
+
+  if (musicItems[3]) {
+    gsap.set(musicItems[3], {
+      x: lerp(336, 286, e),
+      y: lerp(438, 280, e),
+      autoAlpha: 0,
+    });
+  }
+
+  musicItems.forEach((el) => {
+    el.style.pointerEvents = "none";
+  });
+
+  gsap.set(bsTitle, {
+    autoAlpha: e,
+    y: 20 - 20 * e,
+    clearProps: "display",
+  });
+
+  gsap.set(bsCopy, {
+    autoAlpha: e,
+    y: 20 - 20 * e,
+    clearProps: "display",
+  });
+
+  gsap.set(bsBtn, {
+    autoAlpha: e,
+    y: 12 - 12 * e,
+    clearProps: "display",
+  });
+
+  gsap.set(bsGrid, {
+    autoAlpha: e,
+    clearProps: "display",
+  });
+
+  gsap.set(bsArc, {
+    autoAlpha: e,
+    pointerEvents: "none",
+  });
+
+  if (bsTitleReveal?.querySelector(".reveal__inner")) {
+    gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
+      yPercent: 120 - 120 * e,
+    });
+  }
+
+  if (bsCopyReveal?.querySelector(".reveal__inner")) {
+    gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
+      yPercent: 120 - 120 * e,
+    });
+  }
+
+  if (beatItems[0]) {
+    gsap.set(beatItems[0], {
       x: lerp(180, 0, e),
       y: lerp(250, 0, e),
       autoAlpha: lerp(0, 1, e),
     });
   }
 
-  if (musicItems[1]) {
-    gsap.set(musicItems[1], {
+  if (beatItems[1]) {
+    gsap.set(beatItems[1], {
       x: lerp(206, 112, e),
       y: lerp(266, 146, e),
       autoAlpha: lerp(0, 0.55, e),
     });
   }
 
-  if (musicItems[2]) {
-    gsap.set(musicItems[2], {
+  if (beatItems[2]) {
+    gsap.set(beatItems[2], {
       x: lerp(232, 224, e),
       y: lerp(282, 292, e),
       autoAlpha: lerp(0, 0.35, e),
     });
   }
 
-  if (musicItems[3]) {
-    gsap.set(musicItems[3], {
+  if (beatItems[3]) {
+    gsap.set(beatItems[3], {
       x: lerp(258, 336, e),
       y: lerp(298, 438, e),
       autoAlpha: 0,
     });
   }
 
-  musicItems.forEach((el) => {
+  beatItems.forEach((el) => {
     el.style.pointerEvents = "none";
   });
 }
@@ -968,10 +1014,10 @@ function setAboutTransitionProgress(rawT) {
   }
 
   if (aboutMapWrap) {
-  gsap.set(aboutMapWrap, {
-    autoAlpha: t > 0.82 ? 1 : 0,
-  });
-}
+    gsap.set(aboutMapWrap, {
+      autoAlpha: t > 0.82 ? 1 : 0,
+    });
+  }
 }
 
 function setAboutState() {
@@ -1004,10 +1050,10 @@ function setAboutState() {
   });
 
   if (aboutTransitionImg) {
-  gsap.set(aboutTransitionImg, {
-    clearProps: "x,y,scale,opacity,transformOrigin",
-  });
-}
+    gsap.set(aboutTransitionImg, {
+      clearProps: "x,y,scale,opacity,transformOrigin",
+    });
+  }
 
   const aboutTitleInner = getRevealInner(aboutTitleReveal);
   const aboutCopyInner = getRevealInner(aboutCopyReveal);
@@ -1025,12 +1071,13 @@ function setAboutState() {
   }
 
   if (aboutMapWrap) {
-  gsap.set(aboutMapWrap, { autoAlpha: 1 });
-}
+    gsap.set(aboutMapWrap, { autoAlpha: 1 });
+  }
 }
 
-setBeatStoreState();
+setMusicState();
 if (musicArc) musicArc.snap(0);
+if (arc) arc.snap(0);
 setAboutHiddenState();
 
   ensureCarReady().then(() => {
@@ -1059,34 +1106,68 @@ setAboutHiddenState();
             anticipatePin: 1,
             invalidateOnRefresh: true,
 
-            onUpdate: (self) => {
+onUpdate: (self) => {
   if (!arc) return;
 
   const p = self.progress;
 
-  const ARC_START = 0.38;
-  const ARC_END = 0.72;
+  const MUSIC_START = 0.38;
+  const MUSIC_END = 0.58;
 
-  const HANDOFF_START = 0.70;
-  const HANDOFF_END = 0.78;
+  const HANDOFF_START = 0.58;
+  const HANDOFF_END = 0.66;
 
-  const MUSIC_START = HANDOFF_END;
-  const MUSIC_END = 0.86;
+  const BEATSTORE_START = 0.66;
+  const BEATSTORE_END = 0.86;
 
   const ABOUT_START = 0.86;
   const ABOUT_END = 1;
 
-  // 1) beat store state
-  if (p <= ARC_START) {
-    if (lastStep !== 0) arc.snap(0);
+  // 1) music state
+  if (p <= MUSIC_START) {
+    if (musicArc) musicArc.snap(0);
     lastStep = 0;
-    setBeatStoreState();
+    setMusicState();
     setAboutHiddenState();
     return;
   }
 
-  if (p < ARC_END) {
-    const t = (p - ARC_START) / (ARC_END - ARC_START);
+  // 2) music arc phase
+  if (p < MUSIC_END) {
+    setMusicState();
+    setAboutHiddenState();
+
+    if (musicArc) {
+      const mt = (p - MUSIC_START) / (MUSIC_END - MUSIC_START);
+      const mu = Math.max(0, Math.min(1, mt));
+      const mRaw = mu * musicArc.maxStep;
+      musicArc.layoutProgress(mRaw);
+      lastStep = Math.floor(mRaw);
+    }
+
+    return;
+  }
+
+  // 3) hold music briefly before handoff
+  if (p < HANDOFF_START) {
+    if (musicArc) musicArc.snap(musicArc.maxStep);
+    setMusicState();
+    setAboutHiddenState();
+    return;
+  }
+
+  // 4) music -> beat store handoff
+  if (p < HANDOFF_END) {
+    if (musicArc) musicArc.snap(musicArc.maxStep);
+    const handoffT = (p - HANDOFF_START) / (HANDOFF_END - HANDOFF_START);
+    setHandoffProgress(handoffT);
+    setAboutHiddenState();
+    return;
+  }
+
+  // 5) beat store arc phase
+  if (p < BEATSTORE_END) {
+    const t = (p - BEATSTORE_START) / (BEATSTORE_END - BEATSTORE_START);
     const u = Math.max(0, Math.min(1, t));
     const HOLD = 0.05;
 
@@ -1101,55 +1182,18 @@ setAboutHiddenState();
       adjusted = step + (frac - HOLD) / (1 - HOLD);
     }
 
+    setBeatStoreState();
+    setAboutHiddenState();
     arc.layoutProgress(adjusted);
     lastStep = Math.floor(adjusted);
-    setBeatStoreState();
-    setAboutHiddenState();
     return;
   }
 
-  // 2) beat store -> music handoff
-  if (p < HANDOFF_START) {
-    if (lastStep !== arc.maxStep) arc.snap(arc.maxStep);
-    lastStep = arc.maxStep;
-    setBeatStoreState();
-    setAboutHiddenState();
-    return;
-  }
-
-  if (p < HANDOFF_END) {
-    if (lastStep !== arc.maxStep) arc.snap(arc.maxStep);
-    lastStep = arc.maxStep;
-
-    const handoffT = (p - HANDOFF_START) / (HANDOFF_END - HANDOFF_START);
-    setHandoffProgress(handoffT);
-    setAboutHiddenState();
-    return;
-  }
-
-    // 3) music arc phase
-  if (p < MUSIC_END) {
-    setMusicState();
-    setAboutHiddenState();
-
-    if (musicArc) {
-      const mt = (p - MUSIC_START) / (MUSIC_END - MUSIC_START);
-      const mu = Math.max(0, Math.min(1, mt));
-      const mRaw = mu * musicArc.maxStep;
-      musicArc.layoutProgress(mRaw);
-    }
-
-    return;
-  }
-
-  // 4) hold music briefly before about handoff
+  // 6) hold beat store briefly before about handoff
   if (p < ABOUT_START) {
-    setMusicState();
+    if (arc) arc.snap(arc.maxStep);
+    setBeatStoreState();
     setAboutHiddenState();
-
-    if (musicArc) {
-      musicArc.snap(musicArc.maxStep);
-    }
 
     if (beatBg) {
       gsap.set(beatBg, { autoAlpha: 1 });
@@ -1158,16 +1202,17 @@ setAboutHiddenState();
     return;
   }
 
-  // 5) music -> about transition
-  if (p < ABOUT_END) {
-    if (musicArc) {
-      musicArc.snap(musicArc.maxStep);
-    }
+  // 7) beat store -> about transition
+if (p < ABOUT_END) {
+  if (arc) arc.snap(arc.maxStep);
 
-    const aboutT = (p - ABOUT_START) / (ABOUT_END - ABOUT_START);
-    setAboutTransitionProgress(aboutT);
-    return;
-  }
+  const aboutT = (p - ABOUT_START) / (ABOUT_END - ABOUT_START);
+  setAboutTransitionProgress(aboutT);
+  return;
+}
+
+setAboutTransitionProgress(1);
+return;
 },
 
             onEnter: () => {
@@ -1185,26 +1230,15 @@ onEnterBack: () => {
     pointerEvents: "none",
   });
 
-  if (musicArc) {
-    musicArc.snap(musicArc.maxStep);
+  if (arc) {
+    arc.snap(arc.maxStep);
   }
 },
 
             // ✅ KEY CHANGE:
             // when landing pin ends, KEEP beat-store fixed + visible (no disappear)
-onLeave: () => {
-  document.documentElement.classList.remove("nav-blend");
-  moveNavToBody(false);
-
-  gsap.set(beatStore, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-  });
-
-  // keep nav floating above About
-  moveNavToBody(true);
-
-  // do NOT force a second about-state swap here
+onLeave: (self) => {
+  self.scroll(self.end - 1);
 },
 
 
@@ -1272,8 +1306,9 @@ tl.fromTo(
 );
         tl.to(beatStore, { pointerEvents: "auto", duration: 0 }, 0.34);
         // ✅ add extra scroll room AFTER beat-store is fully visible
-const BEATSTORE_PAD = 1.2; // increase to 1.5 / 2.0 for even more room
+        const BEATSTORE_PAD = 1.2;
 tl.to({}, { duration: BEATSTORE_PAD, ease: "none" });
+
 
         ScrollTrigger.refresh();
         
