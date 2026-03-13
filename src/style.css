@@ -1,5 +1,49 @@
 :root {
   --bg: #ab1212;
+
+  /* desktop / laptop fluid scale */
+  --page-pad-x: clamp(48px, 5vw, 80px);
+  --page-pad-y: clamp(36px, 4vh, 60px);
+
+  --hero-left-w: clamp(420px, 36vw, 576px);
+  --right-block-w: clamp(320px, 30vw, 480px);
+
+  --section-title-size: clamp(48px, 4vw, 64px);
+  --about-title-size: clamp(84px, 8vw, 128px);
+
+  --body-copy-size: clamp(13px, 0.95vw, 16px);
+  --mono-ui-size: clamp(14px, 1vw, 16px);
+  --latest-size: clamp(26px, 2vw, 32px);
+
+  --right-block-right: clamp(72px, 10vw, 160px);
+  --about-side-right: clamp(72px, 7.5vw, 120px);
+  --about-side-w: clamp(248px, 18vw, 288px);
+
+  --arc-w: clamp(280px, 21vw, 336px);
+  --arc-h: clamp(268px, 20vw, 320px);
+
+  --music-left-w: clamp(320px, 28vw, 420px);
+  --bs-copy-w: clamp(320px, 26vw, 400px);
+
+  --album-block-w: clamp(640px, 52vw, 760px);
+  --album-center-w: clamp(240px, 18vw, 286px);
+  --album-title-w: clamp(180px, 15vw, 236px);
+  --album-details-w: clamp(240px, 19vw, 300px);
+
+  --album-player-w: clamp(240px, 18vw, 286px);
+  --album-more-offset: clamp(250px, 22vw, 360px);
+
+  --about-map-w: clamp(360px, 14vw, 440px);
+  --about-map-h: clamp(394px, 18vw, 480px);
+
+  --grid-col: clamp(112px, 8.4vw, 134px);
+  --grid-row-top: clamp(108px, 8.1vw, 130px); 
+  --grid-row-bottom: clamp(112px, 8.4vw, 134px);
+
+  --arc-item-w: clamp(186px, 14vw, 224px);
+  --arc-item-h: clamp(112px, 8.4vw, 134px);
+
+  --loader-chamber-w: min(320px, 62vw);
 }
 
 * {
@@ -56,71 +100,22 @@ body {
   inset: 0;
   z-index: 2;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.stage {
-  position: relative;
-  width: min(1440px, 100vw);
-  height: 100%;
-  margin: 0 auto;
-}
-
-.piece {
+.scene-composite {
   position: absolute;
-  display: block;
-  height: auto;
-  user-select: none;
-}
-
-.ground {
-  position: absolute;
-  left: -9vw;
-  bottom: -10vh;
-  width: 105vw;
-  height: auto;
-  object-fit: cover;
-  object-position: center bottom;
-  z-index: 2;
-}
-
-.light {
-  left: -9.5%;
-  bottom: 1.7%;
-  width: 48%;
-  z-index: 10;
-  opacity: 1;
-}
-
-.good {
-  left: -12%;
-  bottom: 3%;
-  width: 36%;
-  z-index: 9;
-}
-
-.car {
-  left: 52%;
-  bottom: -12%;
+  left: 50%;
+  bottom: 0;
   transform: translateX(-50%);
-  width: 32%;
-  z-index: 7;
+  width: 100vw;
+  min-width: 100vw;
+  max-width: none;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
 }
-
-.tuco {
-  left: 95%;
-  bottom: 1.5%;
-  width: 8%;
-  z-index: 8;
-}
-
-.bcs {
-  right: 5%;
-  bottom: -1%;
-  width: 18%;
-  z-index: 7;
-}
-
-
 
 .landing canvas.webgl {
   position: absolute;
@@ -132,15 +127,15 @@ body {
   z-index: 5;
 }
 
-.webgl{
-  pointer-events:none;
-  z-index:1;
+.webgl {
+  pointer-events: none;
+  z-index: 1;
 }
 
 .landing .text-layer {
   position: absolute;
   inset: 0;
-  padding: 60px 80px;
+  padding: var(--page-pad-y) var(--page-pad-x);
   z-index: 10;
   pointer-events: none;
 }
@@ -148,7 +143,7 @@ body {
 /* NAV */
 
 .nav {
-  position: fixed; /* 🔥 fixed during scroll */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -166,7 +161,7 @@ body {
 
 .nav-center {
   display: flex;
-  gap: 24px;
+  gap: clamp(16px, 1.5vw, 24px);
   pointer-events: auto;
 }
 
@@ -174,7 +169,7 @@ body {
 
 .nav-glyph {
   position: fixed;
-  height: 16px;
+  height: clamp(12px, 1vw, 16px);
   width: auto;
   pointer-events: auto;
   cursor: default;
@@ -213,6 +208,7 @@ body {
   cursor: default;
   color: inherit;
   text-decoration: none;
+  font-size: clamp(12px, 0.95vw, 16px);
 }
 
 /* -------------------------
@@ -223,15 +219,15 @@ body {
   position: absolute;
   left: 7vw;
   top: 28vh;
-  width: min(36vw);
+  width: min(var(--hero-left-w), 36vw);
 }
 
 .meta-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 18px;
-  margin-bottom: 18px;
+  gap: clamp(12px, 1.2vw, 18px);
+  margin-bottom: clamp(12px, 1.2vw, 18px);
 }
 
 .hero-logo {
@@ -247,9 +243,9 @@ body {
 /* DESC spacing (fix) */
 
 .desc {
-  margin-top: 28px;
+  margin-top: clamp(20px, 1.8vw, 28px);
   font-style: italic;
-  font-size: 16px;
+  font-size: var(--mono-ui-size);
   line-height: 1.8;
 }
 
@@ -257,7 +253,7 @@ body {
 
 .desc .desc-line {
   display: block;
-  margin-top: 8px;
+  margin-top: clamp(6px, 0.5vw, 8px);
 }
 
 /* remove extra top gap on first line */
@@ -290,9 +286,9 @@ body {
 
 .right-block {
   position: absolute;
-  right: 160px;
+  right: var(--right-block-right);
   top: 58vh;
-  width: 480px;
+  width: var(--right-block-w);
   pointer-events: none;
   text-align: left;
 }
@@ -301,16 +297,16 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
   font-weight: 200;
-  font-size: 32px;
+  font-size: var(--latest-size);
   line-height: 1;
   text-transform: uppercase;
 }
 
 .drop-row {
-  margin-top: 32px;
+  margin-top: clamp(20px, 2vw, 32px);
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: clamp(12px, 1.2vw, 18px);
   width: 100%;
 }
 
@@ -318,7 +314,7 @@ body {
   pointer-events: auto;
   font-family: "Sometype Mono", monospace;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--mono-ui-size);
   letter-spacing: 1px;
   text-transform: uppercase;
 
@@ -380,18 +376,18 @@ body {
 .beat-store-content {
   position: relative;
   z-index: 1;
-  padding: 60px 80px;
+  padding: var(--page-pad-y) var(--page-pad-x);
   height: 100%;
   width: 100%;
 }
 
- #bs-arc{
+#bs-arc {
   position: absolute;
-  right: 80px;     /* matches your Beat Store padding */
-  bottom: 14vh;    /* matches your grid bottom */
-  width: 336px;
-  height: 320px;
-  z-index: 5;      /* ensure it sits above background but not above nav */
+  right: var(--page-pad-x);
+  bottom: 14vh;
+  width: var(--arc-w);
+  height: var(--arc-h);
+  z-index: 5;
   pointer-events: auto;
 }
 
@@ -400,11 +396,11 @@ body {
 .bs-title {
   position: absolute;
   top: 12vh;
-  left: 80px;
+  left: var(--page-pad-x);
   margin: 0;
 
-  color: #FAFAFA;
-  font-size: 64px;
+  color: #fafafa;
+  font-size: var(--section-title-size);
   font-family: "FONTSPRING DEMO - Articulat CF Thin", sans-serif;
   font-weight: 300;
 }
@@ -414,13 +410,13 @@ body {
 .bs-copy {
   position: absolute;
   top: 22vh;
-  left: 80px;
-  width: 400px;
+  left: var(--page-pad-x);
+  width: var(--bs-copy-w);
   margin: 0;
 
   color: rgba(250, 250, 250, 0.85);
   font-family: "Sometype Mono", monospace;
-  font-size: 14px;
+  font-size: clamp(12px, 0.85vw, 14px);
   line-height: 1.6;
   white-space: pre-line;
   text-transform: uppercase;
@@ -431,16 +427,16 @@ body {
 .bs-btn {
   position: absolute;
   top: 40vh;
-  left: 80px;
+  left: var(--page-pad-x);
 
-  padding: 16px 20px;
+  padding: clamp(12px, 1vw, 16px) clamp(16px, 1.25vw, 20px);
   border: 0.5px solid #fafafa;
   opacity: 0.85;
   background: transparent;
 
-  color: #FAFAFA;
+  color: #fafafa;
   font-family: "Sometype Mono", monospace;
-  font-size: 16px;
+  font-size: var(--mono-ui-size);
   font-weight: 700;
   text-transform: uppercase;
 
@@ -455,13 +451,13 @@ body {
 
 .bs-grid {
   position: absolute;
-  left: 80px;
-  bottom: 60px;
+  left: var(--page-pad-x);
+  bottom: var(--page-pad-y);
 
   display: grid;
 
-  grid-template-columns: 134px 134px 134px;
-  grid-template-rows: 130px 130px 134px;
+  grid-template-columns: var(--grid-col) var(--grid-col) var(--grid-col);
+  grid-template-rows: var(--grid-row-top) var(--grid-row-top) var(--grid-row-bottom);
   gap: 1px;
 
   grid-template-areas:
@@ -516,54 +512,52 @@ body {
   pointer-events: none;
 }
 
-.music-page{
-  background:#000;
+.music-page {
+  background: #000;
 }
 
-.music-content{
-  position:relative;
-  z-index:1;
-  width:100%;
-  height:100%;
-  padding:60px 80px;
+.music-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: var(--page-pad-y) var(--page-pad-x);
 }
 
-.music-left{
-  position:absolute;
-  left:80px;
-  top:12vh;
-  width:420px;
+.music-left {
+  position: absolute;
+  left: var(--page-pad-x);
+  top: 12vh;
+  width: var(--music-left-w);
 }
 
-.music-title{
-  margin:0;
-  color:#fafafa;
-  font-size:64px;
-  font-family:"FONTSPRING DEMO - Articulat CF Thin", sans-serif;
-  font-weight:300;
+.music-title {
+  margin: 0;
+  color: #fafafa;
+  font-size: var(--section-title-size);
+  font-family: "FONTSPRING DEMO - Articulat CF Thin", sans-serif;
+  font-weight: 300;
 }
 
-.music-copy{
-  margin:48px 0 0 0;
-  color:rgba(250,250,250,0.85);
-  font-family:"Sometype Mono", monospace;
-  font-size:14px;
-  line-height:1.6;
-  text-transform:uppercase;
-  white-space:pre-line;
+.music-copy {
+  margin: clamp(32px, 3vw, 48px) 0 0 0;
+  color: rgba(250, 250, 250, 0.85);
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(12px, 0.85vw, 14px);
+  line-height: 1.6;
+  text-transform: uppercase;
+  white-space: pre-line;
 }
 
-.music-arc{
-  position:absolute;
-  right:80px;
-  bottom:14vh;
-  width:336px;
-  height:320px;
-  z-index:5;
-  pointer-events:auto;
+.music-arc {
+  position: absolute;
+  right: var(--page-pad-x);
+  bottom: 14vh;
+  width: var(--arc-w);
+  height: var(--arc-h);
+  z-index: 5;
+  pointer-events: auto;
 }
-
-
 
 /* =========================
    LOADER
@@ -605,7 +599,7 @@ body {
 }
 
 .loader__chamber {
-  width: min(320px, 62vw);
+  width: var(--loader-chamber-w);
   height: auto;
   transform-origin: 50% 50%;
   will-change: transform;
@@ -613,14 +607,14 @@ body {
 
 .loader__text {
   font-family: "Tiny5", monospace;
-  font-size: 20px;
+  font-size: clamp(16px, 1.25vw, 20px);
   letter-spacing: 2px;
   color: #fff;
 }
 
 .loader__pct {
   font-family: "Tiny5", monospace;
-  font-size: 36px;
+  font-size: clamp(28px, 2.25vw, 36px);
   color: #fff;
   line-height: 1;
 }
@@ -678,9 +672,6 @@ body {
   pointer-events: none !important;
 }
 
-
-
-
 /* ===== Cinematic Scroll Only ===== */
 
 .beat-store.cinematic-fixed {
@@ -705,441 +696,439 @@ body {
 
 /* Nav must sit above overlay */
 
-.nav{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  z-index:1000000;
-  pointer-events:auto;
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000000;
+  pointer-events: auto;
 }
 
-
-.bs-arc-item{
-  position:absolute;
-  width:224px;
-  height:134px;
-  cursor:pointer;
+.bs-arc-item {
+  position: absolute;
+  width: var(--arc-item-w);
+  height: var(--arc-item-h);
+  cursor: pointer;
 }
 
-.bs-arc-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.bs-arc-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-
-.album-view{
-  position:fixed;
-  inset:0;
-  z-index:2000000;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  background:#000;
+.album-view {
+  position: fixed;
+  inset: 0;
+  z-index: 2000000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: #000;
 }
 
-.album-view.is-open{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
+.album-view.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.album-view-bg{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
+.album-view-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
 .album-view-bg-base,
-.album-view-bg-played{
-  position:absolute;
-  inset:0;
-  background-repeat:no-repeat;
-  background-position:center center;
-  background-size:cover;
-  z-index:1;
+.album-view-bg-played {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  z-index: 1;
 }
 
-.album-view-bg-base{
-  opacity:0.05;
+.album-view-bg-base {
+  opacity: 0.05;
 }
 
-.album-view-bg-played{
-  opacity:0.20;
-  clip-path:inset(0 100% 0 0);
+.album-view-bg-played {
+  opacity: 0.2;
+  clip-path: inset(0 100% 0 0);
 }
 
-.album-view-ui{
-  position:relative;
-  width:100%;
-  height:100%;
-  z-index:2;
+.album-view-ui {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
-.album-view-top{
-  position:absolute;
-  inset:0;
+.album-view-top {
+  position: absolute;
+  inset: 0;
 }
 
 .album-view-more,
-.album-view-sound{
-  background:none;
-  border:0;
-  padding:0;
-  margin:0;
-  color:#fafafa;
-  font-family:"Sometype Mono", monospace;
-  font-size:20px;
-  font-weight:400;
-  letter-spacing:0;
-  text-transform:uppercase;
-  cursor:pointer;
+.album-view-sound {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #fafafa;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(16px, 1.25vw, 20px);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
 
-  appearance:none;
-  -webkit-appearance:none;
-  border-radius:0;
-  box-shadow:none;
-  outline:none;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
 }
 
-.album-view-player-row{
-  position:absolute;
-  left:50%;
-  top:21.5vh;
-  transform:translate(-50%, -50%);
+.album-view-player-row {
+  position: absolute;
+  left: 50%;
+  top: 21.5vh;
+  transform: translate(-50%, -50%);
 
-  width:286px;
+  width: var(--album-player-w);
 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.album-view-more{
-  position:absolute;
-  top:21.5vh;
-  left:calc(50% - 143px - 360px);
-  transform:translate(-100%, -50%);
+.album-view-more {
+  position: absolute;
+  top: 21.5vh;
+  left: calc(50% - (var(--album-player-w) / 2) - var(--album-more-offset));
+  transform: translate(-100%, -50%);
 
-  background:none;
-  border:0;
-  padding:0;
+  background: none;
+  border: 0;
+  padding: 0;
 }
 
-.album-view-sound{
-  position:absolute;
-  top:21.5vh;
-  left:calc(50% + 143px + 360px);
-  transform:translateY(-50%);
+.album-view-sound {
+  position: absolute;
+  top: 21.5vh;
+  left: calc(50% + (var(--album-player-w) / 2) + var(--album-more-offset));
+  transform: translateY(-50%);
 
-  width:110px;
-  text-align:left;
+  width: clamp(88px, 7vw, 110px);
+  text-align: left;
 
-  background:none;
-  border:0;
-  padding:0;
+  background: none;
+  border: 0;
+  padding: 0;
 }
 
-.album-view-player-row{
-  position:absolute;
-  left:50%;
-  top:21.5vh;
-  transform:translate(-50%, -50%);
-  width:286px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.album-view-player-row {
+  position: absolute;
+  left: 50%;
+  top: 21.5vh;
+  transform: translate(-50%, -50%);
+  width: var(--album-player-w);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.album-view-time{
-  color:#AB1212;
+.album-view-time {
+  color: #ab1212;
   mix-blend-mode: exclusion;
-  font-family:"Sometype Mono", monospace;
-  font-size:16px;
-  font-weight:100;
-  line-height:1;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 100;
+  line-height: 1;
 }
 
-.album-view-play{
-  width:20px;
-  height:20px;
-  display:grid;
-  place-items:center;
-  background:none;
-  border:0;
-  padding:0;
-  margin:0;
-  color:#AB1212;
+.album-view-play {
+  width: clamp(18px, 1.25vw, 20px);
+  height: clamp(18px, 1.25vw, 20px);
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #ab1212;
   mix-blend-mode: exclusion;
-  font-family:"Sometype Mono", monospace;
-  font-size:20px;
-  font-weight:700;
-  line-height:1;
-  cursor:pointer;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(18px, 1.25vw, 20px);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.album-view{
-  position:fixed;
-  inset:0;
-  z-index:2000000;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  background:#000;
-  isolation:isolate;
+.album-view {
+  position: fixed;
+  inset: 0;
+  z-index: 2000000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: #000;
+  isolation: isolate;
 }
 
-.album-view.is-open{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
+.album-view.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.album-view-bg{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  background:#000;
+.album-view-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
 }
 
 .album-view-bg-base,
-.album-view-bg-played{
-  position:absolute;
-  inset:0;
-  background-repeat:no-repeat;
-  background-position:center center;
-  background-size:cover;
-  transform-origin:center center;
-  filter:brightness(0.9);
-  mix-blend-mode:normal;
-  filter:contrast(1.05) brightness(0.9);
+.album-view-bg-played {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  transform-origin: center center;
+  filter: brightness(0.9);
+  mix-blend-mode: normal;
+  filter: contrast(1.05) brightness(0.9);
 }
 
-.album-view-bg-base{
-  opacity:0.05;
+.album-view-bg-base {
+  opacity: 0.05;
 }
 
-.album-view-bg-played{
-  opacity:0.20;
-  clip-path:inset(0 100% 0 0);
+.album-view-bg-played {
+  opacity: 0.2;
+  clip-path: inset(0 100% 0 0);
 }
 
-.album-view-progress-line{
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
-  width:1px;
-  background:#fafafa;
-  z-index:3;
-  pointer-events:none;
-  transform:translateX(0);
+.album-view-progress-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: #fafafa;
+  z-index: 3;
+  pointer-events: none;
+  transform: translateX(0);
 }
 
-.album-view-ui{
-  position:relative;
-  width:100%;
-  height:100%;
-  z-index:2;
+.album-view-ui {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
-.album-view-block2{
-  position:absolute;
-  left:50%;
-  top:44vh;
-  transform:translateX(-50%);
-  width:760px;
-  min-height:320px;
+.album-view-block2 {
+  position: absolute;
+  left: 50%;
+  top: 44vh;
+  transform: translateX(-50%);
+  width: var(--album-block-w);
+  min-height: 320px;
 }
 
-.album-view-title{
-  position:absolute;
-  left:calc(50% - 459px); /* 143 + 80 + 236 */
-  top:0;
-  width:236px;
-  margin:0;
-  color:#fafafa;
+.album-view-title {
+  position: absolute;
+  left: calc(50% - 459px);
+  top: 0;
+  width: var(--album-title-w);
+  margin: 0;
+  color: #fafafa;
   opacity: 0.85;
-  font-family:"Sometype Mono", monospace;
-  font-size:36px;
-  font-weight:700;
-  line-height:1.05;
-  text-transform:uppercase;
-  white-space:normal;
-  word-break:break-word;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(28px, 2.25vw, 36px);
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+  white-space: normal;
+  word-break: break-word;
 }
 
-.album-view-title.is-single-line{
-  text-align:right;
+.album-view-title.is-single-line {
+  text-align: right;
 }
 
-.album-view-title:not(.is-single-line){
-  text-align:left;
+.album-view-title:not(.is-single-line) {
+  text-align: left;
 }
 
-.album-view-center{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  top:0;
+.album-view-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
 
-  width:286px;
+  width: var(--album-center-w);
 
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.album-view-desc{
-  width:286px;
-  margin:0;
-  color:#fafafa;
+.album-view-desc {
+  width: var(--album-center-w);
+  margin: 0;
+  color: #fafafa;
   opacity: 0.85;
   text-align: left;
-  font-family:"Sometype Mono", monospace;
-  font-size:16px;
-  font-weight:400;
-  line-height:1.2;
-  text-transform:uppercase;
-  white-space:pre-line;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: pre-line;
 }
 
-.album-view-buy{
-  width:286px;
-  margin-top:40px;
-  padding:16px;
-  background:transparent;
-  border:0.5px solid #fafafa;
-  color:#fafafa;
-  font-family:"Sometype Mono", monospace;
-  font-size:20px;
-  font-weight:700;
-  line-height:1;
-  text-transform:uppercase;
-  cursor:pointer;
+.album-view-buy {
+  width: var(--album-center-w);
+  margin-top: clamp(28px, 2.5vw, 40px);
+  padding: clamp(12px, 1vw, 16px);
+  background: transparent;
+  border: 0.5px solid #fafafa;
+  color: #fafafa;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(16px, 1.25vw, 20px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
   opacity: 1;
 }
 
-.album-view-details-side{
-  position:absolute;
-  left:calc(50% + 223px); /* 143 + 80 */
-  top:0;
-  width:300px;
-  opacity:1;
+.album-view-details-side {
+  position: absolute;
+  left: calc(50% + 223px);
+  top: 0;
+  width: var(--album-details-w);
+  opacity: 1;
 }
 
-.album-view-details-title{
-  margin:0 0 32px 0;
-  color:#fafafa;
+.album-view-details-title {
+  margin: 0 0 clamp(24px, 2vw, 32px) 0;
+  color: #fafafa;
   opacity: 0.85;
-  font-family:"Sometype Mono", monospace;
-  font-size:20px;
-  font-weight:700;
-  line-height:1;
-  text-transform:uppercase;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(16px, 1.25vw, 20px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-.album-view-details-text{
-  color:#fafafa;
-  font-family:"Sometype Mono", monospace;
-  font-size:16px;
-  font-weight:400;
-  line-height:1;
-  white-space:pre-line;
-  text-transform:uppercase;
+.album-view-details-text {
+  color: #fafafa;
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 400;
+  line-height: 1;
+  white-space: pre-line;
+  text-transform: uppercase;
 }
 
-.album-view-bg-site{
-  position:absolute;
-  inset:0;
+.album-view-bg-site {
+  position: absolute;
+  inset: 0;
 
-  background-image:url("/assets/beat-store-bg.svg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+  background-image: url("/assets/beat-store-bg.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  opacity:1;
-  z-index:0;
+  opacity: 1;
+  z-index: 0;
 }
 
-.arc-title{
-  position:absolute;
-  left:0;
-  top:-44px;
-  font-size:18px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  opacity:1;
-  pointer-events:none;
-  white-space:nowrap;
+.arc-title {
+  position: absolute;
+  left: 0;
+  top: clamp(-36px, -2.75vw, -44px);
+  font-size: clamp(14px, 1.1vw, 18px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 1;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-.arc-pointer{
-  position:absolute;
-  left:-54px;
-  top:0;
-  width:40px;
-  height:18px;
-  pointer-events:none;
-  z-index:60;
-  opacity:0.9;
+.arc-pointer {
+  position: absolute;
+  left: clamp(-46px, -3.4vw, -54px);
+  top: 0;
+  width: clamp(32px, 2.5vw, 40px);
+  height: 18px;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.9;
 }
 
-.arc-pointer span{
-  position:absolute;
-  left:0;
-  height:0;
-  border-top:0.5px solid rgba(250,250,250,0.5);
+.arc-pointer span {
+  position: absolute;
+  left: 0;
+  height: 0;
+  border-top: 0.5px solid rgba(250, 250, 250, 0.5);
 }
 
-.arc-pointer span:nth-child(1){ top:0px; width:44px; }
-.arc-pointer span:nth-child(2){ top:4px; width:24px; }
-.arc-pointer span:nth-child(3){ top:8px; width:12px; }
+.arc-pointer span:nth-child(1) { top: 0px; width: clamp(34px, 2.8vw, 44px); }
+.arc-pointer span:nth-child(2) { top: 4px; width: clamp(18px, 1.6vw, 24px); }
+.arc-pointer span:nth-child(3) { top: 8px; width: clamp(10px, 0.9vw, 12px); }
 
-.music-page{
-  display:none;
+.music-page {
+  display: none;
 }
 
-.bs-music-left{
-  position:absolute;
-  left:80px;
-  top:12vh;
-  width:420px;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
+.bs-music-left {
+  position: absolute;
+  left: var(--page-pad-x);
+  top: 12vh;
+  width: var(--music-left-w);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.bs-music-title{
-  margin:0;
-  color:#fafafa;
-  font-size:64px;
-  font-family:"FONTSPRING DEMO - Articulat CF Thin", sans-serif;
-  font-weight:300;
+.bs-music-title {
+  margin: 0;
+  color: #fafafa;
+  font-size: var(--section-title-size);
+  font-family: "FONTSPRING DEMO - Articulat CF Thin", sans-serif;
+  font-weight: 300;
 }
 
-.bs-music-copy{
-  margin:48px 0 0 0;
-  color:rgba(250,250,250,0.85);
-  font-family:"Sometype Mono", monospace;
-  font-size:14px;
-  line-height:1.6;
-  text-transform:uppercase;
-  white-space:pre-line;
+.bs-music-copy {
+  margin: clamp(32px, 3vw, 48px) 0 0 0;
+  color: rgba(250, 250, 250, 0.85);
+  font-family: "Sometype Mono", monospace;
+  font-size: clamp(12px, 0.85vw, 14px);
+  line-height: 1.6;
+  text-transform: uppercase;
+  white-space: pre-line;
 }
 
-.music-arc-overlay{
-  position:absolute;
-  right:80px;
-  bottom:14vh;
-  width:336px;
-  height:320px;
-  z-index:6;
-  pointer-events:none;
-  opacity:0;
-  visibility:hidden;
+.music-arc-overlay {
+  position: absolute;
+  right: var(--page-pad-x);
+  bottom: 14vh;
+  width: var(--arc-w);
+  height: var(--arc-h);
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .about-page {
@@ -1189,7 +1178,7 @@ body {
 
 .about-title-reveal {
   position: absolute;
-  left: 80px;
+  left: var(--page-pad-x);
   top: 50%;
   transform: translateY(-50%);
   overflow: hidden;
@@ -1198,7 +1187,7 @@ body {
 .about-title {
   margin: 0;
   font-family: "FONTSPRING DEMO - Articulat CF Extra Bold", sans-serif;
-  font-size: 128px;
+  font-size: var(--about-title-size);
   line-height: 0.9;
   color: #fafafa;
   opacity: 1;
@@ -1210,8 +1199,8 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 232px;
-  height: 308px;
+  width: var(--about-map-w);
+  height: var(--about-map-h);
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
@@ -1220,8 +1209,8 @@ body {
 
 .about-map {
   display: block;
-  width: 232px;
-  height: 308px;
+  width: var(--about-map-w);
+  height: var(--about-map-h);
   object-fit: contain;
   pointer-events: none;
   user-select: none;
@@ -1229,17 +1218,17 @@ body {
 
 .about-links {
   position: absolute;
-  left: 80px;
-  bottom: 80px;
+  left: var(--page-pad-x);
+  bottom: clamp(48px, 5vw, 80px);
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  gap: clamp(20px, 2.5vw, 40px);
   align-items: center;
 }
 
 .about-links a {
   font-family: "Sometype Mono", monospace;
-  font-size: 16px;
+  font-size: var(--mono-ui-size);
   line-height: 1;
   color: #fafafa;
   text-decoration: underline;
@@ -1250,12 +1239,12 @@ body {
 
 .about-side {
   position: absolute;
-  right: 120px;
-  bottom: 80px;
-  width: 288px;
+  right: var(--about-side-right);
+  bottom: clamp(48px, 5vw, 80px);
+  width: var(--about-side-w);
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: clamp(28px, 2.5vw, 40px);
 }
 
 .about-copy-reveal,
@@ -1265,9 +1254,9 @@ body {
 
 .about-copy {
   margin: 0;
-  width: 288px;
+  width: var(--about-side-w);
   font-family: "Sometype Mono", monospace;
-  font-size: 16px;
+  font-size: var(--body-copy-size);
   line-height: 1.25;
   color: #fafafa;
   opacity: 1;
@@ -1279,9 +1268,9 @@ body {
   background: transparent;
   color: #fafafa;
   font-family: "Sometype Mono", monospace;
-  font-size: 24px;
+  font-size: clamp(18px, 1.5vw, 24px);
   line-height: 1;
-  padding: 16px 24px;
+  padding: clamp(12px, 1vw, 16px) clamp(18px, 1.5vw, 24px);
   cursor: pointer;
   align-self: flex-start;
 }
@@ -1308,4 +1297,75 @@ body {
 .about-copy-reveal,
 .about-btn-reveal {
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+
+.landing {
+  min-height: 100vh;
+}
+
+/* CONTENT WIDTH */
+.text-layer {
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+/* TEXT ABOVE LOGO */
+.meta-row {
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+/* LOGO */
+.hero-logo img {
+  width: 100%;
+  max-width: 314px;
+}
+
+/* POSITION LOGO BLOCK */
+.left-block {
+  margin-top: 190px;
+}
+
+/* TEXT BELOW LOGO */
+.desc {
+  margin-top: 40px;
+}
+
+.desc-line {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* LATEST DROPS */
+.latest-reveal {
+  margin-top: 154px;
+}
+
+.latest {
+  font-size: 24px;
+}
+
+.drop-row {
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+/* SCENE STRIP */
+.scene-layer {
+  position: absolute;
+  bottom: 0;
+  height: 190px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.scene-composite {
+  width: 1000px;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+}
+
 }

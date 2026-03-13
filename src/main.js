@@ -334,68 +334,59 @@ async function preloadAssets(onProgress) {
 }
 
 function initCinematicScroll() {
-  // Kill previous instances
   const existing = ScrollTrigger.getById("cinematicScroll");
   if (existing) existing.kill(true);
 
-  const existingSwap = ScrollTrigger.getById("cinematicSwap");
-  if (existingSwap) existingSwap.kill(true);
-
   const landing = document.querySelector("#home");
-  const stage = landing?.querySelector(".stage");
-  const car = landing?.querySelector("#car");
+  const sceneComposite = landing?.querySelector(".scene-composite");
   const beatStore = document.querySelector("#beat-store");
 
-  if (!landing || !stage || !car || !beatStore) return;
+  if (!landing || !sceneComposite || !beatStore) return;
 
   const beatStoreArcRoot = document.querySelector("#bs-arc");
-const arc = createAlbumArcWidget({
-  root: beatStoreArcRoot,
-  titleSelector: ".arc-title",
-  itemSelector: ".bs-arc-item",
-  data: BEATS,
-});
+  const arc = createAlbumArcWidget({
+    root: beatStoreArcRoot,
+    titleSelector: ".arc-title",
+    itemSelector: ".bs-arc-item",
+    data: BEATS,
+  });
 
-const musicArc = window.__musicArc;
+  const musicArc = window.__musicArc;
 
-const bsTitle = beatStore.querySelector(".bs-title");
-const bsCopy = beatStore.querySelector(".bs-copy");
-const bsBtn = beatStore.querySelector(".bs-btn");
-const bsGrid = beatStore.querySelector(".bs-grid");
-const bsArc = beatStore.querySelector("#bs-arc");
+  const bsTitle = beatStore.querySelector(".bs-title");
+  const bsCopy = beatStore.querySelector(".bs-copy");
+  const bsBtn = beatStore.querySelector(".bs-btn");
+  const bsGrid = beatStore.querySelector(".bs-grid");
+  const bsArc = beatStore.querySelector("#bs-arc");
 
-const musicLeft = beatStore.querySelector("#bsMusicLeft");
-const musicArcOverlay = beatStore.querySelector("#music-arc-overlay");
+  const musicLeft = beatStore.querySelector("#bsMusicLeft");
+  const musicArcOverlay = beatStore.querySelector("#music-arc-overlay");
 
-const bsTitleReveal = beatStore.querySelector(".bs-title-reveal");
-const bsCopyReveal = beatStore.querySelector(".bs-copy-reveal");
+  const bsTitleReveal = beatStore.querySelector(".bs-title-reveal");
+  const bsCopyReveal = beatStore.querySelector(".bs-copy-reveal");
 
-const musicTitleReveal = musicLeft?.querySelector(".bs-music-title-reveal");
-const musicCopyReveal = musicLeft?.querySelector(".bs-music-copy-reveal");
+  const musicTitleReveal = musicLeft?.querySelector(".bs-music-title-reveal");
+  const musicCopyReveal = musicLeft?.querySelector(".bs-music-copy-reveal");
 
-const aboutTransitionMap = document.querySelector("#aboutTransitionMap");
-const aboutTransitionImg = aboutTransitionMap?.querySelector("img");
+  const aboutTransitionMap = document.querySelector("#aboutTransitionMap");
+  const aboutTransitionImg = aboutTransitionMap?.querySelector("img");
 
-const aboutSection = document.querySelector("#about");
-const aboutMapWrap = aboutSection?.querySelector("#aboutMapWrap");
-const aboutTitleReveal = aboutSection?.querySelector(".about-title-reveal");
-const aboutCopyReveal = aboutSection?.querySelector(".about-copy-reveal");
-const aboutBtnReveal = aboutSection?.querySelector(".about-btn-reveal");
-const aboutLinks = aboutSection?.querySelector(".about-links");
+  const aboutSection = document.querySelector("#about");
+  const aboutMapWrap = aboutSection?.querySelector("#aboutMapWrap");
+  const aboutTitleReveal = aboutSection?.querySelector(".about-title-reveal");
+  const aboutCopyReveal = aboutSection?.querySelector(".about-copy-reveal");
+  const aboutBtnReveal = aboutSection?.querySelector(".about-btn-reveal");
+  const aboutLinks = aboutSection?.querySelector(".about-links");
 
   const nav = document.querySelector(".nav");
-
-  // remember where nav originally was so we can restore it
   const navHome = nav ? { parent: nav.parentNode, next: nav.nextSibling } : null;
 
   function moveNavToBody(on) {
     if (!nav || !navHome) return;
 
     if (on) {
-      // move to body so it's not inside any transformed/pinned ancestor
       if (nav.parentNode !== document.body) document.body.appendChild(nav);
 
-      // make it bulletproof visible
       gsap.set(nav, { autoAlpha: 1 });
 
       nav.style.position = "fixed";
@@ -405,7 +396,6 @@ const aboutLinks = aboutSection?.querySelector(".about-links");
       nav.style.zIndex = "999999";
       nav.style.pointerEvents = "auto";
     } else {
-      // restore to original DOM position
       if (navHome.next && navHome.next.parentNode === navHome.parent) {
         navHome.parent.insertBefore(nav, navHome.next);
       } else {
@@ -420,39 +410,45 @@ const aboutLinks = aboutSection?.querySelector(".about-links");
 
   if (reduceMotion) return;
 
-  const FACE_POINT = { x: 0.49, y: 0.49 }; // driver-face-ish in car bbox
-  const ZOOM = 100;
   const END_DIST = 1600;
 
-  // Stable stage math
-  gsap.set(stage, {
-    transformOrigin: "0 0",
+  const IS_MOBILE = window.innerWidth <= 768;
+
+if (IS_MOBILE) {
+  gsap.set(sceneComposite, {
+    x: 0,
+    y: 0,
+    scale: 1,
+    transformOrigin: "left bottom",
+    willChange: "transform"
+  });
+} else {
+  gsap.set(sceneComposite, {
+    transformOrigin: "51.9% 66.5%",
+    xPercent: -50,
     x: 0,
     y: 0,
     scale: 1,
     willChange: "transform",
   });
+}
 
-  // Beat store starts hidden (in normal flow)
-  // Beat store shell stays visible, only content fades
-const beatBg = beatStore.querySelector(".beat-store-bg");
-const beatContent = beatStore.querySelector(".beat-store-content");
+  const beatBg = beatStore.querySelector(".beat-store-bg");
+  const beatContent = beatStore.querySelector(".beat-store-content");
 
-// beat-store should NEVER live in normal document flow
-gsap.set(beatStore, {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100vh",
-  zIndex: 20,
-  autoAlpha: 0,
-  pointerEvents: "none",
-});
+  gsap.set(beatStore, {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100vh",
+    zIndex: 20,
+    autoAlpha: 0,
+    pointerEvents: "none",
+  });
 
-gsap.set(beatContent, { autoAlpha: 0 });
+  gsap.set(beatContent, { autoAlpha: 0 });
 
-  // Spacer (sits where beat-store would have been in flow while fixed)
   let spacer = document.querySelector(".beat-store-spacer");
 
   if (!spacer) {
@@ -462,747 +458,725 @@ gsap.set(beatContent, { autoAlpha: 0 });
     beatStore.insertAdjacentElement("afterend", spacer);
   }
 
-function setSpacer(on) {
-  if (!spacer) return;
-
-  spacer.style.display = on ? "block" : "none";
-  spacer.style.height = on ? "100vh" : "0px";
-  spacer.style.pointerEvents = "none";
-}
-
-function setBeatStoreFixed(on) {
-  setSpacer(on);
-
-  if (on) {
-    moveNavToBody(true);
-
-    gsap.set(beatStore, {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100vh",
-      zIndex: 20,
-    });
-  } else {
-    moveNavToBody(false);
-
-    gsap.set(beatStore, {
-      clearProps: "position,top,left,width,height,zIndex",
-    });
+  function setSpacer(on) {
+    if (!spacer) return;
+    spacer.style.display = on ? "block" : "none";
+    spacer.style.height = on ? "100vh" : "0px";
+    spacer.style.pointerEvents = "none";
   }
-}
 
-function setAboutOverlayMode(on) {
-  if (!aboutSection) return;
+  function setBeatStoreFixed(on) {
+    setSpacer(on);
 
-  if (on) {
-    gsap.set(aboutSection, {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100vh",
-      zIndex: 25,
-    });
+    if (on) {
+      moveNavToBody(true);
 
-    if (aboutTransitionMap) {
-      gsap.set(aboutTransitionMap, {
+      gsap.set(beatStore, {
         position: "fixed",
-        inset: 0,
-        width: "100vw",
+        top: 0,
+        left: 0,
+        width: "100%",
         height: "100vh",
-        zIndex: 40,
-        pointerEvents: "none",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        zIndex: 20,
       });
-    }
-  } else {
-    gsap.set(aboutSection, {
-      clearProps: "position,top,left,width,height,zIndex",
-    });
-
-    if (aboutTransitionMap) {
-      gsap.set(aboutTransitionMap, {
-        clearProps:
-          "position,inset,width,height,zIndex,pointerEvents,display,alignItems,justifyContent",
-      });
-    }
-  }
-}
-
-  // Ensure car is measurable
-  function ensureCarReady() {
-    const img = car;
-    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-    if (img.decode) return img.decode().catch(() => {});
-    return new Promise((res) => img.addEventListener("load", res, { once: true }));
-  }
-
-  function measureFaceLocal() {
-    const prev = stage.style.transform;
-
-    stage.style.transform = "none";
-    const sRect = stage.getBoundingClientRect();
-    const cRect = car.getBoundingClientRect();
-    stage.style.transform = prev;
-
-    if (cRect.width < 2 || cRect.height < 2) return null;
-
-    const faceVX = cRect.left + cRect.width * FACE_POINT.x;
-    const faceVY = cRect.top + cRect.height * FACE_POINT.y;
-
-    const faceLX = faceVX - sRect.left;
-    const faceLY = faceVY - sRect.top;
-
-    return { faceLX, faceLY };
-  }
-
-  function revealOut(el, y = -100, duration = 0.35) {
-  if (!el) return gsap.timeline();
-  const inner = el.querySelector(".reveal__inner");
-  if (!inner) {
-    return gsap.to(el, {
-      autoAlpha: 0,
-      y,
-      duration,
-      ease: "power2.out",
-    });
-  }
-
-  return gsap.to(inner, {
-    yPercent: y,
-    duration,
-    ease: "power3.inOut",
-  });
-}
-
-function revealIn(el, duration = 0.55, delay = 0) {
-  if (!el) return gsap.timeline();
-  const inner = el.querySelector(".reveal__inner");
-  if (!inner) {
-    return gsap.fromTo(
-      el,
-      { autoAlpha: 0, y: 20 },
-      { autoAlpha: 1, y: 0, duration, delay, ease: "power3.out" }
-    );
-  }
-
-  gsap.set(inner, { yPercent: 120 });
-  return gsap.to(inner, {
-    yPercent: 0,
-    duration,
-    delay,
-    ease: "power4.out",
-  });
-}
-
-const beatItems = gsap.utils.toArray(bsArc.querySelectorAll(".bs-arc-item"));
-const musicItems = gsap.utils.toArray(musicArcOverlay.querySelectorAll(".bs-arc-item"));
-const musicTitleEl = musicArcOverlay.querySelector(".arc-title");
-const musicPointerEl = musicArcOverlay.querySelector(".arc-pointer");
-
-function clamp01(v) {
-  return Math.max(0, Math.min(1, v));
-}
-
-function lerp(a, b, t) {
-  return a + (b - a) * t;
-}
-
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function setBeatStoreState() {
-  gsap.set(bsTitle, { autoAlpha: 1, y: 0, clearProps: "display" });
-  gsap.set(bsCopy, { autoAlpha: 1, y: 0, clearProps: "display" });
-  gsap.set(bsBtn, { autoAlpha: 1, y: 0, clearProps: "display" });
-  gsap.set(bsGrid, { autoAlpha: 1, clearProps: "display" });
-  gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "auto" });
-
-  if (bsTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsTitleReveal.querySelector(".reveal__inner"), { yPercent: 0 });
-  }
-
-  if (bsCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsCopyReveal.querySelector(".reveal__inner"), { yPercent: 0 });
-  }
-
-  gsap.set(musicLeft, { autoAlpha: 0, visibility: "hidden" });
-  gsap.set(musicArcOverlay, {
-    autoAlpha: 0,
-    visibility: "hidden",
-    pointerEvents: "none",
-  });
-  gsap.set(musicTitleEl, { autoAlpha: 0 });
-  gsap.set(musicPointerEl, { autoAlpha: 0 });
-
-  if (musicTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicTitleReveal.querySelector(".reveal__inner"), { yPercent: 120 });
-  }
-
-  if (musicCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicCopyReveal.querySelector(".reveal__inner"), { yPercent: 120 });
-  }
-
-  musicItems.forEach((el, i) => {
-    gsap.set(el, {
-      x: 180 + i * 26,
-      y: 250 + i * 16,
-      autoAlpha: 0,
-    });
-    el.style.pointerEvents = "none";
-  });
-}
-
-function setMusicState() {
-  gsap.set(bsTitle, { autoAlpha: 0, y: -20 });
-  gsap.set(bsCopy, { autoAlpha: 0, y: -20 });
-  gsap.set(bsBtn, { autoAlpha: 0, y: -10 });
-  gsap.set(bsGrid, { autoAlpha: 0 });
-  gsap.set(bsArc, { autoAlpha: 0, pointerEvents: "none" });
-
-  if (bsTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsTitleReveal.querySelector(".reveal__inner"), { yPercent: -110 });
-  }
-
-  if (bsCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsCopyReveal.querySelector(".reveal__inner"), { yPercent: -110 });
-  }
-
-  gsap.set(musicLeft, { autoAlpha: 1, visibility: "visible" });
-  gsap.set(musicArcOverlay, {
-    autoAlpha: 1,
-    visibility: "visible",
-    pointerEvents: "auto",
-  });
-  gsap.set(musicTitleEl, { autoAlpha: 1 });
-  gsap.set(musicPointerEl, { autoAlpha: 1 });
-
-  if (musicTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicTitleReveal.querySelector(".reveal__inner"), { yPercent: 0 });
-  }
-
-  if (musicCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicCopyReveal.querySelector(".reveal__inner"), { yPercent: 0 });
-  }
-}
-
-function setHandoffProgress(rawT) {
-  const t = clamp01(rawT);
-  const e = easeOutCubic(t);
-
-  gsap.set(musicLeft, {
-    autoAlpha: 1 - e,
-    visibility: 1 - e > 0.001 ? "visible" : "hidden",
-  });
-
-  gsap.set(musicArcOverlay, {
-    autoAlpha: 1 - e,
-    visibility: 1 - e > 0.001 ? "visible" : "hidden",
-    pointerEvents: "none",
-  });
-
-  gsap.set(musicTitleEl, { autoAlpha: 1 - e });
-  gsap.set(musicPointerEl, { autoAlpha: 1 - e });
-
-  if (musicTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicTitleReveal.querySelector(".reveal__inner"), {
-      yPercent: -110 * e,
-    });
-  }
-
-  if (musicCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(musicCopyReveal.querySelector(".reveal__inner"), {
-      yPercent: -110 * e,
-    });
-  }
-
-  if (musicItems[0]) {
-    gsap.set(musicItems[0], {
-      x: lerp(0, -84, e),
-      y: lerp(0, -120, e),
-      autoAlpha: 1 - e,
-    });
-  }
-
-  if (musicItems[1]) {
-    gsap.set(musicItems[1], {
-      x: lerp(112, 52, e),
-      y: lerp(146, 18, e),
-      autoAlpha: lerp(0.55, 0, e),
-    });
-  }
-
-  if (musicItems[2]) {
-    gsap.set(musicItems[2], {
-      x: lerp(224, 188, e),
-      y: lerp(292, 172, e),
-      autoAlpha: lerp(0.35, 0, e),
-    });
-  }
-
-  if (musicItems[3]) {
-    gsap.set(musicItems[3], {
-      x: lerp(336, 286, e),
-      y: lerp(438, 280, e),
-      autoAlpha: 0,
-    });
-  }
-
-  musicItems.forEach((el) => {
-    el.style.pointerEvents = "none";
-  });
-
-  gsap.set(bsTitle, {
-    autoAlpha: e,
-    y: 20 - 20 * e,
-    clearProps: "display",
-  });
-
-  gsap.set(bsCopy, {
-    autoAlpha: e,
-    y: 20 - 20 * e,
-    clearProps: "display",
-  });
-
-  gsap.set(bsBtn, {
-    autoAlpha: e,
-    y: 12 - 12 * e,
-    clearProps: "display",
-  });
-
-  gsap.set(bsGrid, {
-    autoAlpha: e,
-    clearProps: "display",
-  });
-
-  gsap.set(bsArc, {
-    autoAlpha: e,
-    pointerEvents: "none",
-  });
-
-  if (bsTitleReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
-      yPercent: 120 - 120 * e,
-    });
-  }
-
-  if (bsCopyReveal?.querySelector(".reveal__inner")) {
-    gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
-      yPercent: 120 - 120 * e,
-    });
-  }
-
-  if (beatItems[0]) {
-    gsap.set(beatItems[0], {
-      x: lerp(180, 0, e),
-      y: lerp(250, 0, e),
-      autoAlpha: lerp(0, 1, e),
-    });
-  }
-
-  if (beatItems[1]) {
-    gsap.set(beatItems[1], {
-      x: lerp(206, 112, e),
-      y: lerp(266, 146, e),
-      autoAlpha: lerp(0, 0.55, e),
-    });
-  }
-
-  if (beatItems[2]) {
-    gsap.set(beatItems[2], {
-      x: lerp(232, 224, e),
-      y: lerp(282, 292, e),
-      autoAlpha: lerp(0, 0.35, e),
-    });
-  }
-
-  if (beatItems[3]) {
-    gsap.set(beatItems[3], {
-      x: lerp(258, 336, e),
-      y: lerp(298, 438, e),
-      autoAlpha: 0,
-    });
-  }
-
-  beatItems.forEach((el) => {
-    el.style.pointerEvents = "none";
-  });
-}
-
-function getRevealInner(el) {
-  return el?.querySelector(".reveal__inner") || null;
-}
-
-function getAboutTargetScale() {
-  if (!aboutTransitionImg || !aboutMapWrap) return 0.2;
-
-  const transitionRect = aboutTransitionImg.getBoundingClientRect();
-  const targetRect = aboutMapWrap.getBoundingClientRect();
-
-  if (!transitionRect.width || !targetRect.width) return 0.2;
-
-  return targetRect.width / transitionRect.width;
-}
-
-function getAboutTargetTransform() {
-  if (!aboutTransitionImg || !aboutMapWrap) {
-    return { x: 0, y: 0, scale: 1 };
-  }
-
-  const targetRect = aboutMapWrap.getBoundingClientRect();
-  const viewportCX = window.innerWidth / 2;
-  const viewportCY = window.innerHeight / 2;
-
-  const targetCX = targetRect.left + targetRect.width / 2;
-  const targetCY = targetRect.top + targetRect.height / 2;
-
-  const naturalWidth =
-    aboutTransitionImg.naturalWidth || aboutTransitionImg.clientWidth || 1;
-  const naturalHeight =
-    aboutTransitionImg.naturalHeight || aboutTransitionImg.clientHeight || 1;
-
-  const fitScale = Math.min(
-    (window.innerWidth * 0.78) / naturalWidth,
-    (window.innerHeight * 0.78) / naturalHeight
-  );
-
-  const targetScale = targetRect.width / naturalWidth;
-
-  return {
-    x: targetCX - viewportCX,
-    y: targetCY - viewportCY,
-    startScale: fitScale * 3.4,
-    endScale: targetScale,
-  };
-}
-
-function setAboutHiddenState() {
-  setAboutOverlayMode(false);
-
-  gsap.set(aboutSection, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-  });
-
-  gsap.set(aboutTransitionMap, {
-    autoAlpha: 0,
-  });
-
-  if (aboutTransitionImg) {
-  gsap.set(aboutTransitionImg, {
-    x: 0,
-    y: 0,
-    scale: 3.4,
-    autoAlpha: 1,
-    transformOrigin: "50% 50%",
-  });
-}
-
-  if (aboutTitleReveal) {
-    const inner = getRevealInner(aboutTitleReveal);
-    if (inner) gsap.set(inner, { yPercent: 120 });
-  }
-
-  if (aboutCopyReveal) {
-    const inner = getRevealInner(aboutCopyReveal);
-    if (inner) gsap.set(inner, { yPercent: 120 });
-  }
-
-  if (aboutBtnReveal) {
-    const inner = getRevealInner(aboutBtnReveal);
-    if (inner) gsap.set(inner, { yPercent: 120 });
-  }
-
-  if (aboutLinks) {
-    gsap.set(aboutLinks, {
-      autoAlpha: 0,
-      y: 20,
-    });
-  }
-
-  if (aboutMapWrap) {
-  gsap.set(aboutMapWrap, { autoAlpha: 0 });
-}
-}
-
-function setAboutTransitionProgress(rawT) {
-  const t = clamp01(rawT);
-  const e = easeOutCubic(t);
-  const tf = getAboutTargetTransform();
-
-  if (musicArc) {
-    musicArc.snap(musicArc.maxStep);
-  }
-
-  setAboutOverlayMode(true);
-
-  const musicFade = clamp01(1 - t * 1.25);
-
-  gsap.set(musicLeft, {
-    autoAlpha: musicFade,
-    visibility: musicFade > 0.001 ? "visible" : "hidden",
-  });
-
-  gsap.set(musicArcOverlay, {
-    autoAlpha: musicFade,
-    visibility: musicFade > 0.001 ? "visible" : "hidden",
-    pointerEvents: "none",
-  });
-
-  if (beatBg) {
-    gsap.set(beatBg, {
-      autoAlpha: 1 - e,
-    });
-  }
-
-  gsap.set(aboutSection, {
-    autoAlpha: 1,
-    pointerEvents: "none",
-  });
-
-  gsap.set(aboutTransitionMap, {
-    autoAlpha: 1,
-  });
-
-  if (aboutTransitionImg) {
-    gsap.set(aboutTransitionImg, {
-      transformOrigin: "50% 50%",
-      x: lerp(0, tf.x, e),
-      y: lerp(0, tf.y, e),
-      scale: lerp(tf.startScale, tf.endScale, e),
-      autoAlpha: 1,
-    });
-  }
-
-  const titleT = clamp01((t - 0.48) / 0.18);
-  const copyT = clamp01((t - 0.58) / 0.18);
-  const btnT = clamp01((t - 0.70) / 0.14);
-  const linksT = clamp01((t - 0.64) / 0.16);
-
-  const aboutTitleInner = getRevealInner(aboutTitleReveal);
-  const aboutCopyInner = getRevealInner(aboutCopyReveal);
-  const aboutBtnInner = getRevealInner(aboutBtnReveal);
-
-  if (aboutTitleInner) {
-    gsap.set(aboutTitleInner, {
-      yPercent: 120 - 120 * titleT,
-    });
-  }
-
-  if (aboutCopyInner) {
-    gsap.set(aboutCopyInner, {
-      yPercent: 120 - 120 * copyT,
-    });
-  }
-
-  if (aboutBtnInner) {
-    gsap.set(aboutBtnInner, {
-      yPercent: 120 - 120 * btnT,
-    });
-  }
-
-  if (aboutLinks) {
-    gsap.set(aboutLinks, {
-      autoAlpha: linksT,
-      y: 20 - 20 * linksT,
-    });
-  }
-
-  if (aboutMapWrap) {
-    gsap.set(aboutMapWrap, {
-      autoAlpha: t > 0.82 ? 1 : 0,
-    });
-  }
-}
-
-function setAboutState() {
-  setAboutOverlayMode(false);
-
-  if (beatBg) {
-    gsap.set(beatBg, {
-      autoAlpha: 0,
-    });
-  }
-
-  gsap.set(musicLeft, {
-    autoAlpha: 0,
-    visibility: "hidden",
-  });
-
-  gsap.set(musicArcOverlay, {
-    autoAlpha: 0,
-    visibility: "hidden",
-    pointerEvents: "none",
-  });
-
-  gsap.set(aboutSection, {
-    autoAlpha: 1,
-    pointerEvents: "auto",
-  });
-
-  gsap.set(aboutTransitionMap, {
-    autoAlpha: 0,
-  });
-
-  if (aboutTransitionImg) {
-    gsap.set(aboutTransitionImg, {
-      clearProps: "x,y,scale,opacity,transformOrigin",
-    });
-  }
-
-  const aboutTitleInner = getRevealInner(aboutTitleReveal);
-  const aboutCopyInner = getRevealInner(aboutCopyReveal);
-  const aboutBtnInner = getRevealInner(aboutBtnReveal);
-
-  if (aboutTitleInner) gsap.set(aboutTitleInner, { yPercent: 0 });
-  if (aboutCopyInner) gsap.set(aboutCopyInner, { yPercent: 0 });
-  if (aboutBtnInner) gsap.set(aboutBtnInner, { yPercent: 0 });
-
-  if (aboutLinks) {
-    gsap.set(aboutLinks, {
-      autoAlpha: 1,
-      y: 0,
-    });
-  }
-
-  if (aboutMapWrap) {
-    gsap.set(aboutMapWrap, { autoAlpha: 1 });
-  }
-}
-
-setMusicState();
-if (musicArc) musicArc.snap(0);
-if (arc) arc.snap(0);
-setAboutHiddenState();
-
-  ensureCarReady().then(() => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        let measured = measureFaceLocal();
-        if (!measured) return;
-
-        const refreshHandler = () => {
-          const m = measureFaceLocal();
-          if (m) measured = m;
-          setSpacer(beatStore.classList.contains("cinematic-fixed"));
-        };
-
-        ScrollTrigger.addEventListener("refreshInit", refreshHandler);
-
-        let lastStep = -1;
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            id: "cinematicScroll",
-            trigger: landing,
-            start: "top top",
-            end: `+=${END_DIST}%`,
-            pin: true,
-            scrub: 1.5,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-
-onUpdate: (self) => {
-  if (!arc) return;
-
-  const p = self.progress;
-
-  const MUSIC_START = 0.38;
-  const MUSIC_END = 0.58;
-
-  const HANDOFF_START = 0.58;
-  const HANDOFF_END = 0.66;
-
-  const BEATSTORE_START = 0.66;
-  const BEATSTORE_END = 0.86;
-
-  const ABOUT_START = 0.86;
-  const ABOUT_END = 1;
-
-  // 1) music state
-  if (p <= MUSIC_START) {
-    if (musicArc) musicArc.snap(0);
-    lastStep = 0;
-    setMusicState();
-    setAboutHiddenState();
-    return;
-  }
-
-  // 2) music arc phase
-  if (p < MUSIC_END) {
-    setMusicState();
-    setAboutHiddenState();
-
-    if (musicArc) {
-      const mt = (p - MUSIC_START) / (MUSIC_END - MUSIC_START);
-      const mu = Math.max(0, Math.min(1, mt));
-      const mRaw = mu * musicArc.maxStep;
-      musicArc.layoutProgress(mRaw);
-      lastStep = Math.floor(mRaw);
-    }
-
-    return;
-  }
-
-  // 3) hold music briefly before handoff
-  if (p < HANDOFF_START) {
-    if (musicArc) musicArc.snap(musicArc.maxStep);
-    setMusicState();
-    setAboutHiddenState();
-    return;
-  }
-
-  // 4) music -> beat store handoff
-  if (p < HANDOFF_END) {
-    if (musicArc) musicArc.snap(musicArc.maxStep);
-    const handoffT = (p - HANDOFF_START) / (HANDOFF_END - HANDOFF_START);
-    setHandoffProgress(handoffT);
-    setAboutHiddenState();
-    return;
-  }
-
-  // 5) beat store arc phase
-  if (p < BEATSTORE_END) {
-    const t = (p - BEATSTORE_START) / (BEATSTORE_END - BEATSTORE_START);
-    const u = Math.max(0, Math.min(1, t));
-    const HOLD = 0.05;
-
-    const raw = u * arc.maxStep;
-    const step = Math.floor(raw);
-    const frac = raw - step;
-
-    let adjusted;
-    if (frac < HOLD) {
-      adjusted = step;
     } else {
-      adjusted = step + (frac - HOLD) / (1 - HOLD);
-    }
+      moveNavToBody(false);
 
-    setBeatStoreState();
-    setAboutHiddenState();
-    arc.layoutProgress(adjusted);
-    lastStep = Math.floor(adjusted);
-    return;
+      gsap.set(beatStore, {
+        clearProps: "position,top,left,width,height,zIndex",
+      });
+    }
   }
 
-  // 6) hold beat store briefly before about handoff
-  if (p < ABOUT_START) {
-    if (arc) arc.snap(arc.maxStep);
-    setBeatStoreState();
-    setAboutHiddenState();
+  function setAboutOverlayMode(on) {
+    if (!aboutSection) return;
+
+    if (on) {
+      gsap.set(aboutSection, {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100vh",
+        zIndex: 25,
+      });
+
+      if (aboutTransitionMap) {
+        gsap.set(aboutTransitionMap, {
+          position: "fixed",
+          inset: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 40,
+          pointerEvents: "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        });
+      }
+    } else {
+      gsap.set(aboutSection, {
+        clearProps: "position,top,left,width,height,zIndex",
+      });
+
+      if (aboutTransitionMap) {
+        gsap.set(aboutTransitionMap, {
+          clearProps:
+            "position,inset,width,height,zIndex,pointerEvents,display,alignItems,justifyContent",
+        });
+      }
+    }
+  }
+
+  const beatItems = gsap.utils.toArray(bsArc.querySelectorAll(".bs-arc-item"));
+  const musicItems = gsap.utils.toArray(
+    musicArcOverlay.querySelectorAll(".bs-arc-item")
+  );
+  const musicTitleEl = musicArcOverlay.querySelector(".arc-title");
+  const musicPointerEl = musicArcOverlay.querySelector(".arc-pointer");
+
+  function clamp01(v) {
+    return Math.max(0, Math.min(1, v));
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function setBeatStoreState() {
+    gsap.set(bsTitle, { autoAlpha: 1, y: 0, clearProps: "display" });
+    gsap.set(bsCopy, { autoAlpha: 1, y: 0, clearProps: "display" });
+    gsap.set(bsBtn, { autoAlpha: 1, y: 0, clearProps: "display" });
+    gsap.set(bsGrid, { autoAlpha: 1, clearProps: "display" });
+    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "auto" });
+
+    if (bsTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsTitleReveal.querySelector(".reveal__inner"), { yPercent: 0 });
+    }
+
+    if (bsCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsCopyReveal.querySelector(".reveal__inner"), { yPercent: 0 });
+    }
+
+    gsap.set(musicLeft, { autoAlpha: 0, visibility: "hidden" });
+    gsap.set(musicArcOverlay, {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+    gsap.set(musicTitleEl, { autoAlpha: 0 });
+    gsap.set(musicPointerEl, { autoAlpha: 0 });
+
+    if (musicTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicTitleReveal.querySelector(".reveal__inner"), {
+        yPercent: 120,
+      });
+    }
+
+    if (musicCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicCopyReveal.querySelector(".reveal__inner"), {
+        yPercent: 120,
+      });
+    }
+
+    musicItems.forEach((el, i) => {
+      gsap.set(el, {
+        x: 180 + i * 26,
+        y: 250 + i * 16,
+        autoAlpha: 0,
+      });
+      el.style.pointerEvents = "none";
+    });
+  }
+
+  function setMusicState() {
+    gsap.set(bsTitle, { autoAlpha: 0, y: -20 });
+    gsap.set(bsCopy, { autoAlpha: 0, y: -20 });
+    gsap.set(bsBtn, { autoAlpha: 0, y: -10 });
+    gsap.set(bsGrid, { autoAlpha: 0 });
+    gsap.set(bsArc, { autoAlpha: 0, pointerEvents: "none" });
+
+    if (bsTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
+        yPercent: -110,
+      });
+    }
+
+    if (bsCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
+        yPercent: -110,
+      });
+    }
+
+    gsap.set(musicLeft, { autoAlpha: 1, visibility: "visible" });
+    gsap.set(musicArcOverlay, {
+      autoAlpha: 1,
+      visibility: "visible",
+      pointerEvents: "auto",
+    });
+    gsap.set(musicTitleEl, { autoAlpha: 1 });
+    gsap.set(musicPointerEl, { autoAlpha: 1 });
+
+    if (musicTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicTitleReveal.querySelector(".reveal__inner"), { yPercent: 0 });
+    }
+
+    if (musicCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicCopyReveal.querySelector(".reveal__inner"), { yPercent: 0 });
+    }
+  }
+
+  function setHandoffProgress(rawT) {
+    const t = clamp01(rawT);
+    const e = easeOutCubic(t);
+
+    gsap.set(musicLeft, {
+      autoAlpha: 1 - e,
+      visibility: 1 - e > 0.001 ? "visible" : "hidden",
+    });
+
+    gsap.set(musicArcOverlay, {
+      autoAlpha: 1 - e,
+      visibility: 1 - e > 0.001 ? "visible" : "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(musicTitleEl, { autoAlpha: 1 - e });
+    gsap.set(musicPointerEl, { autoAlpha: 1 - e });
+
+    if (musicTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicTitleReveal.querySelector(".reveal__inner"), {
+        yPercent: -110 * e,
+      });
+    }
+
+    if (musicCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(musicCopyReveal.querySelector(".reveal__inner"), {
+        yPercent: -110 * e,
+      });
+    }
+
+    if (musicItems[0]) {
+      gsap.set(musicItems[0], {
+        x: lerp(0, -84, e),
+        y: lerp(0, -120, e),
+        autoAlpha: 1 - e,
+      });
+    }
+
+    if (musicItems[1]) {
+      gsap.set(musicItems[1], {
+        x: lerp(112, 52, e),
+        y: lerp(146, 18, e),
+        autoAlpha: lerp(0.55, 0, e),
+      });
+    }
+
+    if (musicItems[2]) {
+      gsap.set(musicItems[2], {
+        x: lerp(224, 188, e),
+        y: lerp(292, 172, e),
+        autoAlpha: lerp(0.35, 0, e),
+      });
+    }
+
+    if (musicItems[3]) {
+      gsap.set(musicItems[3], {
+        x: lerp(336, 286, e),
+        y: lerp(438, 280, e),
+        autoAlpha: 0,
+      });
+    }
+
+    musicItems.forEach((el) => {
+      el.style.pointerEvents = "none";
+    });
+
+    gsap.set(bsTitle, {
+      autoAlpha: e,
+      y: 20 - 20 * e,
+      clearProps: "display",
+    });
+
+    gsap.set(bsCopy, {
+      autoAlpha: e,
+      y: 20 - 20 * e,
+      clearProps: "display",
+    });
+
+    gsap.set(bsBtn, {
+      autoAlpha: e,
+      y: 12 - 12 * e,
+      clearProps: "display",
+    });
+
+    gsap.set(bsGrid, {
+      autoAlpha: e,
+      clearProps: "display",
+    });
+
+    gsap.set(bsArc, {
+      autoAlpha: e,
+      pointerEvents: "none",
+    });
+
+    if (bsTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
+        yPercent: 120 - 120 * e,
+      });
+    }
+
+    if (bsCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
+        yPercent: 120 - 120 * e,
+      });
+    }
+
+    if (beatItems[0]) {
+      gsap.set(beatItems[0], {
+        x: lerp(180, 0, e),
+        y: lerp(250, 0, e),
+        autoAlpha: lerp(0, 1, e),
+      });
+    }
+
+    if (beatItems[1]) {
+      gsap.set(beatItems[1], {
+        x: lerp(206, 112, e),
+        y: lerp(266, 146, e),
+        autoAlpha: lerp(0, 0.55, e),
+      });
+    }
+
+    if (beatItems[2]) {
+      gsap.set(beatItems[2], {
+        x: lerp(232, 224, e),
+        y: lerp(282, 292, e),
+        autoAlpha: lerp(0, 0.35, e),
+      });
+    }
+
+    if (beatItems[3]) {
+      gsap.set(beatItems[3], {
+        x: lerp(258, 336, e),
+        y: lerp(298, 438, e),
+        autoAlpha: 0,
+      });
+    }
+
+    beatItems.forEach((el) => {
+      el.style.pointerEvents = "none";
+    });
+  }
+
+  function getRevealInner(el) {
+    return el?.querySelector(".reveal__inner") || null;
+  }
+
+  function getAboutTargetTransform() {
+    if (!aboutTransitionImg || !aboutMapWrap) {
+      return { x: 0, y: 0, scale: 1 };
+    }
+
+    const targetRect = aboutMapWrap.getBoundingClientRect();
+    const viewportCX = window.innerWidth / 2;
+    const viewportCY = window.innerHeight / 2;
+
+    const targetCX = targetRect.left + targetRect.width / 2;
+    const targetCY = targetRect.top + targetRect.height / 2;
+
+    const naturalWidth =
+      aboutTransitionImg.naturalWidth || aboutTransitionImg.clientWidth || 1;
+    const naturalHeight =
+      aboutTransitionImg.naturalHeight || aboutTransitionImg.clientHeight || 1;
+
+    const fitScale = Math.min(
+      (window.innerWidth * 0.78) / naturalWidth,
+      (window.innerHeight * 0.78) / naturalHeight
+    );
+
+    const targetScale = targetRect.width / naturalWidth;
+
+    return {
+      x: targetCX - viewportCX,
+      y: targetCY - viewportCY,
+      startScale: fitScale * 3.4,
+      endScale: targetScale,
+    };
+  }
+
+  function setAboutHiddenState() {
+    setAboutOverlayMode(false);
+
+    gsap.set(aboutSection, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+
+    gsap.set(aboutTransitionMap, {
+      autoAlpha: 0,
+    });
+
+    if (aboutTransitionImg) {
+      gsap.set(aboutTransitionImg, {
+        x: 0,
+        y: 0,
+        scale: 3.4,
+        autoAlpha: 1,
+        transformOrigin: "50% 50%",
+      });
+    }
+
+    if (aboutTitleReveal) {
+      const inner = getRevealInner(aboutTitleReveal);
+      if (inner) gsap.set(inner, { yPercent: 120 });
+    }
+
+    if (aboutCopyReveal) {
+      const inner = getRevealInner(aboutCopyReveal);
+      if (inner) gsap.set(inner, { yPercent: 120 });
+    }
+
+    if (aboutBtnReveal) {
+      const inner = getRevealInner(aboutBtnReveal);
+      if (inner) gsap.set(inner, { yPercent: 120 });
+    }
+
+    if (aboutLinks) {
+      gsap.set(aboutLinks, {
+        autoAlpha: 0,
+        y: 20,
+      });
+    }
+
+    if (aboutMapWrap) {
+      gsap.set(aboutMapWrap, { autoAlpha: 0 });
+    }
+  }
+
+  function setAboutTransitionProgress(rawT) {
+    const t = clamp01(rawT);
+    const e = easeOutCubic(t);
+    const tf = getAboutTargetTransform();
+
+    if (arc) {
+      arc.snap(arc.maxStep);
+    }
+
+    setAboutOverlayMode(true);
+
+    const storeFade = clamp01(1 - t * 1.25);
+    const focusedBeat = beatItems[beatItems.length - 1];
+
+    gsap.set(bsTitle, {
+      autoAlpha: storeFade,
+      y: -20 * t,
+      clearProps: "display",
+    });
+
+    gsap.set(bsCopy, {
+      autoAlpha: storeFade,
+      y: -20 * t,
+      clearProps: "display",
+    });
+
+    gsap.set(bsBtn, {
+      autoAlpha: storeFade,
+      y: -10 * t,
+      clearProps: "display",
+    });
+
+    gsap.set(bsGrid, {
+      autoAlpha: storeFade,
+      clearProps: "display",
+    });
+
+    gsap.set(bsArc, {
+      autoAlpha: storeFade,
+      pointerEvents: "none",
+    });
+
+    if (bsTitleReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsTitleReveal.querySelector(".reveal__inner"), {
+        yPercent: -110 * t,
+      });
+    }
+
+    if (bsCopyReveal?.querySelector(".reveal__inner")) {
+      gsap.set(bsCopyReveal.querySelector(".reveal__inner"), {
+        yPercent: -110 * t,
+      });
+    }
+
+    if (focusedBeat) {
+      gsap.set(focusedBeat, {
+        y: -140 * t,
+        autoAlpha: storeFade,
+      });
+    }
+
+    if (musicLeft) {
+      gsap.set(musicLeft, {
+        autoAlpha: 0,
+        visibility: "hidden",
+      });
+    }
+
+    if (musicArcOverlay) {
+      gsap.set(musicArcOverlay, {
+        autoAlpha: 0,
+        visibility: "hidden",
+        pointerEvents: "none",
+      });
+    }
 
     if (beatBg) {
-      gsap.set(beatBg, { autoAlpha: 1 });
+      gsap.set(beatBg, {
+        autoAlpha: 1 - e,
+      });
     }
 
-    return;
+    gsap.set(aboutSection, {
+      autoAlpha: 1,
+      pointerEvents: "none",
+    });
+
+    gsap.set(aboutTransitionMap, {
+      autoAlpha: 1,
+    });
+
+    if (aboutTransitionImg) {
+      gsap.set(aboutTransitionImg, {
+        transformOrigin: "50% 50%",
+        x: lerp(0, tf.x, e),
+        y: lerp(0, tf.y, e),
+        scale: lerp(tf.startScale, tf.endScale, e),
+        autoAlpha: 1,
+      });
+    }
+
+    const titleT = clamp01((t - 0.48) / 0.18);
+    const copyT = clamp01((t - 0.58) / 0.18);
+    const btnT = clamp01((t - 0.70) / 0.14);
+    const linksT = clamp01((t - 0.64) / 0.16);
+
+    const aboutTitleInner = getRevealInner(aboutTitleReveal);
+    const aboutCopyInner = getRevealInner(aboutCopyReveal);
+    const aboutBtnInner = getRevealInner(aboutBtnReveal);
+
+    if (aboutTitleInner) {
+      gsap.set(aboutTitleInner, {
+        yPercent: 120 - 120 * titleT,
+      });
+    }
+
+    if (aboutCopyInner) {
+      gsap.set(aboutCopyInner, {
+        yPercent: 120 - 120 * copyT,
+      });
+    }
+
+    if (aboutBtnInner) {
+      gsap.set(aboutBtnInner, {
+        yPercent: 120 - 120 * btnT,
+      });
+    }
+
+    if (aboutLinks) {
+      gsap.set(aboutLinks, {
+        autoAlpha: linksT,
+        y: 20 - 20 * linksT,
+      });
+    }
+
+    if (aboutMapWrap) {
+      gsap.set(aboutMapWrap, {
+        autoAlpha: clamp01((t - 0.55) / 0.3),
+      });
+    }
   }
 
-  // 7) beat store -> about transition
+  function setAboutState() {
+    setAboutOverlayMode(false);
+
+    if (beatBg) {
+      gsap.set(beatBg, {
+        autoAlpha: 0,
+      });
+    }
+
+    gsap.set(bsTitle, { autoAlpha: 0, y: -20 });
+    gsap.set(bsCopy, { autoAlpha: 0, y: -20 });
+    gsap.set(bsBtn, { autoAlpha: 0, y: -10 });
+    gsap.set(bsGrid, { autoAlpha: 0 });
+    gsap.set(bsArc, { autoAlpha: 0, pointerEvents: "none" });
+
+    gsap.set(musicLeft, {
+      autoAlpha: 0,
+      visibility: "hidden",
+    });
+
+    gsap.set(musicArcOverlay, {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(aboutSection, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+    });
+
+    gsap.set(aboutTransitionMap, {
+      autoAlpha: 0,
+    });
+
+    if (aboutTransitionImg) {
+      gsap.set(aboutTransitionImg, {
+        clearProps: "x,y,scale,opacity,transformOrigin",
+      });
+    }
+
+    if (aboutMapWrap) {
+      gsap.set(aboutMapWrap, { autoAlpha: 1 });
+    }
+
+    const aboutTitleInner = getRevealInner(aboutTitleReveal);
+    const aboutCopyInner = getRevealInner(aboutCopyReveal);
+    const aboutBtnInner = getRevealInner(aboutBtnReveal);
+
+    if (aboutTitleInner) gsap.set(aboutTitleInner, { yPercent: 0 });
+    if (aboutCopyInner) gsap.set(aboutCopyInner, { yPercent: 0 });
+    if (aboutBtnInner) gsap.set(aboutBtnInner, { yPercent: 0 });
+
+    if (aboutLinks) {
+      gsap.set(aboutLinks, {
+        autoAlpha: 1,
+        y: 0,
+      });
+    }
+  }
+
+  setMusicState();
+  if (musicArc) musicArc.snap(0);
+  if (arc) arc.snap(0);
+  setAboutHiddenState();
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const refreshHandler = () => {
+        setSpacer(beatStore.classList.contains("cinematic-fixed"));
+      };
+
+      ScrollTrigger.addEventListener("refreshInit", refreshHandler);
+
+      let lastStep = -1;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          id: "cinematicScroll",
+          trigger: landing,
+          start: "top top",
+          end: `+=${END_DIST}%`,
+          pin: true,
+          scrub: 1.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+
+          onUpdate: (self) => {
+            if (!arc) return;
+
+            const p = self.progress;
+
+            const MUSIC_START = 0.38;
+            const MUSIC_END = 0.58;
+
+            const HANDOFF_START = 0.58;
+            const HANDOFF_END = 0.66;
+
+            const BEATSTORE_START = 0.66;
+            const BEATSTORE_END = 0.86;
+
+            const ABOUT_START = 0.86;
+            const ABOUT_END = 1;
+
+            if (p <= MUSIC_START) {
+              if (musicArc) musicArc.snap(0);
+              lastStep = 0;
+              setMusicState();
+              setAboutHiddenState();
+              return;
+            }
+
+            if (p < MUSIC_END) {
+              setMusicState();
+              setAboutHiddenState();
+
+              if (musicArc) {
+                const mt = (p - MUSIC_START) / (MUSIC_END - MUSIC_START);
+                const mu = Math.max(0, Math.min(1, mt));
+                const mRaw = mu * musicArc.maxStep;
+                musicArc.layoutProgress(mRaw);
+                lastStep = Math.floor(mRaw);
+              }
+
+              return;
+            }
+
+            if (p < HANDOFF_START) {
+              if (musicArc) musicArc.snap(musicArc.maxStep);
+              setMusicState();
+              setAboutHiddenState();
+              return;
+            }
+
+            if (p < HANDOFF_END) {
+              if (musicArc) musicArc.snap(musicArc.maxStep);
+              const handoffT = (p - HANDOFF_START) / (HANDOFF_END - HANDOFF_START);
+              setHandoffProgress(handoffT);
+              setAboutHiddenState();
+              return;
+            }
+
+            if (p < BEATSTORE_END) {
+              const t = (p - BEATSTORE_START) / (BEATSTORE_END - BEATSTORE_START);
+              const u = Math.max(0, Math.min(1, t));
+              const HOLD = 0.05;
+
+              const raw = u * arc.maxStep;
+              const step = Math.floor(raw);
+              const frac = raw - step;
+
+              let adjusted;
+              if (frac < HOLD) {
+                adjusted = step;
+              } else {
+                adjusted = step + (frac - HOLD) / (1 - HOLD);
+              }
+
+              setBeatStoreState();
+              setAboutHiddenState();
+              arc.layoutProgress(adjusted);
+              lastStep = Math.floor(adjusted);
+              return;
+            }
+
+            if (p < ABOUT_START) {
+              if (arc) arc.snap(arc.maxStep);
+              setBeatStoreState();
+              setAboutHiddenState();
+
+              if (beatBg) {
+                gsap.set(beatBg, { autoAlpha: 1 });
+              }
+
+              return;
+            }
+
+// 7) beat store -> about transition
 if (p < ABOUT_END) {
   if (arc) arc.snap(arc.maxStep);
 
@@ -1213,37 +1187,40 @@ if (p < ABOUT_END) {
 
 setAboutTransitionProgress(1);
 return;
-},
 
-            onEnter: () => {
-              document.documentElement.classList.add("nav-blend");
-              setBeatStoreFixed(true);
-            },
+if (p >= ABOUT_START) {
+  if (arc) arc.snap(arc.maxStep);
 
-onEnterBack: () => {
-  document.documentElement.classList.add("nav-blend");
+  const aboutT = (p - ABOUT_START) / (ABOUT_END - ABOUT_START);
+  setAboutTransitionProgress(aboutT);
+  return;
+}
+          },
 
-  setBeatStoreFixed(true);
+          onEnter: () => {
+            document.documentElement.classList.add("nav-blend");
+            setBeatStoreFixed(true);
+          },
 
-  gsap.set(beatStore, {
-    autoAlpha: 1,
-    pointerEvents: "none",
-  });
+          onEnterBack: () => {
+            document.documentElement.classList.add("nav-blend");
+            setBeatStoreFixed(true);
 
-  if (arc) {
-    arc.snap(arc.maxStep);
-  }
-},
+            gsap.set(beatStore, {
+              autoAlpha: 1,
+              pointerEvents: "none",
+            });
 
-            // ✅ KEY CHANGE:
-            // when landing pin ends, KEEP beat-store fixed + visible (no disappear)
+            if (arc) {
+              arc.snap(arc.maxStep);
+            }
+          },
+
 onLeave: (self) => {
   self.scroll(self.end - 1);
 },
 
-
-
-onLeaveBack: () => {
+          onLeaveBack: () => {
   document.documentElement.classList.remove("nav-blend");
 
   if (beatContent) gsap.set(beatContent, { autoAlpha: 0 });
@@ -1255,6 +1232,7 @@ onLeaveBack: () => {
   });
 
   gsap.set(aboutSection, {
+    clearProps: "position,top,left,width,height,zIndex",
     autoAlpha: 0,
     pointerEvents: "none",
   });
@@ -1269,50 +1247,63 @@ onLeaveBack: () => {
   moveNavToBody(false);
 },
 
-            onKill: () => {
-              ScrollTrigger.removeEventListener("refreshInit", refreshHandler);
-            },
+          onKill: () => {
+            ScrollTrigger.removeEventListener("refreshInit", refreshHandler);
           },
-        });
-
-        tl.to(
-          stage,
-          {
-            scale: ZOOM,
-            x: () => window.innerWidth * 0.5 - measured.faceLX * ZOOM,
-            y: () => window.innerHeight * 0.5 - measured.faceLY * ZOOM,
-            ease: "none",
-          },
-          0
-        ).duration(0.1);
-
-        // Fade out landing content mid-zoom (keep nav)
-tl.to(
-  [".text-layer", ".webgl"],
-  {
-    autoAlpha: 0,
-    ease: "none",
-  },
-  0.08 // <-- midpoint of the scroll zoom; tweak 0.25–0.55
-);
-
-
-tl.to(beatStore, { autoAlpha: 1, ease: "none" }, 0.10);        
-tl.fromTo(
-  ".beat-store-content",
-  { autoAlpha: 0 },
-  { autoAlpha: 1, ease: "none" },
-  0.22
-);
-        tl.to(beatStore, { pointerEvents: "auto", duration: 0 }, 0.34);
-        // ✅ add extra scroll room AFTER beat-store is fully visible
-        const BEATSTORE_PAD = 1.2;
-tl.to({}, { duration: BEATSTORE_PAD, ease: "none" });
-
-
-        ScrollTrigger.refresh();
-        
+        },
       });
+
+      if (IS_MOBILE) {
+
+  const PAN_DISTANCE = 600; // ~1000 - 402
+
+  tl.to(
+    sceneComposite,
+    {
+      x: -PAN_DISTANCE,
+      ease: "none"
+    },
+    0
+  );
+
+} else {
+
+  tl.to(
+    sceneComposite,
+    {
+      scale: 200,
+      y: window.innerHeight * 0.18,
+      ease: "none",
+    },
+    0
+  ).duration(0.1);
+
+}
+
+      tl.to(
+        [".text-layer", ".webgl"],
+        {
+          autoAlpha: 0,
+          ease: "none",
+        },
+        0.08
+      );
+
+      tl.to(beatStore, { autoAlpha: 1, ease: "none" }, 0.1);
+
+      tl.fromTo(
+        ".beat-store-content",
+        { autoAlpha: 0 },
+        { autoAlpha: 1, ease: "none" },
+        0.22
+      );
+
+      tl.to(beatStore, { pointerEvents: "auto", duration: 0 }, 0.34);
+
+      const BEATSTORE_PAD = 1.2;
+      tl.to({}, { duration: BEATSTORE_PAD, ease: "none" });
+
+      ScrollTrigger.refresh();
     });
   });
 }
@@ -1493,14 +1484,7 @@ gsap.set("#music-arc-overlay .arc-pointer", { autoAlpha: 0 });
         <div class="bg-layer"></div>
 
         <div class="scene-layer">
-          <div class="stage">
-            <img class="piece light" src="/assets/scene-light.svg" alt="" />
-            <img class="piece ground blend" src="/assets/scene-ground.svg" alt="" />
-            <img class="piece good blend" src="/assets/scene-good.svg" alt="" />
-            <img class="piece car blend" id="car" src="/assets/scene-car.svg" alt="" />
-            <img class="piece tuco blend" src="/assets/scene-tuco.svg" alt="" />
-            <img class="piece bcs blend" src="/assets/scene-bcs.svg" alt="" />
-          </div>
+        <img class="scene-composite" src="/assets/scene-composite.svg" alt="" />
         </div>
 
         <canvas class="webgl"></canvas>
@@ -2215,46 +2199,43 @@ window.addEventListener("pointerup", () => {
 
     // 🔥 Scene intro setup
     // setup for all pieces EXCEPT light
-    gsap.set(".scene-layer .piece:not(.light)", { y: 160, opacity: 0 });
-    // light should NOT move, only fade
-    gsap.set(".scene-layer .light", { opacity: 0 });
+    gsap.set(".scene-composite", { y: 160, opacity: 0 });
 
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
-    // Meta row (kicker + est) first (fast)
-    tl.add(() => {
-      metaReveals.forEach((w, i) =>
-        maskReveal(w, { duration: 0.6, delay: i * 0.06 })
-      );
-    }, 0);
+tl.add(() => {
+  metaReveals.forEach((w, i) =>
+    maskReveal(w, { duration: 0.6, delay: i * 0.06 })
+  );
+}, 0);
 
-    // Hero logo (big reveal)
-    tl.add(() => {
-      maskReveal(heroReveal, { duration: 1.8, delay: 0 });
-    }, 0.1);
+tl.add(() => {
+  maskReveal(heroReveal, { duration: 1.8, delay: 0 });
+}, 0.1);
 
-    // 🔥 Scene cinematic reveal (sync with hero)
-    tl.to(".scene-layer .ground", { y: 0, opacity: 1, duration: 1.4, ease: "power3.out" }, 0.15);
-    tl.to(".scene-layer .car", { y: 0, opacity: 1, duration: 1.4, ease: "power3.out" }, 0.25);
-    tl.to(".scene-layer .good", { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, 0.35);
-    tl.to(".scene-layer .tuco", { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, 0.45);
-    tl.to(".scene-layer .bcs", { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, 0.55);
-    tl.to(".scene-layer .light", { opacity: 1, duration: 1.6, ease: "power2.out" }, 0.6);
+tl.to(
+  ".scene-composite",
+  {
+    y: 0,
+    opacity: 1,
+    duration: 1.5,
+    ease: "power3.out",
+  },
+  0.2
+);
 
-    // Desc lines (shortly after)
-    tl.add(() => {
-      if (descReveals[0]) maskReveal(descReveals[0], { duration: 0.7, delay: 0 });
-      if (descReveals[1]) maskReveal(descReveals[1], { duration: 0.7, delay: 0.18 });
-    }, 0.8);
+tl.add(() => {
+  if (descReveals[0]) maskReveal(descReveals[0], { duration: 0.7, delay: 0 });
+  if (descReveals[1]) maskReveal(descReveals[1], { duration: 0.7, delay: 0.18 });
+}, 0.8);
 
-    // Right block
-    tl.add(() => {
-      maskReveal(latestReveal, { duration: 0.7, delay: 0 });
-    }, 1.35);
+tl.add(() => {
+  maskReveal(latestReveal, { duration: 0.7, delay: 0 });
+}, 1.35);
 
-    tl.add(() => {
-      maskReveal(dropReveal, { duration: 0.7, delay: 0 });
-    }, 1.75);
+tl.add(() => {
+  maskReveal(dropReveal, { duration: 0.7, delay: 0 });
+}, 1.75);
 
     return tl;
   }
