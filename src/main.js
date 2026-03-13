@@ -280,23 +280,28 @@ function createLoaderDriver() {
 }
 
 async function preloadAssets(onProgress) {
-  const assets = [
-    "/assets/noise.svg",
-    "/assets/beat-store-bg.svg",
-    "/assets/scene-light.svg",
-    "/assets/scene-ground.svg",
-    "/assets/scene-good.svg",
-    "/assets/scene-car.svg",
-    "/assets/scene-tuco.svg",
-    "/assets/scene-bcs.svg",
-    "/assets/revolver_load.svg",
-    "/assets/blood-splatter.png",
-    "/models/revolver.glb",
-    "/models/WAVES.glb",
-    "/models/fl_studio_logo.glb",
-    "/models/arturia_minilab_mkii_model.glb",
-    "/models/mpc_one.glb",
-  ];
+  const IS_MOBILE = window.innerWidth <= 768;
+
+const assets = IS_MOBILE
+  ? [
+      "/assets/noise.svg",
+      "/assets/scene-composite.svg",
+      "/assets/revolver_load.svg",
+      "/assets/blood-splatter.png",
+      "/models/revolver.glb",
+    ]
+  : [
+      "/assets/noise.svg",
+      "/assets/beat-store-bg.svg",
+      "/assets/scene-composite.svg",
+      "/assets/revolver_load.svg",
+      "/assets/blood-splatter.png",
+      "/models/revolver.glb",
+      "/models/WAVES.glb",
+      "/models/fl_studio_logo.glb",
+      "/models/arturia_minilab_mkii_model.glb",
+      "/models/mpc_one.glb",
+    ];
 
   let loaded = 0;
 
