@@ -1051,6 +1051,8 @@ function attachHoverScrambleDesktop(el, { duration = 0.28, fps = 30 } = {}) {
   el.addEventListener("mouseleave", stop);
 }
 
+
+
 function maskRevealDesktop(wrapperEl, { duration = 0.6, delay = 0 } = {}) {
   if (!wrapperEl) return;
   const inner = wrapperEl.querySelector(".reveal__inner");
@@ -2531,16 +2533,18 @@ function initCinematicScrollDesktop() {
             const p = self.progress;
 
             const MUSIC_START = 0.38;
-            const MUSIC_END = 0.58;
+const MUSIC_HOLD_END = 0.42;
+const MUSIC_END = 0.58;
 
-            const HANDOFF_START = 0.58;
-            const HANDOFF_END = 0.66;
+const HANDOFF_START = 0.58;
+const HANDOFF_END = 0.66;
 
-            const BEATSTORE_START = 0.66;
-            const BEATSTORE_END = 0.86;
+const BEATSTORE_START = 0.66;
+const BEATSTORE_HOLD_END = 0.70;
+const BEATSTORE_END = 0.86;
 
-            const ABOUT_START = 0.86;
-            const ABOUT_END = 1;
+const ABOUT_START = 0.86;
+const ABOUT_END = 1;
 
             if (p <= MUSIC_START) {
               if (musicArc) musicArc.snap(0);
@@ -2578,32 +2582,40 @@ function initCinematicScrollDesktop() {
               return;
             }
 
-            if (p < BEATSTORE_END) {
-              const t = (p - BEATSTORE_START) / (BEATSTORE_END - BEATSTORE_START);
-              const u = Math.max(0, Math.min(1, t));
-              const HOLD = 0.05;
+            if (p < BEATSTORE_HOLD_END) {
+  if (arc) arc.snap(0);
+  setBeatStoreStateDesktop();
+  setAboutHiddenStateDesktop();
+  return;
+}
 
-              const raw = u * arc.maxStep;
-              const step = Math.floor(raw);
-              const frac = raw - step;
+if (p < BEATSTORE_END) {
+  const t =
+    (p - BEATSTORE_HOLD_END) / (BEATSTORE_END - BEATSTORE_HOLD_END);
+  const u = Math.max(0, Math.min(1, t));
+  const HOLD = 0.05;
 
-              let adjusted;
-              if (frac < HOLD) adjusted = step;
-              else adjusted = step + (frac - HOLD) / (1 - HOLD);
+  const raw = u * arc.maxStep;
+  const step = Math.floor(raw);
+  const frac = raw - step;
 
-              setBeatStoreStateDesktop();
-              setAboutHiddenStateDesktop();
-              arc.layoutProgress(adjusted);
-              return;
-            }
+  let adjusted;
+  if (frac < HOLD) adjusted = step;
+  else adjusted = step + (frac - HOLD) / (1 - HOLD);
 
-            if (p < ABOUT_START) {
-              if (arc) arc.snap(arc.maxStep);
-              setBeatStoreStateDesktop();
-              setAboutHiddenStateDesktop();
-              if (beatBg) gsap.set(beatBg, { autoAlpha: 1 });
-              return;
-            }
+  setBeatStoreStateDesktop();
+  setAboutHiddenStateDesktop();
+  arc.layoutProgress(adjusted);
+  return;
+}
+
+if (p < ABOUT_START) {
+  if (arc) arc.snap(arc.maxStep);
+  setBeatStoreStateDesktop();
+  setAboutHiddenStateDesktop();
+  if (beatBg) gsap.set(beatBg, { autoAlpha: 1 });
+  return;
+}
 
             if (p < ABOUT_END) {
               if (arc) arc.snap(arc.maxStep);
@@ -2708,6 +2720,61 @@ function initCinematicScrollDesktop() {
   });
 }
 
+function setupDesktopPhaseNav() {
+  const links = Array.from(document.querySelectorAll(".nav-link"));
+  if (!links.length) return;
+
+  function scrollToDesktopProgress(progress) {
+    const st = ScrollTrigger.getById("cinematicScrollDesktop");
+    if (!st) return;
+
+    const p = Math.max(0, Math.min(1, progress));
+    const y = st.start + (st.end - st.start) * p;
+
+    window.scrollTo({
+      top: y,
+      behavior: "smooth",
+    });
+  }
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const href = link.getAttribute("href");
+
+      // Desktop nav maps to cinematic phases, not normal anchors
+      if (href === "#home") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+
+      if (href === "#music") {
+        scrollToDesktopProgress(0.38);
+        return;
+      }
+
+      if (href === "#beat-store") {
+        scrollToDesktopProgress(0.68);
+        return;
+      }
+
+      if (href === "#about") {
+        scrollToDesktopProgress(0.99);
+        return;
+      }
+
+      // Updates doesn't exist yet on desktop
+      if (href === "#updates") {
+        return;
+      }
+    });
+  });
+}
+
 function initDesktopApp() {
   gsap.set("#beat-store", { autoAlpha: 0, pointerEvents: "none" });
   gsap.set("#beat-store .beat-store-content", { autoAlpha: 0 });
@@ -2760,9 +2827,10 @@ function initDesktopApp() {
       const introTl = startLandingIntroDesktop();
 
       introTl.eventCallback("onComplete", () => {
-        document.body.style.overflow = "";
-        initCinematicScrollDesktop();
-      });
+  document.body.style.overflow = "";
+  initCinematicScrollDesktop();
+  setupDesktopPhaseNav();
+});
     }, 100);
   });
 }
