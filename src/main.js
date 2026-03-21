@@ -47,8 +47,6 @@ const PRELOAD_ASSETS_MOBILE = [
   "/assets/noise.svg",
   "/assets/revolver_load.svg",
   "/assets/blood-splatter.png",
-  "/assets/scene-composite.svg",
-  "/assets/boombap-logo.svg",
 ];
 
 const BEATS = [
