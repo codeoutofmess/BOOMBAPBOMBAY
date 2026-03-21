@@ -322,21 +322,22 @@ function getAppMarkupDesktop() {
         <canvas class="webgl"></canvas>
 
         <nav class="nav">
-          <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-left" alt="ब" />
-          <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-left" alt="B" />
+  <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-left" alt="ब" />
+  <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-left" alt="B" />
 
-          <div class="nav-center">
-            <span class="nav-item hover-scramble">[ HOME ]</span>
-            <a class="nav-item hover-scramble nav-link" href="#beat-store">[ BEAT STORE ]</a>
-            <span class="nav-item hover-scramble">[ MUSIC ]</span>
-            <span class="nav-item hover-scramble">[ ABOUT ]</span>
-            <span class="nav-item hover-scramble">[ UPDATES ]</span>
-          </div>
+  <div class="nav-center">
+    <span class="nav-item hover-scramble">[ HOME ]</span>
+    <a class="nav-item hover-scramble nav-link" href="#beat-store">[ BEAT STORE ]</a>
+    <span class="nav-item hover-scramble">[ MUSIC ]</span>
+    <span class="nav-item hover-scramble">[ ABOUT ]</span>
+    <span class="nav-item hover-scramble">[ UPDATES ]</span>
+  </div>
 
+  <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-right" alt="B" />
+  <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
+</nav>
 
-        <button class="menu-btn" type="button" aria-label="Open menu">
-  <img src="/assets/menu-btn.svg" alt="" />
-</button>
+<div class="text-layer">
 
         <div class="text-layer">
           <div class="left-block">
@@ -841,9 +842,7 @@ function getAppMarkupMobile() {
             <div class="reveal about-copy-reveal">
               <p class="about-copy reveal__inner">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.
-
-                
-
+                <br><br>
                 Dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.
               </p>
             </div>
@@ -2934,7 +2933,7 @@ function startLandingIntroMobile() {
 
 gsap.set(sceneComposite, {
   left: "50%",
-  bottom: "0svh",
+  bottom: 0,
   xPercent: -50,
   x: 0,
   y: 40,
@@ -3962,7 +3961,7 @@ function measureLandingZoomScaleMobile() {
 
 gsap.set(sceneComposite, {
   left: "50%",
-  bottom: "0svh",
+  bottom: 0,
   xPercent: -50,
   x: 0,
   y: 0,
@@ -4010,7 +4009,7 @@ gsap.set(sceneComposite, {
 
   gsap.set(sceneComposite, {
     left: "50%",
-    bottom: "0svh",
+    bottom: 0,
     xPercent: -50,
     x: 0,
     y: lerpMobile(0, window.innerHeight * 0.06, e),
@@ -4823,6 +4822,22 @@ function initMobileApp() {
 
   document.documentElement.style.overflow = "hidden";
   document.documentElement.style.touchAction = "none";
+
+  const mobileSceneComposite = document.querySelector(".scene-composite");
+
+if (mobileSceneComposite) {
+  gsap.set(mobileSceneComposite, {
+    left: "50%",
+    bottom: 0,
+    xPercent: -50,
+    x: 0,
+    y: 0,
+    scale: 1,
+    autoAlpha: 0,
+    transformOrigin: "51.9% 66.5%",
+    force3D: true,
+  });
+}
 
   initRevolverMobile(() => {
     const landing = document.querySelector(".landing");
