@@ -372,7 +372,7 @@ function getAppMarkupDesktop() {
 
             <div class="reveal drop-reveal">
               <div class="drop-row reveal__inner">
-                <span class="drop-text">1. GUNS, CARS AND BARS // BEAT TAPE</span>
+                <span class="drop-text">/ GUNS, CARS AND BARS // BEAT TAPE</span>
                 <span class="arrow-box" aria-hidden="true">→</span>
               </div>
             </div>
@@ -520,11 +520,11 @@ function getAppMarkupDesktop() {
           </div>
 
           <div class="about-links">
-            <a href="#">SPOTIFY</a>
-            <a href="#">APPLE MUSIC</a>
-            <a href="#">BEATSTARS</a>
-            <a href="#">YOUTUBE</a>
-            <a href="#">INSTAGRAM</a>
+            <a href="#">[ SPOTIFY ]</a>
+            <a href="#">[ APPLE MUSIC ]</a>
+            <a href="#">[ BEATSTARS ]</a>
+            <a href="#">[ YOUTUBE ]</a>
+            <a href="#">[ INSTAGRAM ]</a>
           </div>
 
           <div class="about-side">
@@ -532,8 +532,7 @@ function getAppMarkupDesktop() {
               <p class="about-copy reveal__inner">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.
 
-                <br /><br />
-
+                <br />
                 Dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.
               </p>
             </div>
@@ -668,7 +667,7 @@ function getAppMarkupMobile() {
 
             <div class="reveal drop-reveal">
               <div class="drop-row reveal__inner">
-                <span class="drop-text">1. GUNS, CARS AND BARS // BEAT TAPE</span>
+                <span class="drop-text">/ GUNS, CARS AND BARS // BEAT TAPE</span>
                 <span class="arrow-box" aria-hidden="true">→</span>
               </div>
             </div>
@@ -831,11 +830,11 @@ function getAppMarkupMobile() {
           </div>
 
           <div class="about-links">
-            <a href="#">SPOTIFY</a>
-            <a href="#">APPLE MUSIC</a>
-            <a href="#">BEATSTARS</a>
-            <a href="#">YOUTUBE</a>
-            <a href="#">INSTAGRAM</a>
+            <a href="#">[ SPOTIFY ]</a>
+            <a href="#">[ APPLE MUSIC ]</a>
+            <a href="#">[ BEATSTARS ]</a>
+            <a href="#">[ YOUTUBE ]</a>
+            <a href="#">[ INSTAGRAM ]</a>
           </div>
 
           <div class="about-side">
@@ -843,7 +842,7 @@ function getAppMarkupMobile() {
               <p class="about-copy reveal__inner">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.
 
-                <br /><br />
+                
 
                 Dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.
               </p>
@@ -3747,6 +3746,70 @@ function initCinematicScrollMobile() {
   const aboutBtnReveal = aboutSection?.querySelector(".about-btn-reveal");
   const aboutLinks = aboutSection?.querySelector(".about-links");
 
+  const nav = document.querySelector(".nav");
+const menuBtn = document.querySelector(".menu-btn");
+
+const navHome = nav ? { parent: nav.parentNode, next: nav.nextSibling } : null;
+const menuHome = menuBtn
+  ? { parent: menuBtn.parentNode, next: menuBtn.nextSibling }
+  : null;
+
+function moveNavToBodyMobile(on) {
+  if (!nav || !navHome) return;
+
+  if (on) {
+    // NAV
+    if (nav.parentNode !== document.body) {
+      document.body.appendChild(nav);
+    }
+
+    // MENU BUTTON
+    if (menuBtn && menuBtn.parentNode !== document.body) {
+      document.body.appendChild(menuBtn);
+    }
+
+    gsap.set(nav, { autoAlpha: 1, pointerEvents: "none" });
+    if (menuBtn) gsap.set(menuBtn, { autoAlpha: 1 });
+
+    nav.style.position = "fixed";
+    nav.style.top = "0";
+    nav.style.left = "0";
+    nav.style.width = "100%";
+    nav.style.zIndex = "999998";
+
+    if (menuBtn) {
+      menuBtn.style.position = "fixed";
+      menuBtn.style.zIndex = "1000000";
+    }
+
+  } else {
+    // restore NAV
+    nav.style.position = "";
+    nav.style.top = "";
+    nav.style.left = "";
+    nav.style.width = "";
+    nav.style.zIndex = "";
+
+    if (navHome.next && navHome.next.parentNode === navHome.parent) {
+      navHome.parent.insertBefore(nav, navHome.next);
+    } else {
+      navHome.parent.appendChild(nav);
+    }
+
+    // restore MENU
+    if (menuBtn && menuHome) {
+      menuBtn.style.position = "";
+      menuBtn.style.zIndex = "";
+
+      if (menuHome.next && menuHome.next.parentNode === menuHome.parent) {
+        menuHome.parent.insertBefore(menuBtn, menuHome.next);
+      } else {
+        menuHome.parent.appendChild(menuBtn);
+      }
+    }
+  }
+}
+
   if (
     !landing ||
     !musicSection ||
@@ -4587,24 +4650,24 @@ gsap.set(beatStore, {
 
 
     onEnter: () => {
-      document.documentElement.classList.add("nav-blend");
-      
-    },
+  document.documentElement.classList.add("nav-blend");
+  moveNavToBodyMobile(true);
+},
 
     onEnterBack: () => {
-      document.documentElement.classList.add("nav-blend");
-      
-    },
+  document.documentElement.classList.add("nav-blend");
+  moveNavToBodyMobile(true);
+},
 
     onUpdate: (self) => {
       const p = self.progress;
 
-const LANDING_END = 0.36;
-const MUSIC_END = 0.56;
-const HANDOFF_END = 0.58;
-const BEAT_GRID_END = 0.62;
+const LANDING_END = 0.22;
+const MUSIC_END = 0.44;
+const HANDOFF_END = 0.46;
+const BEAT_GRID_END = 0.56;
 const BEAT_ARC_END = 0.90;
-const ABOUT_END = 1.0;
+const ABOUT_END = 0.94;
 
             if (p <= LANDING_END) {
         const local = clamp01Mobile(p / LANDING_END);
@@ -4701,6 +4764,7 @@ const ABOUT_END = 1.0;
 
     onLeaveBack: () => {
       document.documentElement.classList.remove("nav-blend");
+  moveNavToBodyMobile(false);
       
       setLandingStateMobile();
       if (musicArc) musicArc.snap(0);
