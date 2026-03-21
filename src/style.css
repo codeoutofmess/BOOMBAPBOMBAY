@@ -2026,6 +2026,153 @@ body {
 #about .about-btn {
   display: none !important;
 }
+
+/* =========================
+   MOBILE ALBUM VIEW
+   layout only — desktop untouched
+========================= */
+
+.album-view {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100svh !important;
+  overflow: hidden !important;
+}
+
+.album-view-ui {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.album-view-top {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+/* top row labels */
+.album-view-more {
+  position: absolute !important;
+  top: calc(176px + var(--m-safe-top)) !important;
+  left: var(--m-side) !important;
+  transform: none !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.album-view-sound {
+  position: absolute !important;
+  top: calc(176px + var(--m-safe-top)) !important;
+  right: var(--m-side) !important;
+  left: auto !important;
+  width: auto !important;
+  transform: none !important;
+  text-align: right !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+/* player row = 80px below top row */
+.album-view-player-row {
+  position: absolute !important;
+  left: 50% !important;
+  top: calc(256px + var(--m-safe-top)) !important; /* 176 + 80 */
+  transform: translate(-50%, -50%) !important;
+  width: min(240px, calc(100vw - 176px)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.album-view-time {
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.album-view-play {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+/* main content block starts 40px below player row */
+.album-view-block2 {
+  position: absolute !important;
+  left: var(--m-side) !important;
+  top: calc(296px + var(--m-safe-top)) !important;
+  transform: none !important;
+  width: var(--m-content-w) !important;
+  min-height: 0 !important;
+  padding-bottom: 140px !important;
+}
+
+/* title */
+.album-view-title {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  margin: 0 0 24px 0 !important;
+  text-align: left !important;
+}
+
+/* copy block directly below title */
+.album-view-center {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+.album-view-desc {
+  width: 100% !important;
+  margin: 0 !important;
+  font-size: 14px !important;   /* requested */
+  line-height: 1.2 !important;
+  text-align: left !important;
+}
+
+/* details block = 24px below copy */
+.album-view-details-side {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+}
+
+.album-view-details-title {
+  margin: 0 0 8px 0 !important;
+}
+
+.album-view-details-text {
+  font-size: 14px !important;   /* requested */
+  line-height: 1.4 !important;
+}
+
+/* buy button pinned near bottom */
+.album-view-buy {
+  position: fixed !important;
+  left: var(--m-side) !important;
+  right: var(--m-side) !important;
+  bottom: calc(44px + var(--m-safe-bottom)) !important;
+  width: auto !important;
+  margin: 0 !important;
+  z-index: 20 !important;
+}
+
+/* keep background behavior stable on mobile */
+.album-view-bg,
+.album-view-bg-site,
+.album-view-bg-base,
+.album-view-bg-played {
+  background-position: center center !important;
+}
   /* =========================
      SHORTER PHONES
   ========================= */

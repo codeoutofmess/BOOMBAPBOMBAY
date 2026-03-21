@@ -14,6 +14,14 @@ const IS_MOBILE = window.innerWidth <= 768;
 
 let mobileScenePanLoop = null;
 
+let mobileBeatStoreModelsInitialized = false;
+
+function ensureBeatStoreModelsMobile() {
+  if (mobileBeatStoreModelsInitialized) return;
+  mobileBeatStoreModelsInitialized = true;
+  initBeatStoreModelsMobile();
+}
+
 const ROT_FIX = {
   "WAVES.glb": { x: Math.PI / 2, y: 0, z: 0 },
   "arturia_minilab_mkii_model.glb": { x: Math.PI / 2, y: 0, z: 0 },
@@ -28,24 +36,21 @@ const MOBILE_MODEL_FIT = {
 };
 
 const PRELOAD_ASSETS = [
-  "/assets/noise.svg",
-  "/assets/beat-store-bg.svg",
-  "/assets/scene-light.svg",
-  "/assets/scene-ground.svg",
-  "/assets/scene-good.svg",
-  "/assets/scene-car.svg",
-  "/assets/scene-tuco.svg",
-  "/assets/scene-bcs.svg",
+ "/assets/noise.svg",
   "/assets/revolver_load.svg",
   "/assets/blood-splatter.png",
-  "/assets/mumbai-city.svg",
   "/assets/scene-composite.svg",
   "/assets/boombap-logo.svg",
   "/models/revolver.glb",
-  "/models/WAVES.glb",
-  "/models/fl_studio_logo.glb",
-  "/models/arturia_minilab_mkii_model.glb",
-  "/models/mpc_one.glb",
+];
+
+const PRELOAD_ASSETS_MOBILE = [
+  "/assets/noise.svg",
+  "/assets/revolver_load.svg",
+  "/assets/blood-splatter.png",
+  "/assets/scene-composite.svg",
+  "/assets/boombap-logo.svg",
+  "/models/revolver.glb",
 ];
 
 const BEATS = [
@@ -326,12 +331,13 @@ function getAppMarkupDesktop() {
   <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-left" alt="B" />
 
   <div class="nav-center">
-    <span class="nav-item hover-scramble">[ HOME ]</span>
-    <a class="nav-item hover-scramble nav-link" href="#beat-store">[ BEAT STORE ]</a>
-    <span class="nav-item hover-scramble">[ MUSIC ]</span>
-    <span class="nav-item hover-scramble">[ ABOUT ]</span>
-    <span class="nav-item hover-scramble">[ UPDATES ]</span>
-  </div>
+  <a class="nav-item hover-scramble nav-link" href="#home">[ HOME ]</a>
+  
+  <a class="nav-item hover-scramble nav-link" href="#music">[ MUSIC ]</a>
+  <a class="nav-item hover-scramble nav-link" href="#beat-store">[ BEAT STORE ]</a>
+  <a class="nav-item hover-scramble nav-link" href="#about">[ ABOUT ]</a>
+  <a class="nav-item hover-scramble nav-link" href="#updates">[ UPDATES ]</a>
+</div>
 
   <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-right" alt="B" />
   <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
@@ -2769,12 +2775,12 @@ async function preloadAssetsMobile(onProgress) {
 
   const tick = () => {
     loaded++;
-    if (onProgress) onProgress(Math.min(1, loaded / PRELOAD_ASSETS.length));
+    if (onProgress) onProgress(Math.min(1, loaded / PRELOAD_ASSETS_MOBILE.length));
   };
 
   const gltfLoader = new GLTFLoader();
 
-  const jobs = PRELOAD_ASSETS.map((url) => {
+  const jobs = PRELOAD_ASSETS_MOBILE.map((url) => {
     if (url.endsWith(".glb")) {
       return new Promise((resolve) => {
         gltfLoader.load(
@@ -4660,6 +4666,9 @@ gsap.set(beatStore, {
 
     onUpdate: (self) => {
       const p = self.progress;
+      if (p > 0.42) {
+  ensureBeatStoreModelsMobile();
+}
 
 const LANDING_END = 0.22;
 const MUSIC_END = 0.44;
@@ -4815,8 +4824,6 @@ function initMobileApp() {
     });
   });
 
-  initBeatStoreModelsMobile();
-
   document.body.style.overflow = "hidden";
   document.body.style.touchAction = "none";
 
@@ -4894,7 +4901,7 @@ if (mobileSceneComposite) {
 
   const driver = createLoaderDriver();
 
-  const MIN_TIME_MS = 2600;
+  const MIN_TIME_MS = IS_MOBILE ? 900 : 2600;
   const start = performance.now();
 
   const pctTween = driver.startPercent(MIN_TIME_MS / 1000);
@@ -4912,7 +4919,7 @@ if (mobileSceneComposite) {
     pctTween.progress(1);
 
     driver.finish().then(async () => {
-      await new Promise((r) => setTimeout(r, 800));
+      await new Promise((r) => setTimeout(r, IS_MOBILE ? 120 : 800));
 
       gsap.to("#loaderChamber", {
         autoAlpha: 0,
@@ -4956,7 +4963,7 @@ if (mobileSceneComposite) {
         } else {
           initDesktopApp();
         }
-      }, 650);
+      }, IS_MOBILE ? 120 : 650);
     });
   }, remaining);
 })();
