@@ -23,24 +23,22 @@ function ensureBeatStoreModelsMobile() {
 }
 
 const ROT_FIX = {
-  "WAVES.glb": { x: Math.PI / 2, y: 0, z: 0 },
-  "arturia_minilab_mkii_model.glb": { x: Math.PI / 2, y: 0, z: 0 },
-  "mpc_one.glb": { x: Math.PI / 2, y: 0, z: 0 },
+  "WAVES.optimized.glb": { x: Math.PI / 2, y: 0, z: 0 },
+  "arturia_minilab_mkii_model.optimized.glb": { x: Math.PI / 2, y: 0, z: 0 },
+  "mpc_one.optimized.glb": { x: Math.PI / 2, y: 0, z: 0 },
 };
 
 const MOBILE_MODEL_FIT = {
-  "WAVES.glb": { y: -0.08, zoom: 1.32 },
-  "fl_studio_logo.glb": { y: -0.02, zoom: 1.18 },
-  "arturia_minilab_mkii_model.glb": { y: -0.06, zoom: 1.28 },
-  "mpc_one.glb": { y: -0.03, zoom: 1.22 },
+  "WAVES.optimized.glb": { y: -0.08, zoom: 1.32 },
+  "fl_studio_logo.optimized.glb": { y: -0.02, zoom: 1.18 },
+  "arturia_minilab_mkii_model.optimized.glb": { y: -0.06, zoom: 1.28 },
+  "mpc_one.optimized.glb": { y: -0.03, zoom: 1.22 },
 };
 
 const PRELOAD_ASSETS = [
  "/assets/noise.svg",
   "/assets/revolver_load.svg",
   "/assets/blood-splatter.png",
-  "/assets/scene-composite.svg",
-  "/assets/boombap-logo.svg",
 ];
 
 const PRELOAD_ASSETS_MOBILE = [
@@ -339,7 +337,7 @@ function getAppMarkupDesktop() {
   <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
 </nav>
 
-<div class="text-layer">
+
 
         <div class="text-layer">
           <div class="left-block">
@@ -403,20 +401,20 @@ function getAppMarkupDesktop() {
           <div class="bs-grid">
             <div class="bs-row">
               <div class="bs-box bs-small" data-grid="img-2">
-                <canvas class="bs-canvas" data-model="/models/WAVES.glb"></canvas>
+                <canvas class="bs-canvas" data-model="/models/WAVES.optimized.glb"></canvas>
               </div>
 
               <div class="bs-box bs-small" data-grid="img-3">
-                <canvas class="bs-canvas" data-model="/models/fl_studio_logo.glb"></canvas>
+                <canvas class="bs-canvas" data-model="/models/fl_studio_logo.optimized.glb"></canvas>
               </div>
 
               <div class="bs-box bs-small" data-grid="img-4">
-                <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.glb"></canvas>
+                <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.optimized.glb"></canvas>
               </div>
             </div>
 
             <div class="bs-box bs-big bs-aim" data-grid="img-1">
-              <canvas class="bs-canvas" data-model="/models/mpc_one.glb"></canvas>
+              <canvas class="bs-canvas" data-model="/models/mpc_one.optimized.glb"></canvas>
             </div>
           </div>
 
@@ -750,20 +748,20 @@ function getAppMarkupMobile() {
         <div class="bs-grid">
           <div class="bs-row">
             <div class="bs-box bs-small" data-grid="img-2">
-              <canvas class="bs-canvas" data-model="/models/WAVES.glb"></canvas>
+              <canvas class="bs-canvas" data-model="/models/WAVES.optimized.glb"></canvas>
             </div>
 
             <div class="bs-box bs-small" data-grid="img-3">
-              <canvas class="bs-canvas" data-model="/models/fl_studio_logo.glb"></canvas>
+              <canvas class="bs-canvas" data-model="/models/fl_studio_logo.optimized.glb"></canvas>
             </div>
 
             <div class="bs-box bs-small" data-grid="img-4">
-              <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.glb"></canvas>
+              <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.optimized.glb"></canvas>
             </div>
           </div>
 
           <div class="bs-box bs-big bs-aim" data-grid="img-1">
-            <canvas class="bs-canvas" data-model="/models/mpc_one.glb"></canvas>
+            <canvas class="bs-canvas" data-model="/models/mpc_one.optimized.glb"></canvas>
           </div>
         </div>
       </div>
