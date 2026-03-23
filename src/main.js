@@ -3630,7 +3630,7 @@ function initBeatStoreModelsMobile() {
   }, 150);
 }
 
-function initRevolverMobile(onReady) {
+function initRevolverMobile(onReady = null) {
   const canvas = document.querySelector(".webgl");
   if (!canvas) return;
 
@@ -4908,43 +4908,44 @@ if (mobileSceneComposite) {
   });
 }
 
-  initRevolverMobile(() => {
-    const landing = document.querySelector(".landing");
-    startNavIntroMobile();
+  const landing = document.querySelector(".landing");
 
-    setTimeout(() => {
-      landing?.classList.remove("revolver-only");
+startNavIntroMobile();
 
-      const introTl = startLandingIntroMobile();
+setTimeout(() => {
+  landing?.classList.remove("revolver-only");
 
-      introTl.eventCallback("onComplete", () => {
-        document.body.style.overflow = "auto";
-        document.body.style.overflowY = "auto";
-        document.body.style.overflowX = "hidden";
+  const introTl = startLandingIntroMobile();
 
-        document.documentElement.style.overflow = "auto";
-        document.documentElement.style.overflowY = "auto";
-        document.documentElement.style.overflowX = "hidden";
+  introTl.eventCallback("onComplete", () => {
+    document.body.style.overflow = "auto";
+    document.body.style.overflowY = "auto";
+    document.body.style.overflowX = "hidden";
 
-        document.body.style.touchAction = "pan-y";
-        document.documentElement.style.touchAction = "pan-y";
+    document.documentElement.style.overflow = "auto";
+    document.documentElement.style.overflowY = "auto";
+    document.documentElement.style.overflowX = "hidden";
 
-        const app = document.querySelector(".app");
-        if (app) {
-          app.style.overflow = "visible";
-        }
+    document.body.style.touchAction = "pan-y";
+    document.documentElement.style.touchAction = "pan-y";
 
-        window.scrollTo(0, 0);
+    const app = document.querySelector(".app");
+    if (app) {
+      app.style.overflow = "visible";
+    }
 
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            initCinematicScrollMobile();
-            ScrollTrigger.refresh(true);
-          });
-        });
+    window.scrollTo(0, 0);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        initCinematicScrollMobile();
+        ScrollTrigger.refresh(true);
       });
-    }, 60);
+    });
   });
+}, 60);
+
+initRevolverMobile();
 }
 
 /* =========================
