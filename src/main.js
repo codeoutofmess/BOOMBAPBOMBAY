@@ -6,6 +6,7 @@ import { Flip } from "gsap/Flip.js";
 
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Flip);
@@ -934,6 +935,7 @@ async function preloadAssetsDesktop(onProgress) {
   };
 
   const gltfLoader = new GLTFLoader();
+gltfLoader.setMeshoptDecoder(MeshoptDecoder);
 
   const jobs = PRELOAD_ASSETS.map((url) => {
     if (url.endsWith(".glb")) {
@@ -1599,6 +1601,7 @@ function createBoxViewerDesktop(canvas) {
     load: (url) =>
       new Promise((resolve, reject) => {
         const loader = new GLTFLoader();
+        loader.setMeshoptDecoder(MeshoptDecoder);
 
         loader.load(
           url,
@@ -1606,7 +1609,7 @@ function createBoxViewerDesktop(canvas) {
             const modelRoot = gltf.scene;
 
             const fileName = decodeURIComponent(url).split("/").pop().split("?")[0];
-            const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
+const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
             modelRoot.rotation.set(fix.x, fix.y, fix.z);
 
             group.add(modelRoot);
@@ -1783,7 +1786,10 @@ function initRevolverDesktop(onReady) {
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   });
 
-  new GLTFLoader().load(
+  const loader = new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
+
+loader.load(
     MODEL_URL,
     (gltf) => {
       const gunRoot = gltf.scene;
@@ -2841,6 +2847,7 @@ async function preloadAssetsMobile(onProgress) {
   };
 
   const gltfLoader = new GLTFLoader();
+gltfLoader.setMeshoptDecoder(MeshoptDecoder);
 
   const jobs = PRELOAD_ASSETS_MOBILE.map((url) => {
     if (url.endsWith(".glb")) {
@@ -3498,6 +3505,7 @@ function createBoxViewerMobile(canvas) {
     load: (url) =>
       new Promise((resolve, reject) => {
         const loader = new GLTFLoader();
+        loader.setMeshoptDecoder(MeshoptDecoder);
 
         loader.load(
           url,
@@ -3505,9 +3513,10 @@ function createBoxViewerMobile(canvas) {
             const modelRoot = gltf.scene;
 
             const fileName = decodeURIComponent(url).split("/").pop().split("?")[0];
-            currentModelFile = fileName;
 
-            const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
+currentModelFile = fileName;
+
+const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
             modelRoot.rotation.set(fix.x, fix.y, fix.z);
 
             group.add(modelRoot);
@@ -3704,7 +3713,10 @@ function enableGyro() {
   }
 }
 
-  new GLTFLoader().load(
+  const loader = new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
+
+loader.load(
     MODEL_URL,
     (gltf) => {
       const gunRoot = gltf.scene;
@@ -4894,58 +4906,58 @@ function initMobileApp() {
 
   const mobileSceneComposite = document.querySelector(".scene-composite");
 
-if (mobileSceneComposite) {
-  gsap.set(mobileSceneComposite, {
-    left: "50%",
-    bottom: 0,
-    xPercent: -50,
-    x: 0,
-    y: 0,
-    scale: 1,
-    autoAlpha: 0,
-    transformOrigin: "51.9% 66.5%",
-    force3D: true,
-  });
-}
+  if (mobileSceneComposite) {
+    gsap.set(mobileSceneComposite, {
+      left: "50%",
+      bottom: 0,
+      xPercent: -50,
+      x: 0,
+      y: 0,
+      scale: 1,
+      autoAlpha: 0,
+      transformOrigin: "51.9% 66.5%",
+      force3D: true,
+    });
+  }
 
   const landing = document.querySelector(".landing");
+  startNavIntroMobile();
 
-startNavIntroMobile();
+  setTimeout(() => {
+    landing?.classList.remove("revolver-only");
 
-setTimeout(() => {
-  landing?.classList.remove("revolver-only");
+    const introTl = startLandingIntroMobile();
 
-  const introTl = startLandingIntroMobile();
+    introTl.eventCallback("onComplete", () => {
+      document.body.style.overflow = "auto";
+      document.body.style.overflowY = "auto";
+      document.body.style.overflowX = "hidden";
 
-  introTl.eventCallback("onComplete", () => {
-    document.body.style.overflow = "auto";
-    document.body.style.overflowY = "auto";
-    document.body.style.overflowX = "hidden";
+      document.documentElement.style.overflow = "auto";
+      document.documentElement.style.overflowY = "auto";
+      document.documentElement.style.overflowX = "hidden";
 
-    document.documentElement.style.overflow = "auto";
-    document.documentElement.style.overflowY = "auto";
-    document.documentElement.style.overflowX = "hidden";
+      document.body.style.touchAction = "pan-y";
+      document.documentElement.style.touchAction = "pan-y";
 
-    document.body.style.touchAction = "pan-y";
-    document.documentElement.style.touchAction = "pan-y";
+      const app = document.querySelector(".app");
+      if (app) {
+        app.style.overflow = "visible";
+      }
 
-    const app = document.querySelector(".app");
-    if (app) {
-      app.style.overflow = "visible";
-    }
+      window.scrollTo(0, 0);
 
-    window.scrollTo(0, 0);
-
-    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        initCinematicScrollMobile();
-        ScrollTrigger.refresh(true);
+        requestAnimationFrame(() => {
+          initCinematicScrollMobile();
+          ScrollTrigger.refresh(true);
+        });
       });
     });
-  });
-}, 60);
+  }, 60);
 
-initRevolverMobile();
+  // Load revolver in parallel, do not block landing reveal
+  initRevolverMobile();
 }
 
 /* =========================
