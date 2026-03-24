@@ -1301,30 +1301,37 @@ body {
     --m-safe-top: max(env(safe-area-inset-top), 0px);
     --m-safe-bottom: max(env(safe-area-inset-bottom), 0px);
 
-    /* fixed rules */
-    --m-side: 44px;
-    --m-content-w: calc(100vw - 88px);
+    --app-dvh: 100dvh;
 
-    /* vertical placement */
-    --m-nav-top: 28px;
-    --m-menu-top: 32px;
-    --m-landing-top: 190px;
-    --m-landing-right-top: 568px;
-    --m-section-top: 108px;
-    --m-visual-top: 500px;
+    /* spacing */
+    --m-side: clamp(22px, 5.6vw, 32px);
+    --m-content-w: calc(100vw - (var(--m-side) * 2));
 
-    /* fixed type sizes */
-    --m-meta-size: 12px;
-    --m-copy-size: 14px;
-    --m-landing-desc-size: 16px;
-    --m-drop-size: 16px;
-    --m-latest-size: 24px;
-    --m-title-thin: 40px;
-    --m-title-bold: 96px;
-    --m-arc-title-size: 16px;
+    /* top spacing */
+    --m-nav-top: clamp(18px, 2.2vh, 26px);
+    --m-menu-top: clamp(22px, 3vh, 30px);
+
+    /* layout rhythm */
+    --m-landing-top: clamp(118px, 16vh, 168px);
+    --m-section-top: clamp(96px, 12vh, 124px);
+    --m-copy-gap: clamp(18px, 2.4vh, 24px);
+    --m-block-gap: clamp(22px, 3vh, 32px);
+
+    /* visual positioning */
+    --m-visual-top: clamp(380px, 52vh, 470px);
+
+    /* type */
+    --m-meta-size: clamp(10px, 2.8vw, 12px);
+    --m-copy-size: clamp(12px, 3.6vw, 14px);
+    --m-landing-desc-size: clamp(14px, 4.2vw, 16px);
+    --m-drop-size: clamp(14px, 4.2vw, 16px);
+    --m-latest-size: clamp(22px, 6vw, 26px);
+    --m-title-thin: clamp(34px, 9vw, 40px);
+    --m-title-bold: clamp(78px, 22vw, 96px);
+    --m-arc-title-size: clamp(14px, 4vw, 16px);
 
     /* controls */
-    --m-btn-h: 64px;
+    --m-btn-h: 58px;
 
     /* grid */
     --m-grid-gap: 1px;
@@ -1332,13 +1339,13 @@ body {
     --m-grid-big-h: calc((var(--m-grid-col) * 2) + var(--m-grid-gap));
 
     /* arc */
-    --m-arc-w: 288px;
-    --m-arc-h: 290px;
-    --m-arc-item-w: 144px;
-    --m-arc-item-h: 86px;
+    --m-arc-w: min(78vw, 288px);
+    --m-arc-h: calc(var(--m-arc-w) * 1.01);
+    --m-arc-item-w: calc(var(--m-arc-w) * 0.5);
+    --m-arc-item-h: calc(var(--m-arc-item-w) * 0.6);
 
     /* about */
-    --m-about-map-w: 180px;
+    --m-about-map-w: clamp(150px, 42vw, 210px);
   }
 
   html,
@@ -1347,6 +1354,7 @@ body {
     min-height: 100% !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
+    background: var(--bg) !important;
   }
 
   body {
@@ -1357,16 +1365,19 @@ body {
   #app,
   .app {
     height: auto !important;
-    min-height: 100vh !important;
+    min-height: var(--app-dvh) !important;
     overflow: visible !important;
     position: relative !important;
+    background: var(--bg) !important;
   }
 
   #mobile-cinematic-root {
     position: relative;
     width: 100%;
-    height: 100svh;
-    overflow: visible;
+    min-height: var(--app-dvh);
+    height: var(--app-dvh);
+    overflow: clip;
+    background: var(--bg);
   }
 
   #home,
@@ -1375,16 +1386,16 @@ body {
   #about {
     position: absolute !important;
     inset: 0 !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    min-height: var(--app-dvh) !important;
+    height: var(--app-dvh) !important;
   }
 
   #home {
-    overflow: visible !important;
+    overflow: clip !important;
   }
 
   #home .scene-layer {
-    overflow: visible !important;
+    overflow: clip !important;
   }
 
   #music,
@@ -1396,9 +1407,10 @@ body {
   .page.landing,
   .landing {
     position: relative;
-    height: 100svh;
-    min-height: 100svh;
-    overflow: hidden;
+    min-height: var(--app-dvh);
+    height: var(--app-dvh);
+    overflow: clip;
+    background: var(--bg);
   }
 
   .landing .webgl {
@@ -1470,9 +1482,7 @@ body {
     display: block;
   }
 
-  /* =========================
-     LANDING
-  ========================= */
+  /* LANDING */
 
   .landing .text-layer {
     position: relative;
@@ -1482,6 +1492,9 @@ body {
     padding-left: var(--m-side);
     padding-right: var(--m-side);
     padding-top: calc(var(--m-landing-top) + var(--m-safe-top));
+    display: flex;
+    flex-direction: column;
+    gap: var(--m-block-gap);
   }
 
   .landing .left-block,
@@ -1527,10 +1540,10 @@ body {
   }
 
   .landing .desc {
-    margin-top: 40px;
+    margin-top: var(--m-copy-gap);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
     max-width: 100%;
   }
@@ -1541,16 +1554,12 @@ body {
 
   .landing .desc-line .reveal__inner {
     font-size: var(--m-landing-desc-size);
-    line-height: 1;
+    line-height: 1.05;
     white-space: nowrap;
   }
 
   .landing .right-block {
-    position: absolute !important;
-    left: var(--m-side) !important;
-    top: var(--m-landing-right-top) !important;
-    width: var(--m-content-w);
-    max-width: var(--m-content-w);
+    margin-top: clamp(8px, 2vh, 18px) !important;
   }
 
   .landing .latest {
@@ -1560,7 +1569,7 @@ body {
   }
 
   .landing .drop-reveal {
-    margin-top: 16px;
+    margin-top: 12px;
   }
 
   .landing .drop-row {
@@ -1580,7 +1589,7 @@ body {
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    overflow: visible !important;
+    overflow: clip !important;
     z-index: 6 !important;
     pointer-events: none !important;
   }
@@ -1608,8 +1617,8 @@ body {
 
   #music.music-page {
     display: block !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: var(--app-dvh) !important;
+    min-height: var(--app-dvh) !important;
     overflow: hidden !important;
     background: #000 !important;
   }
@@ -1716,8 +1725,8 @@ body {
 
   #beat-store {
     display: block !important;
-    height: 100svh !important;
-    min-height: 100svh !important;
+    height: var(--app-dvh) !important;
+    min-height: var(--app-dvh) !important;
     overflow: hidden !important;
     background: #000 !important;
   }
@@ -1787,14 +1796,14 @@ body {
   }
 
   #beat-store .bs-mobile-visual {
-    position: absolute !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: var(--m-visual-top) !important;
-    bottom: 0 !important;
-    z-index: 10 !important;
-    pointer-events: none !important;
-  }
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: clamp(360px, 50vh, 460px) !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
 
   #beat-store .bs-mobile-grid-stage,
   #beat-store .bs-mobile-arc-stage {
@@ -1928,7 +1937,7 @@ body {
 #about .about-title-reveal {
   position: absolute !important;
   left: var(--m-side) !important;
-  top: calc(144px + var(--m-safe-top)) !important;
+  top: calc(clamp(112px, 15vh, 144px) + var(--m-safe-top)) !important;
   width: var(--m-content-w) !important;
   overflow: hidden !important;
   z-index: 5 !important;
@@ -1947,7 +1956,7 @@ body {
 #about .about-side {
   position: absolute !important;
   left: var(--m-side) !important;
-  top: calc(240px + var(--m-safe-top)) !important;
+  top: calc(clamp(204px, 27vh, 240px) + var(--m-safe-top)) !important;
   width: var(--m-content-w) !important;
   max-width: var(--m-content-w) !important;
   z-index: 5 !important;
@@ -1976,7 +1985,7 @@ body {
   position: absolute !important;
   left: 0 !important;
   padding-left: var(--m-side) !important;
-  bottom: calc(54px + var(--m-safe-bottom)) !important;
+  bottom: calc(clamp(28px, 5vh, 54px) + var(--m-safe-bottom)) !important;
 
   display: flex !important;
   flex-direction: column !important;
@@ -2036,7 +2045,7 @@ body {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
-  height: 100svh !important;
+  height: var(--app-dvh) !important;
   overflow: hidden !important;
 }
 

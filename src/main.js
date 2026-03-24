@@ -17,6 +17,16 @@ let mobileScenePanLoop = null;
 
 let mobileBeatStoreModelsInitialized = false;
 
+function setMobileViewportVars() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--app-vh", `${vh}px`);
+  document.documentElement.style.setProperty("--app-dvh", `${window.innerHeight}px`);
+}
+
+function getMobileViewportHeight() {
+  return window.innerHeight || document.documentElement.clientHeight || 0;
+}
+
 function ensureBeatStoreModelsMobile() {
   if (mobileBeatStoreModelsInitialized) return;
   mobileBeatStoreModelsInitialized = true;
@@ -4092,8 +4102,8 @@ gsap.set(sceneComposite, {
     bottom: 0,
     xPercent: -50,
     x: 0,
-    y: lerpMobile(0, window.innerHeight * 0.06, e),
-    scale: lerpMobile(1, 12, e),
+    y: lerpMobile(0, getMobileViewportHeight() * 0.035, e),
+    scale: lerpMobile(1, 9.2, e),
     autoAlpha: 1 - sceneFade,
     transformOrigin: "51.9% 66.5%",
     force3D: true,
@@ -4444,44 +4454,46 @@ gsap.set(beatStore, {
   }
 
   function setAboutOverlayModeMobile(on) {
-    if (!aboutSection) return;
+  if (!aboutSection) return;
 
-    if (on) {
-      gsap.set(aboutSection, {
+  const vh = getMobileViewportHeight();
+
+  if (on) {
+    gsap.set(aboutSection, {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: vh,
+      zIndex: 30,
+    });
+
+    if (aboutTransitionMap) {
+      gsap.set(aboutTransitionMap, {
         position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100svh",
-        zIndex: 30,
+        inset: 0,
+        width: "100vw",
+        height: vh,
+        zIndex: 40,
+        pointerEvents: "none",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       });
+    }
+  } else {
+    gsap.set(aboutSection, {
+      clearProps: "position,top,left,width,height,zIndex",
+    });
 
-      if (aboutTransitionMap) {
-        gsap.set(aboutTransitionMap, {
-          position: "fixed",
-          inset: 0,
-          width: "100vw",
-          height: "100svh",
-          zIndex: 40,
-          pointerEvents: "none",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        });
-      }
-    } else {
-      gsap.set(aboutSection, {
-        clearProps: "position,top,left,width,height,zIndex",
+    if (aboutTransitionMap) {
+      gsap.set(aboutTransitionMap, {
+        clearProps:
+          "position,inset,width,height,zIndex,pointerEvents,display,alignItems,justifyContent",
       });
-
-      if (aboutTransitionMap) {
-        gsap.set(aboutTransitionMap, {
-          clearProps:
-            "position,inset,width,height,zIndex,pointerEvents,display,alignItems,justifyContent",
-        });
-      }
     }
   }
+}
 
   function getAboutTargetTransformMobile() {
     if (!aboutTransitionImg || !aboutMapWrap) {
@@ -4717,15 +4729,16 @@ gsap.set(beatStore, {
   
 
   ScrollTrigger.create({
-    id: "cinematicMobileMaster",
-    trigger: cinematicRoot,
-    start: "top top",
-    end: "+=800%",
-    pin: true,
-    pinSpacing: true,
-    scrub: 1,
-    anticipatePin: 1,
-    invalidateOnRefresh: true,
+  id: "cinematicMobileMaster",
+  trigger: cinematicRoot,
+  start: "top top",
+  end: "+=560%",
+  pin: true,
+  pinSpacing: true,
+  scrub: 0.55,
+  anticipatePin: 0,
+  invalidateOnRefresh: true,
+  fastScrollEnd: true,
 
 
     onEnter: () => {
@@ -4867,6 +4880,17 @@ const ABOUT_END = 0.94;
 }
 
 function initMobileApp() {
+
+  setMobileViewportVars();
+
+window.addEventListener("resize", setMobileViewportVars, { passive: true });
+window.addEventListener("orientationchange", () => {
+  setTimeout(() => {
+    setMobileViewportVars();
+    ScrollTrigger.refresh(true);
+  }, 120);
+}, { passive: true });
+
   gsap.set("#beat-store", {
     autoAlpha: 0,
     pointerEvents: "none",
