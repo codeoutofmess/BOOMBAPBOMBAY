@@ -720,20 +720,6 @@ body {
   object-fit: cover;
 }
 
-#mobile-music-arc {
-  pointer-events: auto !important;
-}
-
-#mobile-music-arc .bs-arc-item {
-  pointer-events: auto !important;
-  touch-action: manipulation !important;
-  cursor: pointer !important;
-}
-
-#mobile-music-arc .bs-arc-item img {
-  pointer-events: none !important;
-}
-
 .album-view {
   position: fixed;
   inset: 0;
@@ -1731,6 +1717,7 @@ body {
   #mobile-music-arc .bs-arc-item {
     width: var(--m-arc-item-w) !important;
     height: var(--m-arc-item-h) !important;
+    touch-action: manipulation !important;
   }
 
   /* =========================
