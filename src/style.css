@@ -1806,6 +1806,14 @@ body {
   pointer-events: none !important;
 }
 
+#beat-store .bs-mobile-visual {
+  z-index: 1 !important;
+}
+
+#mobile-music-arc {
+  z-index: 21 !important;
+}
+
   #beat-store .bs-mobile-grid-stage,
   #beat-store .bs-mobile-arc-stage {
     position: absolute !important;

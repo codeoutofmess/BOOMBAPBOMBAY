@@ -3475,13 +3475,50 @@ function createAlbumArcWidgetMobile({
   snap(0);
 
   items.forEach((btn, idx) => {
-  btn.addEventListener("click", (e) => {
+  let startX = 0;
+  let startY = 0;
+  let moved = false;
+
+  const openBeat = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (window.__albumViewMobile) {
       window.__albumViewMobile.open(idx, data);
     }
-  });
+  };
+
+  btn.addEventListener("click", openBeat);
+
+  btn.addEventListener(
+    "touchstart",
+    (e) => {
+      const t = e.changedTouches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      moved = false;
+    },
+    { passive: true }
+  );
+
+  btn.addEventListener(
+    "touchmove",
+    (e) => {
+      const t = e.changedTouches[0];
+      const dx = Math.abs(t.clientX - startX);
+      const dy = Math.abs(t.clientY - startY);
+      if (dx > 10 || dy > 10) moved = true;
+    },
+    { passive: true }
+  );
+
+  btn.addEventListener(
+    "touchend",
+    (e) => {
+      if (moved) return;
+      openBeat(e);
+    },
+    { passive: false }
+  );
 });
 
   return { layoutProgress, snap, maxStep, root, data };
@@ -4236,6 +4273,37 @@ if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
     pointerEvents: "none",
     zIndex: 40,
   });
+
+  gsap.set([
+  ".landing .scene-layer",
+  ".landing .text-layer",
+  ".landing .bg-layer",
+  ".landing .webgl"
+], {
+  pointerEvents: "none"
+});
+
+gsap.set("#mobile-music", {
+  pointerEvents: "auto",
+  zIndex: 30
+});
+
+gsap.set("#mobile-music-arc", {
+  pointerEvents: "auto",
+  zIndex: 31
+});
+
+gsap.set(".bs-mobile-grid-stage", {
+  autoAlpha: 0,
+  visibility: "hidden",
+  pointerEvents: "none",
+});
+
+gsap.set("#beat-store .bs-mobile-visual", {
+  pointerEvents: "none",
+});
+
+
 }
 
 function setMusicBaseStateMobile() {
@@ -4261,6 +4329,16 @@ function setMusicBaseStateMobile() {
     visibility: "visible",
     pointerEvents: "auto",
   });
+
+  gsap.set(".bs-mobile-grid-stage", {
+  autoAlpha: 0,
+  visibility: "hidden",
+  pointerEvents: "none",
+});
+
+gsap.set("#beat-store .bs-mobile-visual", {
+  pointerEvents: "none",
+});
 
   const mobileMusicTitleInner = mobileMusicLeft?.querySelector(".bs-music-title-reveal .reveal__inner");
   const mobileMusicCopyInner = mobileMusicLeft?.querySelector(".bs-music-copy-reveal .reveal__inner");
@@ -4328,6 +4406,16 @@ function setMusicBaseStateMobile() {
       visibility: "hidden",
       pointerEvents: "none",
     });
+
+    gsap.set(".bs-mobile-grid-stage", {
+  autoAlpha: 1,
+  visibility: "visible",
+  pointerEvents: "auto",
+});
+
+gsap.set("#beat-store .bs-mobile-visual", {
+  pointerEvents: "auto",
+});
 
     gsap.set(bsGrid, { autoAlpha: 1 });
     gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "none" });
