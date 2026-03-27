@@ -81,7 +81,7 @@ const BEATS = [
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details:
       "12/09/2026 / 19:07:29\n\nBY KSHAH & PSYESH / BOOM BAP\n\n84 BPM / E#m KEY",
-    art: "/assets/album-art1.svg",
+    art: "/assets/album-art1.webp",
     preview: "/assets/previews/beat1.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
@@ -96,7 +96,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
-    art: "/assets/album-art2.svg",
+    art: "/assets/album-art2.webp",
     preview: "/assets/previews/beat2.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
@@ -111,7 +111,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/assets/album-art3.svg",
+    art: "/assets/album-art3.webp",
     preview: "/assets/previews/beat3.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
@@ -126,7 +126,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
-    art: "/assets/album-art4.svg",
+    art: "/assets/album-art4.webp",
     preview: "/assets/previews/beat4.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
@@ -141,7 +141,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/assets/album-art5.svg",
+    art: "/assets/album-art5.webp",
     preview: "/assets/previews/beat5.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:11",
@@ -189,7 +189,7 @@ const MUSIC_BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS.",
     details: "12/09/2026 / 19:07:29\n\nBY KSHAH / MUSIC\n\n94 BPM / Em KEY",
-    art: "/assets/music-art1.svg",
+    art: "/assets/music-art1.webp",
     preview: "/assets/previews/beat1.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
@@ -204,7 +204,7 @@ const MUSIC_BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n88 BPM / Dm KEY",
-    art: "/assets/music-art2.svg",
+    art: "/assets/music-art2.webp",
     preview: "/assets/previews/beat2.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
@@ -219,7 +219,7 @@ const MUSIC_BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / MUSIC\n\n140 BPM / C#m KEY",
-    art: "/assets/music-art3.svg",
+    art: "/assets/music-art3.webp",
     preview: "/assets/previews/beat3.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
@@ -233,7 +233,7 @@ const MUSIC_BEATS = [
     time: "14:40:18",
     description: "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n102 BPM / Fm KEY",
-    art: "/assets/music-art4.svg",
+    art: "/assets/music-art4.webp",
     preview: "/assets/previews/beat4.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
@@ -450,23 +450,23 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS">
-              <img src="/assets/album-art1.svg" alt="" />
+              <img src="/assets/album-art1.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="CARS">
-              <img src="/assets/album-art2.svg" alt="" />
+              <img src="/assets/album-art2.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="BARS">
-              <img src="/assets/album-art3.svg" alt="" />
+              <img src="/assets/album-art3.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="GREENS">
-              <img src="/assets/album-art4.svg" alt="" />
+              <img src="/assets/album-art4.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SMOKES">
-              <img src="/assets/album-art5.svg" alt="" />
+              <img src="/assets/album-art5.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="PILLS">
@@ -503,19 +503,19 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.svg" alt="" />
+              <img src="/assets/music-art1.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.svg" alt="" />
+              <img src="/assets/music-art2.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.svg" alt="" />
+              <img src="/assets/music-art3.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.svg" alt="" />
+              <img src="/assets/music-art4.webp" alt="" />
             </div>
           </div>
         </div>
@@ -727,19 +727,19 @@ function getAppMarkupMobile() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.svg" alt="" />
+              <img src="/assets/music-art1.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.svg" alt="" />
+              <img src="/assets/music-art2.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.svg" alt="" />
+              <img src="/assets/music-art3.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.svg" alt="" />
+              <img src="/assets/music-art4.webp" alt="" />
             </div>
           </div>
         </div>
@@ -799,23 +799,23 @@ function getAppMarkupMobile() {
           </div>
 
           <div class="bs-arc-item" data-title="GUNS">
-            <img src="/assets/album-art1.svg" alt="" />
+            <img src="/assets/album-art1.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="CARS">
-            <img src="/assets/album-art2.svg" alt="" />
+            <img src="/assets/album-art2.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="BARS">
-            <img src="/assets/album-art3.svg" alt="" />
+            <img src="/assets/album-art3.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="GREENS">
-            <img src="/assets/album-art4.svg" alt="" />
+            <img src="/assets/album-art4.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="SMOKES">
-            <img src="/assets/album-art5.svg" alt="" />
+            <img src="/assets/album-art5.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="PILLS">
@@ -1793,7 +1793,7 @@ function initRevolverDesktop(onReady) {
   const gunGroup = new THREE.Group();
   scene.add(gunGroup);
 
-  const MODEL_URL = "/models/revolver.glb";
+  const MODEL_URL = "/models/revolver.optimized.glb";
   const baseQuat = new THREE.Quaternion().setFromEuler(
     new THREE.Euler(0, Math.PI, 0)
   );
@@ -3465,7 +3465,7 @@ function createBoxViewerMobile(canvas) {
   });
 
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(1);
 
   const scene = new THREE.Scene();
 
@@ -3672,7 +3672,7 @@ function initRevolverMobile(onReady = null) {
     alpha: true,
   });
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(1);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -3700,7 +3700,7 @@ function initRevolverMobile(onReady = null) {
   const gunGroup = new THREE.Group();
   scene.add(gunGroup);
 
-  const MODEL_URL = "/models/revolver.glb";
+  const MODEL_URL = "/models/revolver.optimized.glb";
   const baseQuat = new THREE.Quaternion().setFromEuler(
     new THREE.Euler(0, Math.PI, 0)
   );
@@ -3796,7 +3796,7 @@ gunGroup.quaternion.slerp(targetQuat, 0.08);
 
   window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(1);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
   });
