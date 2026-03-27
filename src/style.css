@@ -720,6 +720,20 @@ body {
   object-fit: cover;
 }
 
+#mobile-music-arc {
+  pointer-events: auto !important;
+}
+
+#mobile-music-arc .bs-arc-item {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+}
+
+#mobile-music-arc .bs-arc-item img {
+  pointer-events: none !important;
+}
+
 .album-view {
   position: fixed;
   inset: 0;
@@ -2079,7 +2093,7 @@ body.album-view-lock .album-view {
 /* top row labels */
 .album-view-more {
   position: absolute !important;
-  top: calc(176px + var(--m-safe-top)) !important;
+  top: calc(148px + var(--m-safe-top)) !important;
   left: var(--m-side) !important;
   transform: none !important;
   font-size: 16px !important;
@@ -2088,7 +2102,7 @@ body.album-view-lock .album-view {
 
 .album-view-sound {
   position: absolute !important;
-  top: calc(176px + var(--m-safe-top)) !important;
+  top: calc(148px + var(--m-safe-top)) !important;
   right: var(--m-side) !important;
   left: auto !important;
   width: auto !important;
@@ -2102,7 +2116,7 @@ body.album-view-lock .album-view {
 .album-view-player-row {
   position: absolute !important;
   left: 50% !important;
-  top: calc(256px + var(--m-safe-top)) !important; /* 176 + 80 */
+  top: calc(224px + var(--m-safe-top)) !important;
   transform: translate(-50%, -50%) !important;
   width: min(240px, calc(100vw - 176px)) !important;
   display: flex !important;
@@ -2126,11 +2140,19 @@ body.album-view-lock .album-view {
 .album-view-block2 {
   position: absolute !important;
   left: var(--m-side) !important;
-  top: calc(296px + var(--m-safe-top)) !important;
+  top: calc(258px + var(--m-safe-top)) !important;
   transform: none !important;
   width: var(--m-content-w) !important;
   min-height: 0 !important;
   padding-bottom: 140px !important;
+}
+
+.album-view-title,
+.album-view-desc,
+.album-view-details-side,
+.album-view-details-text {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
 }
 
 /* title */
