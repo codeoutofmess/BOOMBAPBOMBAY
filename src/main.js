@@ -3178,16 +3178,31 @@ function initAlbumViewMobile() {
     setPlayedProgressMobile(0);
   }
 
+  let albumViewScrollY = 0;
+
+function lockAlbumViewScrollMobile() {
+  albumViewScrollY = window.scrollY || window.pageYOffset || 0;
+  document.body.classList.add("album-view-lock");
+  document.body.style.top = `-${albumViewScrollY}px`;
+}
+
+function unlockAlbumViewScrollMobile() {
+  const y = Math.abs(parseInt(document.body.style.top || "0", 10)) || 0;
+  document.body.classList.remove("album-view-lock");
+  document.body.style.top = "";
+  window.scrollTo(0, y);
+}
+
   function open(index, list = BEATS) {
-    loadBeat(index, list);
+  loadBeat(index, list);
 
-    view.classList.add("is-open");
-    view.setAttribute("aria-hidden", "false");
+  view.classList.add("is-open");
+  view.setAttribute("aria-hidden", "false");
 
-    setMobileViewportVars();
-    document.body.style.overflow = "hidden";
+  setMobileViewportVars();
+  lockAlbumViewScrollMobile();
 
-    gsap.killTweensOf(view);
+  gsap.killTweensOf(view);
     gsap.killTweensOf(".album-view-bg-base, .album-view-bg-played, .album-view-ui");
 
     gsap.set(view, { autoAlpha: 1 });
@@ -3223,10 +3238,10 @@ function initAlbumViewMobile() {
       duration: 0.22,
       ease: "power2.out",
       onComplete: () => {
-        view.classList.remove("is-open");
-        view.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
-      },
+  view.classList.remove("is-open");
+  view.setAttribute("aria-hidden", "true");
+  unlockAlbumViewScrollMobile();
+},
     });
   }
 
@@ -3270,6 +3285,15 @@ function initAlbumViewMobile() {
   view.addEventListener("click", (e) => {
     if (e.target === view) close();
   });
+
+  const blockAlbumScroll = (e) => {
+  if (view.classList.contains("is-open")) {
+    e.preventDefault();
+  }
+};
+
+view.addEventListener("touchmove", blockAlbumScroll, { passive: false });
+view.addEventListener("wheel", blockAlbumScroll, { passive: false });
 
   window.addEventListener("resize", () => {
     if (audio.duration) setPlayedProgressMobile(audio.currentTime / audio.duration);
