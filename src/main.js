@@ -120,8 +120,13 @@ const BEATS = [
       "12/09/2026 / 19:07:29\n\nBY KSHAH & PSYESH / BOOM BAP\n\n84 BPM / E#m KEY",
     art: "/assets/album-art1.webp",
     preview: "/assets/previews/beat1.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
+    product: {
+  id: "beat_guns",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "DRUGS",
@@ -135,8 +140,13 @@ const BEATS = [
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
     art: "/assets/album-art2.webp",
     preview: "/assets/previews/beat2.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
+    product: {
+  id: "beat_drugs",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "PILLS",
@@ -150,8 +160,13 @@ const BEATS = [
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art3.webp",
     preview: "/assets/previews/beat3.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
+    product: {
+  id: "beat_pills",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "CARS",
@@ -165,8 +180,13 @@ const BEATS = [
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
     art: "/assets/album-art4.webp",
     preview: "/assets/previews/beat4.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
+    product: {
+  id: "beat_cars",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "SMOKES",
@@ -180,8 +200,13 @@ const BEATS = [
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art5.webp",
     preview: "/assets/previews/beat5.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "03:11",
+    product: {
+  id: "beat_smokes",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "STACKS",
@@ -195,8 +220,13 @@ const BEATS = [
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art6.webp",
     preview: "/assets/previews/beat6.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:49",
+    product: {
+  id: "beat_stacks",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "GREENS",
@@ -210,8 +240,13 @@ const BEATS = [
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art7.webp",
     preview: "/assets/previews/beat7.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "03:21",
+    product: {
+  id: "beat_greens",
+  type: "beat",
+  priceInr: 499,
+  currency: "INR"
+}
   },
 ];
 
@@ -228,8 +263,13 @@ const MUSIC_BEATS = [
     details: "12/09/2026 / 19:07:29\n\nBY KSHAH / MUSIC\n\n94 BPM / Em KEY",
     art: "/assets/music-art1.webp",
     preview: "/assets/previews/beat1.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:42",
+    product: {
+  id: "album_guns_cars_and_bars",
+  type: "album",
+  priceInr: 1499,
+  currency: "INR"
+}
   },
   {
     title: "SECOND DROP",
@@ -243,8 +283,13 @@ const MUSIC_BEATS = [
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n88 BPM / Dm KEY",
     art: "/assets/music-art2.webp",
     preview: "/assets/previews/beat2.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "03:05",
+    product: {
+  id: "album_second_drop",
+  type: "album",
+  priceInr: 1499,
+  currency: "INR"
+}
   },
   {
     title: "THIRD CUT",
@@ -258,8 +303,13 @@ const MUSIC_BEATS = [
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / MUSIC\n\n140 BPM / C#m KEY",
     art: "/assets/music-art3.webp",
     preview: "/assets/previews/beat3.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:23",
+    product: {
+  id: "album_third_cut",
+  type: "album",
+  priceInr: 499,
+  currency: "INR"
+}
   },
   {
     title: "FOURTH CUT",
@@ -272,8 +322,13 @@ const MUSIC_BEATS = [
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n102 BPM / Fm KEY",
     art: "/assets/music-art4.webp",
     preview: "/assets/previews/beat4.mp3",
-    buyUrl: "https://www.beatstars.com/",
     duration: "02:58",
+    product: {
+  id: "album_fourth_cut",
+  type: "album",
+  priceInr: 1499,
+  currency: "INR"
+}
   },
 ];
 
@@ -362,6 +417,59 @@ function createLoaderDriver() {
   }
 
   return { startPercent, setPercent, finish };
+}
+
+/* =========================
+   PAYMENT (RAZORPAY)
+========================= */
+
+async function startRazorpayCheckout(product, beat) {
+  try {
+    const res = await fetch("http://localhost:4000/api/orders/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: product.id,
+        productType: product.type,
+        title: beat.title,
+        priceInr: product.priceInr,
+        currency: product.currency,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create order");
+    }
+
+    const order = await res.json();
+
+    if (!window.Razorpay) {
+      throw new Error("Razorpay SDK not loaded");
+    }
+
+    const rzp = new window.Razorpay({
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: "BOOM BAP BOMBAY",
+      description: beat.title,
+      order_id: order.razorpayOrderId,
+      image: "/assets/boombap-logo.svg",
+      handler: function () {
+        window.location.href = `/payment-success?order_id=${encodeURIComponent(order.internalOrderId)}`;
+      },
+      theme: {
+        color: "#ab1212",
+      },
+    });
+
+    rzp.open();
+  } catch (err) {
+    console.error(err);
+    alert("Checkout failed. Try again.");
+  }
 }
 
 /* =========================
@@ -1284,8 +1392,13 @@ function initAlbumViewDesktop() {
     audio.load();
 
     buyBtn.onclick = () => {
-      window.open(beat.buyUrl, "_blank");
-    };
+  if (!beat.product) {
+    alert("This product is not configured yet.");
+    return;
+  }
+
+  startRazorpayCheckout(beat.product, beat);
+};
 
     currentEl.textContent = "00:00";
     setPlayedProgress(0);
@@ -1678,7 +1791,8 @@ const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
             modelRoot.position.sub(center);
 
             fitCameraToObject(group);
-            resolve();
+renderer.render(scene, camera);
+resolve();
           },
           undefined,
           reject
@@ -1711,6 +1825,8 @@ const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
 function initBeatStoreModelsDesktop() {
   const boxViewers = [];
   const canvases = Array.from(document.querySelectorAll(".bs-canvas"));
+  let viewersRaf = null;
+  let lastTime = performance.now();
 
   canvases.forEach((c) => {
     const viewer = createBoxViewerDesktop(c);
@@ -1721,6 +1837,25 @@ function initBeatStoreModelsDesktop() {
       console.error("BeatStore GLB load failed:", url, err);
     });
   });
+
+  function startBoxViewersDesktop() {
+    if (viewersRaf) return;
+
+    lastTime = performance.now();
+
+    const loop = (now) => {
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      for (const v of boxViewers) {
+        v.tick(dt);
+      }
+
+      viewersRaf = requestAnimationFrame(loop);
+    };
+
+    viewersRaf = requestAnimationFrame(loop);
+  }
 
   function resetViewerForBox(boxEl) {
     const c = boxEl.querySelector(".bs-canvas");
@@ -1778,6 +1913,8 @@ function initBeatStoreModelsDesktop() {
   setTimeout(() => {
     for (const v of boxViewers) v.resize();
   }, 150);
+
+  startBoxViewersDesktop();
 }
 
 function initRevolverDesktop(onReady) {
@@ -1833,9 +1970,9 @@ function initRevolverDesktop(onReady) {
   });
 
   const loader = new GLTFLoader();
-loader.setMeshoptDecoder(MeshoptDecoder);
+  loader.setMeshoptDecoder(MeshoptDecoder);
 
-loader.load(
+  loader.load(
     MODEL_URL,
     (gltf) => {
       const gunRoot = gltf.scene;
@@ -1858,67 +1995,41 @@ loader.load(
 
       gunGroup.quaternion.copy(baseQuat);
 
+      renderer.render(scene, camera);
+
       if (onReady) onReady();
     },
     undefined,
     (err) => console.error("GLB load failed", err)
   );
 
-  function renderRevolverFrame() {
-  const targetRotX = THREE.MathUtils.degToRad(
-    THREE.MathUtils.clamp((gyroBeta - 45) * 0.12, -10, 10)
-  );
+  function tick() {
+    const targetX = mouse.x * 1.2;
+    const targetY = mouse.y * 0.7;
 
-  const targetRotY = THREE.MathUtils.degToRad(
-    THREE.MathUtils.clamp(gyroGamma * 0.35, -20, 20)
-  );
+    aimPoint.set(targetX, targetY, 0);
 
-  const targetQuat = new THREE.Quaternion().setFromEuler(
-    new THREE.Euler(targetRotX, targetRotY, 0)
-  );
+    tmpVec.copy(aimPoint).normalize();
 
-  targetQuat.premultiply(baseQuat);
-  gunGroup.quaternion.slerp(targetQuat, 0.08);
+    const targetQuat = new THREE.Quaternion().setFromEuler(
+      new THREE.Euler(tmpVec.y * 0.18, tmpVec.x * 0.28, 0)
+    );
 
-  renderer.render(scene, camera);
-}
+    targetQuat.premultiply(baseQuat);
+    gunGroup.quaternion.slerp(targetQuat, 0.08);
 
-function startRevolverMobile() {
-  if (mobileRevolverRunning) return;
-  mobileRevolverRunning = true;
-
-  const loop = () => {
-    if (!mobileRevolverRunning) return;
-    renderRevolverFrame();
-    mobileRevolverRaf = requestAnimationFrame(loop);
-  };
-
-  mobileRevolverRaf = requestAnimationFrame(loop);
-}
-
-function stopRevolverMobile() {
-  mobileRevolverRunning = false;
-
-  if (mobileRevolverRaf) {
-    cancelAnimationFrame(mobileRevolverRaf);
-    mobileRevolverRaf = null;
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
   }
-}
 
-mobileRevolverRenderer = {
-  start: startRevolverMobile,
-  stop: stopRevolverMobile,
-  renderOnce: renderRevolverFrame,
-};
+  tick();
 
-startRevolverMobile();
-
-window.addEventListener("resize", () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
+  window.addEventListener("resize", () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
 }
 
 function initCinematicScrollDesktop() {
@@ -3226,8 +3337,13 @@ function initAlbumViewMobile() {
     audio.load();
 
     buyBtn.onclick = () => {
-      window.open(beat.buyUrl, "_blank");
-    };
+  if (!beat.product) {
+    alert("This product is not configured yet.");
+    return;
+  }
+
+  startRazorpayCheckout(beat.product, beat);
+};
 
     currentEl.textContent = "00:00";
     setPlayedProgressMobile(0);
@@ -3673,7 +3789,8 @@ const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
             modelRoot.position.sub(center);
 
             fitCameraToObjectMobile(group);
-            resolve();
+renderer.render(scene, camera);
+resolve();
           },
           undefined,
           reject
@@ -3719,7 +3836,7 @@ function initBeatStoreModelsMobile() {
     const all = Array.from(document.querySelectorAll(".bs-canvas"));
     const idx = all.indexOf(c);
 
-    if (idx >= 0 && boxViewers[idx]) boxViewers[idx].resetRotation();
+    if (idx >= 0 && mobileBoxViewers[idx]) mobileBoxViewers[idx].resetRotation();
   }
 
   const bsBoxes = gsap.utils.toArray("#beat-store .bs-grid .bs-box");
@@ -3816,41 +3933,41 @@ function initRevolverMobile(onReady = null) {
     new THREE.Euler(0, Math.PI, 0)
   );
 
-let gyroBeta = 0;   // front/back tilt
-let gyroGamma = 0;  // left/right tilt
-let gyroEnabled = false;
+  let gyroBeta = 0;
+  let gyroGamma = 0;
+  let gyroEnabled = false;
 
-function handleOrientation(e) {
-  gyroBeta = e.beta || 0;
-  gyroGamma = e.gamma || 0;
-}
-
-function enableGyro() {
-  if (gyroEnabled) return;
-  gyroEnabled = true;
-
-  if (
-    typeof DeviceOrientationEvent !== "undefined" &&
-    typeof DeviceOrientationEvent.requestPermission === "function"
-  ) {
-    DeviceOrientationEvent.requestPermission()
-      .then((state) => {
-        if (state === "granted") {
-          window.addEventListener("deviceorientation", handleOrientation);
-        }
-      })
-      .catch((err) => {
-        console.warn("Gyro permission denied:", err);
-      });
-  } else {
-    window.addEventListener("deviceorientation", handleOrientation);
+  function handleOrientation(e) {
+    gyroBeta = e.beta || 0;
+    gyroGamma = e.gamma || 0;
   }
-}
+
+  function enableGyro() {
+    if (gyroEnabled) return;
+    gyroEnabled = true;
+
+    if (
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function"
+    ) {
+      DeviceOrientationEvent.requestPermission()
+        .then((state) => {
+          if (state === "granted") {
+            window.addEventListener("deviceorientation", handleOrientation);
+          }
+        })
+        .catch((err) => {
+          console.warn("Gyro permission denied:", err);
+        });
+    } else {
+      window.addEventListener("deviceorientation", handleOrientation);
+    }
+  }
 
   const loader = new GLTFLoader();
-loader.setMeshoptDecoder(MeshoptDecoder);
+  loader.setMeshoptDecoder(MeshoptDecoder);
 
-loader.load(
+  loader.load(
     MODEL_URL,
     (gltf) => {
       const gunRoot = gltf.scene;
@@ -3873,22 +3990,75 @@ loader.load(
 
       gunGroup.quaternion.copy(baseQuat);
 
-window.addEventListener("click", enableGyro, { once: true });
-window.addEventListener("touchstart", enableGyro, { once: true, passive: true });
+      renderer.render(scene, camera);
 
-if (onReady) onReady();
+      window.addEventListener("click", enableGyro, { once: true });
+      window.addEventListener("touchstart", enableGyro, {
+        once: true,
+        passive: true,
+      });
+
+      if (onReady) onReady();
     },
     undefined,
     (err) => console.error("GLB load failed", err)
   );
 
-  tick();
+  function renderRevolverFrame() {
+    const targetRotX = THREE.MathUtils.degToRad(
+      THREE.MathUtils.clamp((gyroBeta - 45) * 0.12, -10, 10)
+    );
+
+    const targetRotY = THREE.MathUtils.degToRad(
+      THREE.MathUtils.clamp(gyroGamma * 0.35, -20, 20)
+    );
+
+    const targetQuat = new THREE.Quaternion().setFromEuler(
+      new THREE.Euler(targetRotX, targetRotY, 0)
+    );
+
+    targetQuat.premultiply(baseQuat);
+    gunGroup.quaternion.slerp(targetQuat, 0.08);
+
+    renderer.render(scene, camera);
+  }
+
+  function startRevolverMobile() {
+    if (mobileRevolverRunning) return;
+    mobileRevolverRunning = true;
+
+    const loop = () => {
+      if (!mobileRevolverRunning) return;
+      renderRevolverFrame();
+      mobileRevolverRaf = requestAnimationFrame(loop);
+    };
+
+    mobileRevolverRaf = requestAnimationFrame(loop);
+  }
+
+  function stopRevolverMobile() {
+    mobileRevolverRunning = false;
+
+    if (mobileRevolverRaf) {
+      cancelAnimationFrame(mobileRevolverRaf);
+      mobileRevolverRaf = null;
+    }
+  }
+
+  mobileRevolverRenderer = {
+    start: startRevolverMobile,
+    stop: stopRevolverMobile,
+    renderOnce: renderRevolverFrame,
+  };
+
+  startRevolverMobile();
 
   window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(1);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    renderer.render(scene, camera);
   });
 }
 
