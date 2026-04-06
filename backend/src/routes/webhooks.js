@@ -5,7 +5,7 @@ import { markOrderPaidByRazorpayOrderId } from "../services/orderStore.js";
 
 const router = Router();
 
-router.post("/razorpay", (req, res) => {
+router.post("/razorpay", async (req, res) => {
   try {
     const signature = req.headers["x-razorpay-signature"];
 
@@ -21,11 +21,6 @@ router.post("/razorpay", (req, res) => {
     const event = JSON.parse(req.body.toString("utf8"));
 
     if (event.event === "payment.captured" || event.event === "order.paid") {
-      const paymentEntity =
-        event.payload?.payment?.entity ||
-        event.payload?.order?.entity ||
-        null;
-
       const razorpayOrderId =
         event.payload?.payment?.entity?.order_id ||
         event.payload?.order?.entity?.id ||
@@ -35,12 +30,15 @@ router.post("/razorpay", (req, res) => {
         event.payload?.payment?.entity?.id || null;
 
       if (razorpayOrderId) {
-        const updated = markOrderPaidByRazorpayOrderId(
+        const updated = await markOrderPaidByRazorpayOrderId(
           razorpayOrderId,
           razorpayPaymentId
         );
 
-        console.log("Webhook marked order paid:", updated?.internalOrderId || "not found");
+        console.log(
+          "Webhook marked order paid:",
+          updated?.internalOrderId || "not found"
+        );
       }
     }
 

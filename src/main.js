@@ -13,6 +13,8 @@ gsap.registerPlugin(Flip);
 
 const IS_MOBILE = window.innerWidth <= 768;
 
+
+
 let mobileScenePanLoop = null;
 let mobileBeatStoreModelsInitialized = false;
 
@@ -80,6 +82,8 @@ function stopBoxViewersMobile() {
     mobileBeatStoreRaf = null;
   }
 }
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 const ROT_FIX = {
   "WAVES.optimized.glb": { x: Math.PI / 2, y: 0, z: 0 },
@@ -423,9 +427,29 @@ function createLoaderDriver() {
    PAYMENT (RAZORPAY)
 ========================= */
 
-async function startRazorpayCheckout(product, beat) {
+async function startRazorpayCheckout(product, beat, options = {}) {
+  const {
+    onStart,
+    onReset,
+  } = options;
+
   try {
-    const res = await fetch("http://localhost:4000/api/orders/create", {
+
+    if (!product?.id) {
+  throw new Error("Missing product id");
+}
+
+if (!product?.type) {
+  throw new Error("Missing product type");
+}
+
+if (!beat?.title) {
+  throw new Error("Missing product title");
+}
+
+    if (typeof onStart === "function") onStart();
+
+    const res = await fetch(`${API_BASE_URL}/api/orders/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -457,9 +481,45 @@ async function startRazorpayCheckout(product, beat) {
       description: beat.title,
       order_id: order.razorpayOrderId,
       image: "/assets/boombap-logo.svg",
-      handler: function () {
-        window.location.href = `/payment-success?order_id=${encodeURIComponent(order.internalOrderId)}`;
+
+      handler: async function (response) {
+        try {
+          const verifyRes = await fetch(`${API_BASE_URL}/api/payments/verify`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              internalOrderId: order.internalOrderId,
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+
+          if (!verifyRes.ok || !verifyData.success) {
+            throw new Error(verifyData.error || "Payment verification failed");
+          }
+
+          window.location.href =
+            `/payment-success?order_id=${encodeURIComponent(order.internalOrderId)}` +
+            `&payment_id=${encodeURIComponent(response.razorpay_payment_id)}`;
+        } catch (verifyError) {
+          console.error("Verification error:", verifyError);
+          if (typeof onReset === "function") onReset();
+          alert("Payment was completed, but verification failed. Please contact support.");
+        }
       },
+
+      modal: {
+        ondismiss: function () {
+          console.log("Razorpay checkout closed by user");
+          if (typeof onReset === "function") onReset();
+        },
+      },
+
       theme: {
         color: "#ab1212",
       },
@@ -468,7 +528,163 @@ async function startRazorpayCheckout(product, beat) {
     rzp.open();
   } catch (err) {
     console.error(err);
-    alert("Checkout failed. Try again.");
+    if (typeof onReset === "function") onReset();
+    alert(err.message || "Checkout failed. Try again.");
+  }
+}
+
+function isPaymentSuccessRoute() {
+  return window.location.pathname === "/payment-success";
+}
+
+async function renderPaymentSuccessPage() {
+  const app = document.querySelector("#app");
+  if (!app) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("order_id") || "";
+  const paymentId = params.get("payment_id") || "N/A";
+
+  app.innerHTML = `
+    <main class="payment-success-page">
+      <section class="payment-success-card">
+        <div class="payment-success-kicker">BOOM BAP BOMBAY</div>
+        <h1 class="payment-success-title">PAYMENT SUCCESSFUL</h1>
+
+        <p class="payment-success-copy">
+          LOADING PURCHASE DETAILS...
+        </p>
+      </section>
+    </main>
+  `;
+
+  if (!orderId) {
+    app.innerHTML = `
+      <main class="payment-success-page">
+        <section class="payment-success-card">
+          <div class="payment-success-kicker">BOOM BAP BOMBAY</div>
+          <h1 class="payment-success-title">PAYMENT SUCCESSFUL</h1>
+          <p class="payment-success-copy">
+            ORDER ID IS MISSING FROM THE URL.
+          </p>
+          <div class="payment-success-actions">
+            <a class="payment-success-btn" href="/">RETURN TO SITE</a>
+          </div>
+        </section>
+      </main>
+    `;
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/orders/${encodeURIComponent(orderId)}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to load order");
+    }
+
+    const formattedAmount = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: data.currency || "INR",
+      maximumFractionDigits: 2,
+    }).format((data.amount || 0) / 100);
+
+    const paidLabel = data.paidAt
+      ? new Date(data.paidAt).toLocaleString()
+      : "PAYMENT RECORDED";
+
+    app.innerHTML = `
+      <main class="payment-success-page">
+        <section class="payment-success-card">
+          <div class="payment-success-kicker">BOOM BAP BOMBAY</div>
+          <h1 class="payment-success-title">PAYMENT SUCCESSFUL</h1>
+
+          <div class="payment-success-meta">
+            <div>
+              <span>PRODUCT</span>
+              <strong>${data.title || "N/A"}</strong>
+            </div>
+
+            <div>
+              <span>TYPE</span>
+              <strong>${(data.productType || "N/A").toUpperCase()}</strong>
+            </div>
+
+            <div>
+              <span>AMOUNT PAID</span>
+              <strong>${formattedAmount}</strong>
+            </div>
+
+            <div>
+              <span>ORDER ID</span>
+              <strong>${data.internalOrderId || orderId}</strong>
+            </div>
+
+            <div>
+              <span>PAYMENT ID</span>
+              <strong>${data.razorpayPaymentId || paymentId}</strong>
+            </div>
+
+            <div>
+              <span>STATUS</span>
+              <strong>${(data.status || "N/A").toUpperCase()}</strong>
+            </div>
+
+            <div>
+              <span>PAID AT</span>
+              <strong>${paidLabel}</strong>
+            </div>
+          </div>
+
+          <p class="payment-success-copy">
+            YOUR PAYMENT WAS VERIFIED SUCCESSFULLY.
+          </p>
+
+          <div class="payment-success-actions">
+  <a
+    class="payment-success-btn"
+    href="${API_BASE_URL}/api/download/${encodeURIComponent(data.internalOrderId || orderId)}"
+  >
+    DOWNLOAD YOUR PURCHASE
+  </a>
+
+  <a class="payment-success-btn" href="/">RETURN TO SITE</a>
+</div>
+        </section>
+      </main>
+    `;
+  } catch (error) {
+    console.error("Failed to load success page order:", error);
+
+    app.innerHTML = `
+      <main class="payment-success-page">
+        <section class="payment-success-card">
+          <div class="payment-success-kicker">BOOM BAP BOMBAY</div>
+          <h1 class="payment-success-title">PAYMENT SUCCESSFUL</h1>
+
+          <div class="payment-success-meta">
+            <div>
+              <span>ORDER ID</span>
+              <strong>${orderId}</strong>
+            </div>
+
+            <div>
+              <span>PAYMENT ID</span>
+              <strong>${paymentId}</strong>
+            </div>
+          </div>
+
+          <p class="payment-success-copy">
+            PAYMENT WAS VERIFIED, BUT ORDER DETAILS COULD NOT BE LOADED.
+          </p>
+
+          <div class="payment-success-actions">
+            <a class="payment-success-btn" href="/">RETURN TO SITE</a>
+          </div>
+        </section>
+      </main>
+    `;
   }
 }
 
@@ -1397,7 +1613,16 @@ function initAlbumViewDesktop() {
     return;
   }
 
-  startRazorpayCheckout(beat.product, beat);
+  startRazorpayCheckout(beat.product, beat, {
+    onStart: () => {
+      buyBtn.disabled = true;
+      buyBtn.textContent = "PROCESSING...";
+    },
+    onReset: () => {
+      buyBtn.disabled = false;
+      buyBtn.textContent = "BUY NOW";
+    },
+  });
 };
 
     currentEl.textContent = "00:00";
@@ -3342,7 +3567,16 @@ function initAlbumViewMobile() {
     return;
   }
 
-  startRazorpayCheckout(beat.product, beat);
+  startRazorpayCheckout(beat.product, beat, {
+    onStart: () => {
+      buyBtn.disabled = true;
+      buyBtn.textContent = "PROCESSING...";
+    },
+    onReset: () => {
+      buyBtn.disabled = false;
+      buyBtn.textContent = "BUY NOW";
+    },
+  });
 };
 
     currentEl.textContent = "00:00";
@@ -5402,6 +5636,22 @@ function initMobileApp() {
    BOOT
 ========================= */
 (async function boot() {
+  if (isPaymentSuccessRoute()) {
+    document.body.style.overflow = "auto";
+    document.body.style.overflowY = "auto";
+    document.body.style.overflowX = "hidden";
+
+    document.documentElement.style.overflow = "auto";
+    document.documentElement.style.overflowY = "auto";
+    document.documentElement.style.overflowX = "hidden";
+
+    document.body.style.touchAction = "auto";
+    document.documentElement.style.touchAction = "auto";
+
+    await renderPaymentSuccessPage();
+    return;
+  }
+
   mountLoader();
 
   gsap.to(".loader__text", {
@@ -5420,8 +5670,8 @@ function initMobileApp() {
   const pctTween = driver.startPercent(MIN_TIME_MS / 1000);
 
   if (!IS_MOBILE) {
-  await preloadAssetsDesktop(() => {});
-}
+    await preloadAssetsDesktop(() => {});
+  }
 
   const elapsed = performance.now() - start;
   const remaining = Math.max(0, MIN_TIME_MS - elapsed);
