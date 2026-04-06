@@ -9,8 +9,20 @@ import downloadRoutes from "./routes/download.js";
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://boombapbombay.onrender.com",
+  "https://boombapbombay.com",
+  "https://www.boombapbombay.com",
+];
+
 app.use(cors({
-  origin: env.frontendUrl,
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
   credentials: true,
 }));
 
