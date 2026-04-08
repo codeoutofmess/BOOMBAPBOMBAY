@@ -6,6 +6,7 @@ import webhooksRouter from "./routes/webhooks.js";
 import healthRouter from "./routes/health.js";
 import paymentsRouter from "./routes/payments.js";
 import downloadRoutes from "./routes/download.js";
+import cartRoutes from "./routes/cart.js";
 
 const app = express();
 
@@ -29,11 +30,13 @@ app.use(cors({
 app.use("/api/webhooks/razorpay", express.raw({ type: "application/json" }));
 app.use("/api/orders", express.json());
 app.use("/api/payments", express.json());
+app.use("/api/cart", express.json());
 
 app.use("/api/payments", paymentsRouter);
 app.use("/api/health", healthRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/webhooks", webhooksRouter);
 app.use("/api/download", downloadRoutes);
+app.use("/api/cart", cartRoutes);
 
 export default app;

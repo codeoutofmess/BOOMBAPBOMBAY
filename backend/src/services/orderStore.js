@@ -102,37 +102,68 @@ export async function markOrderPaid({
 
 // GET ORDER (for success page)
 export async function getOrderById(internalOrderId) {
-  const result = await db.query(
+  const orderResult = await db.query(
     `
-    select o.*, p.title, p.type
-    from orders o
-    join products p on p.id = o.product_id
-    where o.internal_order_id = $1
+    select *
+    from orders
+    where internal_order_id = $1
     limit 1
     `,
     [internalOrderId]
   );
 
-  if (!result.rows.length) return null;
+  if (!orderResult.rows.length) return null;
 
-  const row = result.rows[0];
+  const row = orderResult.rows[0];
+
+  const itemsResult = await db.query(
+    `
+    select
+      product_id,
+      title_snapshot,
+      type_snapshot,
+      unit_price_minor,
+      quantity,
+      line_total_minor,
+      file_path_snapshot
+    from order_items
+    where internal_order_id = $1
+    order by id asc
+    `,
+    [internalOrderId]
+  );
+
+  const items = itemsResult.rows.map((item) => ({
+    productId: item.product_id,
+    title: item.title_snapshot,
+    productType: item.type_snapshot,
+    unitPriceMinor: item.unit_price_minor,
+    quantity: item.quantity,
+    lineTotalMinor: item.line_total_minor,
+    filePath: item.file_path_snapshot,
+  }));
+
+  const isCartOrder = items.length > 0;
 
   return {
-  internalOrderId: row.internal_order_id,
-  productId: row.product_id,
-  productType: row.product_type || row.type,
-  title: row.title,
-  amount: row.amount_minor,
-  currency: row.currency,
-  status: row.status,
-  razorpayOrderId: row.razorpay_order_id,
-  razorpayPaymentId: row.razorpay_payment_id,
-  createdAt: row.created_at,
-  paidAt: row.paid_at,
-  downloadCount: row.download_count,
-  firstDownloadedAt: row.first_downloaded_at,
-  lastDownloadedAt: row.last_downloaded_at,
-};
+    internalOrderId: row.internal_order_id,
+    productId: row.product_id,
+    productType: row.product_type,
+    title: row.title,
+    amount: row.amount_minor,
+    currency: row.currency,
+    status: row.status,
+    razorpayOrderId: row.razorpay_order_id,
+    razorpayPaymentId: row.razorpay_payment_id,
+    createdAt: row.created_at,
+    paidAt: row.paid_at,
+    downloadCount: row.download_count,
+    firstDownloadedAt: row.first_downloaded_at,
+    lastDownloadedAt: row.last_downloaded_at,
+    itemCount: row.item_count,
+    isCartOrder,
+    items,
+  };
 }
 
 export async function markOrderPaidByRazorpayOrderId(

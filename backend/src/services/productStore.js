@@ -3,7 +3,7 @@ import { db } from "../config/db.js";
 export async function getProductById(productId) {
   const result = await db.query(
     `
-    select id, title, type, price_minor, currency, is_active
+    select id, title, type, price_minor, currency, is_active, file_path
     from products
     where id = $1
     limit 1
@@ -16,11 +16,12 @@ export async function getProductById(productId) {
   const row = result.rows[0];
 
   return {
-    id: row.id,
-    title: row.title,
-    type: row.type,
-    amount: row.price_minor,
-    currency: row.currency,
-    isActive: row.is_active,
-  };
+  id: row.id,
+  title: row.title,
+  type: row.type,
+  amount: row.price_minor,
+  currency: row.currency,
+  isActive: row.is_active,
+  file_path: row.file_path,
+};
 }
