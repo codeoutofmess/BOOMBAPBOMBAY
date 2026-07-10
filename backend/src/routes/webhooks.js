@@ -14,7 +14,14 @@ router.post("/razorpay", async (req, res) => {
       .update(req.body)
       .digest("hex");
 
-    if (signature !== expectedSignature) {
+    const expectedBuf = Buffer.from(expectedSignature, "hex");
+    const providedBuf = Buffer.from(String(signature || ""), "hex");
+
+    const signatureValid =
+      expectedBuf.length === providedBuf.length &&
+      crypto.timingSafeEqual(expectedBuf, providedBuf);
+
+    if (!signatureValid) {
       return res.status(400).json({ error: "Invalid webhook signature" });
     }
 

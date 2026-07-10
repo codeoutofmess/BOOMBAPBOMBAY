@@ -1201,31 +1201,31 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS">
-              <img src="/assets/album-art1.webp" alt="" />
+              <img src="/assets/album-art1.webp" alt="GUNS beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="CARS">
-              <img src="/assets/album-art2.webp" alt="" />
+              <img src="/assets/album-art2.webp" alt="CARS beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="BARS">
-              <img src="/assets/album-art3.webp" alt="" />
+              <img src="/assets/album-art3.webp" alt="BARS beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="GREENS">
-              <img src="/assets/album-art4.webp" alt="" />
+              <img src="/assets/album-art4.webp" alt="GREENS beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="SMOKES">
-              <img src="/assets/album-art5.webp" alt="" />
+              <img src="/assets/album-art5.webp" alt="SMOKES beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="PILLS">
-              <img src="/assets/album-art6.webp" alt="" />
+              <img src="/assets/album-art6.webp" alt="PILLS beat cover art" />
             </div>
 
             <div class="bs-arc-item" data-title="DRINKS">
-              <img src="/assets/album-art7.webp" alt="" />
+              <img src="/assets/album-art7.webp" alt="DRINKS beat cover art" />
             </div>
           </div>
 
@@ -1251,19 +1251,19 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.webp" alt="" />
+              <img src="/assets/music-art1.webp" alt="GUNS CARS AND BARS album art" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.webp" alt="" />
+              <img src="/assets/music-art2.webp" alt="SECOND DROP album art" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.webp" alt="" />
+              <img src="/assets/music-art3.webp" alt="THIRD CUT album art" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.webp" alt="" />
+              <img src="/assets/music-art4.webp" alt="FOURTH CUT album art" />
             </div>
           </div>
         </div>
@@ -1538,31 +1538,31 @@ function getAppMarkupMobile() {
           </div>
 
           <div class="bs-arc-item" data-title="GUNS">
-            <img src="/assets/album-art1.webp" alt="" />
+            <img src="/assets/album-art1.webp" alt="GUNS beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="CARS">
-            <img src="/assets/album-art2.webp" alt="" />
+            <img src="/assets/album-art2.webp" alt="CARS beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="BARS">
-            <img src="/assets/album-art3.webp" alt="" />
+            <img src="/assets/album-art3.webp" alt="BARS beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="GREENS">
-            <img src="/assets/album-art4.webp" alt="" />
+            <img src="/assets/album-art4.webp" alt="GREENS beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="SMOKES">
-            <img src="/assets/album-art5.webp" alt="" />
+            <img src="/assets/album-art5.webp" alt="SMOKES beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="PILLS">
-            <img src="/assets/album-art6.webp" alt="" />
+            <img src="/assets/album-art6.webp" alt="PILLS beat cover art" />
           </div>
 
           <div class="bs-arc-item" data-title="DRINKS">
-            <img src="/assets/album-art7.webp" alt="" />
+            <img src="/assets/album-art7.webp" alt="DRINKS beat cover art" />
           </div>
         </div>
       </div>

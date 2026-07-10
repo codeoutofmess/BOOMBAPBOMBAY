@@ -5,6 +5,7 @@ import { db } from "../config/db.js";
 import { env } from "../config/env.js";
 import { getProductById } from "./productStore.js";
 import { createOrderItems } from "./orderItemsStore.js";
+import { isValidQuantity } from "./quantity.js";
 
 const razorpay = new Razorpay({
   key_id: env.razorpayKeyId,
@@ -31,7 +32,7 @@ export async function createCartOrder(req, res) {
         return res.status(400).json({ error: "Missing productId" });
       }
 
-      if (!Number.isInteger(quantity) || quantity < 1) {
+      if (!isValidQuantity(quantity)) {
         return res.status(400).json({ error: "Invalid quantity" });
       }
 
