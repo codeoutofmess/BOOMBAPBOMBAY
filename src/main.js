@@ -5035,12 +5035,15 @@ ScrollTrigger.create({
   trigger: beatStore,
   start: "top top",
 
-  // Longer Beat Store scroll
-  end: () => `+=${getMobileViewportHeight() * 4}`,
+  // Sized so the arc's per-item scroll distance matches the Music arc's
+  // pace below (~0.83 viewport-heights/item) instead of blowing past it.
+  end: () => `+=${getMobileViewportHeight() * 5.5}`,
 
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
-  scrub: 0.9,
+  /* BBB FIX: unified with the Music pin's scrub — different lag values
+     between the two pinned sections made Beat Store feel draggier. */
+  scrub: 0.55,
   anticipatePin: 1,
   invalidateOnRefresh: true,
 
@@ -5074,17 +5077,24 @@ ScrollTrigger.create({
     const p = self.progress;
 
     /*
-      0.00 → 0.22 = grid fully visible
-      0.22 → 0.30 = grid fades out, arc fades in
-      0.30 → 1.00 = arc scrolls
+      BBB FIX: the grid hold used to eat 22% of a 4x-viewport pin (~0.9
+      screens of scrolling with zero visual feedback), then the arc raced
+      through all 7 items in the remaining 70% — almost twice as fast per
+      screen-height as the Music arc. That mismatch is what made the scroll
+      feel like it suddenly sped up. Shrunk the hold to a brief beat and
+      lengthened the pin (see `end` above) so the arc's pace now matches.
+
+      0.000 → 0.055 = grid fully visible (brief pause to register it)
+      0.055 → 0.085 = grid fades out, arc fades in
+      0.085 → 1.000 = arc scrolls, ~0.84 viewport-heights per item
     */
 
-    const gridFade = gsap.utils.clamp(0, 1, (p - 0.22) / 0.08);
-    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.30) / 0.70);
+    const gridFade = gsap.utils.clamp(0, 1, (p - 0.055) / 0.03);
+    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.085) / 0.915);
 
     // Phase switch only happens once, not every frame.
     // This avoids choppy repeated start/stop behavior during handoff.
-    if (p < 0.30 && beatStorePhase !== "grid") {
+    if (p < 0.085 && beatStorePhase !== "grid") {
       beatStorePhase = "grid";
       startBoxViewersMobile();
 
@@ -5097,7 +5107,7 @@ ScrollTrigger.create({
       });
     }
 
-    if (p >= 0.30 && beatStorePhase !== "arc") {
+    if (p >= 0.085 && beatStorePhase !== "arc") {
       beatStorePhase = "arc";
       stopBoxViewersMobile();
 
@@ -5115,7 +5125,7 @@ ScrollTrigger.create({
     }
 
     // Smooth visual handoff before arc movement starts
-    if (p < 0.30) {
+    if (p < 0.085) {
       gsap.set(bsGridStage, {
         autoAlpha: 1 - gridFade,
       });
