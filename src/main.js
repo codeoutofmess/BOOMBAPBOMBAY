@@ -4950,7 +4950,7 @@ ScrollTrigger.create({
   end: () => `+=${getMobileViewportHeight() * 2}`,
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
-  scrub: 0.35,
+  scrub: 0.75,
   anticipatePin: 1,
   invalidateOnRefresh: true,
 
