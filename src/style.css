@@ -37,7 +37,7 @@
   --about-map-h: clamp(394px, 18vw, 480px);
 
   --grid-col: clamp(112px, 8.4vw, 134px);
-  --grid-row-top: clamp(108px, 8.1vw, 130px); 
+  --grid-row-top: clamp(108px, 8.1vw, 130px);
   --grid-row-bottom: clamp(112px, 8.4vw, 134px);
 
   --arc-item-w: clamp(186px, 14vw, 224px);
@@ -107,7 +107,6 @@ body {
   position: absolute;
   left: 50%;
   bottom: 0;
-  transform: translateX(-50%);
   width: 100vw;
   min-width: 100vw;
   max-width: none;
@@ -1087,9 +1086,6 @@ body {
 .arc-pointer span:nth-child(2) { top: 4px; width: clamp(18px, 1.6vw, 24px); }
 .arc-pointer span:nth-child(3) { top: 8px; width: clamp(10px, 0.9vw, 12px); }
 
-.music-page {
-  display: none;
-}
 
 .bs-music-left {
   position: absolute;
@@ -1301,71 +1297,483 @@ body {
 
 @media (max-width: 768px) {
 
-.landing {
-  min-height: 100vh;
+  #home,
+#music,
+#beat-store,
+#about {
+  height: 100svh !important;
+  min-height: 100svh !important;
 }
 
-/* CONTENT WIDTH */
-.text-layer {
-  padding-left: 44px;
-  padding-right: 44px;
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .page.landing,
+  .landing {
+    position: relative;
+    height: 100svh;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+.landing .webgl {
+  pointer-events: none !important;
 }
 
-/* TEXT ABOVE LOGO */
-.meta-row {
-  font-size: 12px;
-  margin-bottom: 12px;
+  .nav {
+    position: fixed !important;
+    top: 28px !important;
+    left: 0 !important;
+    width: 100% !important;
+    padding: 0 36px !important;
+    z-index: 999999 !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+    align-items: start !important;
+  }
+
+  .nav-center {
+    display: none !important;
+  }
+
+  .nav-glyph {
+    width: 9px;
+    height: auto;
+    display: block;
+  }
+
+  .nav-glyph-b-left {
+    justify-self: start;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  .nav-glyph-B-left {
+    justify-self: center;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  .nav-glyph-B-right {
+    justify-self: center;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  .nav-glyph-b-right {
+    justify-self: end;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  .menu-btn {
+    position: fixed;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000000;
+
+    width: 34px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-btn img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .landing .text-layer {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    padding-left: 44px;
+    padding-right: 44px;
+    padding-top: 190px;
+  }
+
+  .landing .left-block,
+  .landing .right-block {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    width: 314px;
+    max-width: calc(100vw - 88px);
+  }
+
+  .landing .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    line-height: 1;
+    width: 314px;
+    max-width: 100%;
+  }
+
+  .landing .meta-row .reveal__inner {
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .landing .hero-logo {
+    width: 314px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .landing .hero-logo img,
+  .landing .hero-logo .reveal__inner {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
+
+  .landing .desc {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 314px;
+    max-width: 100%;
+  }
+
+  .landing .desc-line {
+    margin: 0;
+  }
+
+  .landing .desc-line .reveal__inner {
+    font-size: 16px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .landing .right-block {
+    position: absolute !important;
+    left: 44px !important;
+    top: 568px !important;
+    width: 314px;
+    max-width: calc(100vw - 88px);
+  }
+
+  .landing .latest {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .landing .drop-reveal {
+    margin-top: 16px;
+  }
+
+  .landing .drop-row {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.15;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .landing .arrow-box {
+    display: none !important;
+  }
+
+  .landing .scene-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+  z-index: 6 !important;
+  pointer-events: none !important;
 }
 
-/* LOGO */
-.hero-logo img {
-  width: 100%;
-  max-width: 314px;
+.landing .scene-composite {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 0 !important;
+  display: block !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform-origin: 51.9% 66.5% !important;
+  will-change: transform, opacity !important;
 }
 
-/* POSITION LOGO BLOCK */
-.left-block {
-  margin-top: 190px;
+  #beat-store .bs-music-left {
+    position: absolute !important;
+    left: 44px !important;
+    top: 108px !important;
+    width: 314px !important;
+    max-width: calc(100vw - 88px) !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  #beat-store .bs-music-title {
+    margin: 0 !important;
+    font-size: 40px !important;
+    line-height: 1 !important;
+    font-weight: 300 !important;
+    color: #fafafa !important;
+  }
+
+  #beat-store .bs-music-copy {
+    margin: 24px 0 0 0 !important;
+    width: 314px !important;
+    max-width: calc(100vw - 88px) !important;
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+    color: rgba(250, 250, 250, 0.9) !important;
+    text-transform: uppercase !important;
+    white-space: pre-line !important;
+  }
+
+  #music-arc-overlay {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 16px !important;
+    width: 288px !important;
+    height: 290px !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 21;
+  }
+
+  #music-arc-overlay .arc-title {
+    position: absolute !important;
+    left: 0 !important;
+    top: -32px !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    color: #fafafa !important;
+    white-space: nowrap !important;
+  }
+
+  #music-arc-overlay .arc-pointer {
+    position: absolute !important;
+    left: -244px !important;
+    top: 0 !important;
+    width: 40px !important;
+    height: 18px !important;
+    opacity: 0.9 !important;
+  }
+
+  #music-arc-overlay .arc-pointer span:nth-child(1) {
+    top: 0 !important;
+    width: 34px !important;
+  }
+
+  #music-arc-overlay .arc-pointer span:nth-child(2) {
+    top: 4px !important;
+    width: 18px !important;
+  }
+
+  #music-arc-overlay .arc-pointer span:nth-child(3) {
+    top: 8px !important;
+    width: 10px !important;
+  }
+
+  #music-arc-overlay .bs-arc-item {
+    width: 144px !important;
+    height: 86px !important;
+  }
 }
 
-/* TEXT BELOW LOGO */
-.desc {
-  margin-top: 40px;
+@media (max-width: 768px) {
+  html,
+  body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body {
+    position: static !important;
+    touch-action: auto !important;
+  }
+
+  #app {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  .app {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
 }
 
-.desc-line {
-  font-size: 16px;
-  margin-bottom: 16px;
+@media (max-width: 768px) {
+  #music.music-page {
+  display: block !important;
+  height: 100svh !important;
+  min-height: 100svh !important;
+  overflow: hidden !important;
+  background: #000 !important;
 }
 
-/* LATEST DROPS */
-.latest-reveal {
-  margin-top: 154px;
+  #music .beat-store-bg {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    opacity: 1 !important;
+  }
+
+  #music .beat-store-content {
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+  }
+
+#mobileMusicLeftStatic {
+  position: absolute !important;
+  left: 44px !important;
+  top: 108px !important;
+  width: 314px !important;
+  max-width: calc(100vw - 88px) !important;
+  pointer-events: none !important;
+  z-index: 20 !important;
 }
 
-.latest {
-  font-size: 24px;
+  #mobileMusicLeftStatic .bs-music-title {
+    margin: 0 !important;
+    font-size: 40px !important;
+    line-height: 1 !important;
+    font-weight: 300 !important;
+    color: #fafafa !important;
+  }
+
+  #mobileMusicLeftStatic .bs-music-copy {
+    margin: 24px 0 0 0 !important;
+    width: 314px !important;
+    max-width: calc(100vw - 88px) !important;
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+    color: rgba(250, 250, 250, 0.9) !important;
+    text-transform: uppercase !important;
+    white-space: pre-line !important;
+  }
+
+  #mobile-music-arc {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 16px !important;
+  width: 288px !important;
+  height: 290px !important;
+  z-index: 21 !important;
 }
 
-.drop-row {
-  margin-top: 16px;
-  font-size: 16px;
+  #mobile-music-arc .arc-title {
+    position: absolute !important;
+    left: 0 !important;
+    top: -32px !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    color: #fafafa !important;
+    white-space: nowrap !important;
+    opacity: 1 !important;
+  }
+
+  #mobile-music-arc .arc-pointer {
+    position: absolute !important;
+    left: -244px !important;
+    top: 0 !important;
+    width: 40px !important;
+    height: 18px !important;
+    opacity: 0.9 !important;
+  }
+
+  #mobile-music-arc .arc-pointer span:nth-child(1) {
+    top: 0 !important;
+    width: 34px !important;
+  }
+
+  #mobile-music-arc .arc-pointer span:nth-child(2) {
+    top: 4px !important;
+    width: 18px !important;
+  }
+
+  #mobile-music-arc .arc-pointer span:nth-child(3) {
+    top: 8px !important;
+    width: 10px !important;
+  }
+
+  #mobile-music-arc .bs-arc-item {
+    width: 144px !important;
+    height: 86px !important;
+  }
 }
 
-/* SCENE STRIP */
-.scene-layer {
-  position: absolute;
-  bottom: 0;
-  height: 190px;
-  width: 100%;
-  overflow: hidden;
+@media (max-width: 768px) {
+  #mobile-cinematic-root {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    overflow: visible;
+  }
 }
 
-.scene-composite {
-  width: 1000px;
-  height: auto;
-  position: absolute;
-  bottom: 0;
+@media (max-width: 768px) {
+  #home,
+  #music,
+  #beat-store,
+  #about {
+    position: absolute !important;
+    inset: 0;
+  }
 }
 
+@media (max-width: 768px) {
+  #home {
+    overflow: visible !important;
+  }
+
+  #home .scene-layer {
+    overflow: visible !important;
+  }
+
+  #home .scene-composite {
+    backface-visibility: hidden;
+    transform-box: fill-box;
+    will-change: transform, opacity;
+  }
+
+  #music,
+  #beat-store,
+  #about {
+    overflow: hidden !important;
+  }
 }
+
