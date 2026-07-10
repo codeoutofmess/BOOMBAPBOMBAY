@@ -8,6 +8,16 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
+import {
+  getCartItems,
+  getCartCount,
+  getCartTotalMinor,
+  removeFromCart,
+  clearCart,
+  addToCart,
+  getCartCheckoutPayload,
+} from "./cartStore.js";
+
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Flip);
 
@@ -84,6 +94,166 @@ function stopBoxViewersMobile() {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
+function formatInrFromMinor(amountMinor) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format((amountMinor || 0) / 100);
+}
+
+function injectCartShell() {
+  if (document.getElementById("cartFab")) return;
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+      <button class="cart-fab" id="cartFab" type="button" aria-label="Open cart">
+        CART <span id="cartFabCount">0</span>
+      </button>
+
+      <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+        <div class="cart-drawer__backdrop" id="cartDrawerBackdrop"></div>
+
+        <aside class="cart-panel">
+          <div class="cart-panel__top">
+            <h2 class="cart-panel__title">CART</h2>
+            <button class="cart-panel__close" id="cartCloseBtn" type="button">✕</button>
+          </div>
+
+          <div class="cart-panel__items" id="cartItems"></div>
+
+          <div class="cart-panel__footer">
+            <div class="cart-panel__total-row">
+              <span>TOTAL</span>
+              <strong id="cartTotal">₹0.00</strong>
+            </div>
+
+            <div class="cart-panel__actions">
+              <button class="cart-panel__ghost" id="cartClearBtn" type="button">
+                CLEAR CART
+              </button>
+
+              <button class="cart-panel__checkout" id="cartCheckoutBtn" type="button">
+                CHECKOUT
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    `
+  );
+}
+
+function renderCartUI() {
+  const countEl = document.getElementById("cartFabCount");
+  const itemsEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("cartTotal");
+  const checkoutBtn = document.getElementById("cartCheckoutBtn");
+
+  if (!countEl || !itemsEl || !totalEl || !checkoutBtn) return;
+
+  const items = getCartItems();
+  const count = getCartCount();
+  const totalMinor = getCartTotalMinor();
+
+  countEl.textContent = String(count);
+  totalEl.textContent = formatInrFromMinor(totalMinor);
+
+  if (!items.length) {
+    itemsEl.innerHTML = `
+      <div class="cart-empty">
+        YOUR CART IS EMPTY.
+      </div>
+    `;
+    checkoutBtn.disabled = true;
+    return;
+  }
+
+  checkoutBtn.disabled = false;
+
+  itemsEl.innerHTML = items
+    .map(
+      (item) => `
+        <div class="cart-item" data-product-id="${item.productId}">
+          <div class="cart-item__meta">
+            <div class="cart-item__title">${item.title}</div>
+            <div class="cart-item__sub">
+              ${item.type.toUpperCase()} · QTY ${item.quantity}
+            </div>
+          </div>
+
+          <div class="cart-item__side">
+            <div class="cart-item__price">${formatInrFromMinor(item.priceMinor * item.quantity)}</div>
+            <button class="cart-item__remove" type="button" data-remove-id="${item.productId}">
+              REMOVE
+            </button>
+          </div>
+        </div>
+      `
+    )
+    .join("");
+}
+
+function openCartDrawer() {
+  const drawer = document.getElementById("cartDrawer");
+  if (!drawer) return;
+  drawer.classList.add("is-open");
+  drawer.setAttribute("aria-hidden", "false");
+  document.body.classList.add("cart-open");
+}
+
+function closeCartDrawer() {
+  const drawer = document.getElementById("cartDrawer");
+  if (!drawer) return;
+  drawer.classList.remove("is-open");
+  drawer.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("cart-open");
+}
+
+function bindCartUI() {
+  const fab = document.getElementById("cartFab");
+  const closeBtn = document.getElementById("cartCloseBtn");
+  const backdrop = document.getElementById("cartDrawerBackdrop");
+  const clearBtn = document.getElementById("cartClearBtn");
+  const itemsEl = document.getElementById("cartItems");
+  const checkoutBtn = document.getElementById("cartCheckoutBtn");
+
+  if (!fab || !closeBtn || !backdrop || !clearBtn || !itemsEl || !checkoutBtn) return;
+
+  fab.addEventListener("click", openCartDrawer);
+  closeBtn.addEventListener("click", closeCartDrawer);
+  backdrop.addEventListener("click", closeCartDrawer);
+
+  clearBtn.addEventListener("click", () => {
+    clearCart();
+    renderCartUI();
+  });
+
+  itemsEl.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-remove-id]");
+    if (!btn) return;
+
+    removeFromCart(btn.getAttribute("data-remove-id"));
+    renderCartUI();
+  });
+
+  checkoutBtn.addEventListener("click", () => {
+  startCartRazorpayCheckout({
+    onStart: () => {
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = "PROCESSING...";
+    },
+    onReset: () => {
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = "CHECKOUT";
+    },
+  });
+});
+
+  window.addEventListener("bbb:cart-updated", renderCartUI);
+}
 
 const ROT_FIX = {
   "WAVES.optimized.glb": { x: Math.PI / 2, y: 0, z: 0 },
@@ -533,6 +703,108 @@ if (!beat?.title) {
   }
 }
 
+async function startCartRazorpayCheckout(options = {}) {
+  const { onStart, onReset } = options;
+
+  try {
+    const items = getCartCheckoutPayload();
+
+    if (!items.length) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    if (typeof onStart === "function") onStart();
+
+    const res = await fetch(`${API_BASE_URL}/api/cart/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ items }),
+    });
+
+    const rawText = await res.text();
+let orderData;
+
+try {
+  orderData = JSON.parse(rawText);
+} catch (e) {
+  console.error("Cart checkout non-JSON response:", rawText);
+  throw new Error(`Cart checkout returned non-JSON response (${res.status})`);
+}
+
+if (!res.ok || !orderData.success) {
+  throw new Error(orderData.error || "Failed to create cart order");
+}
+
+    if (!window.Razorpay) {
+      throw new Error("Razorpay SDK not loaded");
+    }
+
+    const rzp = new window.Razorpay({
+      key: orderData.order.key,
+      amount: orderData.order.amount,
+      currency: orderData.order.currency,
+      name: "BOOM BAP BOMBAY",
+      description: `Cart Checkout (${orderData.order.itemCount} items)`,
+      order_id: orderData.order.razorpayOrderId,
+      image: "/assets/boombap-logo.svg",
+
+      handler: async function (response) {
+        try {
+          const verifyRes = await fetch(`${API_BASE_URL}/api/payments/verify`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              internalOrderId: orderData.order.internalOrderId,
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+
+          if (!verifyRes.ok || !verifyData.success) {
+            throw new Error(verifyData.error || "Cart payment verification failed");
+          }
+
+          clearCart();
+          renderCartUI();
+          closeCartDrawer();
+
+          window.location.href =
+            `/payment-success?order_id=${encodeURIComponent(orderData.order.internalOrderId)}` +
+            `&payment_id=${encodeURIComponent(response.razorpay_payment_id)}`;
+        } catch (verifyError) {
+          console.error("Cart verification error:", verifyError);
+          if (typeof onReset === "function") onReset();
+          alert("Payment completed, but verification failed. Please contact support.");
+        }
+      },
+
+      modal: {
+        ondismiss: function () {
+          if (typeof onReset === "function") onReset();
+        },
+      },
+
+      theme: {
+        color: "#ab1212",
+      },
+    });
+
+    rzp.open();
+  } catch (err) {
+    console.error(err);
+    if (typeof onReset === "function") onReset();
+    alert(err.message || "Cart checkout failed. Try again.");
+  }
+}
+
 function isPaymentSuccessRoute() {
   return window.location.pathname === "/payment-success";
 }
@@ -594,6 +866,79 @@ async function renderPaymentSuccessPage() {
       ? new Date(data.paidAt).toLocaleString()
       : "PAYMENT RECORDED";
 
+    const cartItemsMarkup =
+      data.isCartOrder && Array.isArray(data.items) && data.items.length
+        ? `
+          <div class="payment-success-items">
+            <h2 class="payment-success-items-title">PURCHASED ITEMS</h2>
+
+            <div class="payment-success-items-list">
+              ${data.items
+                .map(
+                  (item) => `
+                    <div class="payment-success-item">
+                      <div class="payment-success-item-meta">
+                        <div>
+                          <span>ITEM</span>
+                          <strong>${item.title}</strong>
+                        </div>
+
+                        <div>
+                          <span>TYPE</span>
+                          <strong>${(item.productType || "N/A").toUpperCase()}</strong>
+                        </div>
+
+                        <div>
+                          <span>QTY</span>
+                          <strong>${item.quantity}</strong>
+                        </div>
+
+                        <div>
+                          <span>LINE TOTAL</span>
+                          <strong>${new Intl.NumberFormat("en-IN", {
+                            style: "currency",
+                            currency: data.currency || "INR",
+                            maximumFractionDigits: 2,
+                          }).format((item.lineTotalMinor || 0) / 100)}</strong>
+                        </div>
+                      </div>
+
+                      <a
+                        class="payment-success-btn"
+                        href="${API_BASE_URL}/api/download/${encodeURIComponent(
+                          data.internalOrderId || orderId
+                        )}/${encodeURIComponent(item.productId)}"
+                      >
+                        DOWNLOAD ${item.title}
+                      </a>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          </div>
+        `
+        : "";
+
+    const actionsMarkup = data.isCartOrder
+      ? `
+        <div class="payment-success-actions">
+          <a class="payment-success-btn" href="/">RETURN TO SITE</a>
+        </div>
+      `
+      : `
+        <div class="payment-success-actions">
+          <a
+            class="payment-success-btn"
+            href="${API_BASE_URL}/api/download/${encodeURIComponent(data.internalOrderId || orderId)}"
+          >
+            DOWNLOAD YOUR PURCHASE
+          </a>
+
+          <a class="payment-success-btn" href="/">RETURN TO SITE</a>
+        </div>
+      `;
+
     app.innerHTML = `
       <main class="payment-success-page">
         <section class="payment-success-card">
@@ -603,12 +948,12 @@ async function renderPaymentSuccessPage() {
           <div class="payment-success-meta">
             <div>
               <span>PRODUCT</span>
-              <strong>${data.title || "N/A"}</strong>
+              <strong>${data.isCartOrder ? `${data.itemCount || 0} ITEMS` : data.title || "N/A"}</strong>
             </div>
 
             <div>
               <span>TYPE</span>
-              <strong>${(data.productType || "N/A").toUpperCase()}</strong>
+              <strong>${data.isCartOrder ? "CART ORDER" : (data.productType || "N/A").toUpperCase()}</strong>
             </div>
 
             <div>
@@ -641,16 +986,8 @@ async function renderPaymentSuccessPage() {
             YOUR PAYMENT WAS VERIFIED SUCCESSFULLY.
           </p>
 
-          <div class="payment-success-actions">
-  <a
-    class="payment-success-btn"
-    href="${API_BASE_URL}/api/download/${encodeURIComponent(data.internalOrderId || orderId)}"
-  >
-    DOWNLOAD YOUR PURCHASE
-  </a>
-
-  <a class="payment-success-btn" href="/">RETURN TO SITE</a>
-</div>
+          ${cartItemsMarkup}
+          ${actionsMarkup}
         </section>
       </main>
     `;
@@ -962,7 +1299,10 @@ function getAppMarkupDesktop() {
                 LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT.
               </p>
 
-              <button class="album-view-buy" id="albumViewBuyBtn" type="button">BUY NOW</button>
+              <div class="album-view-actions">
+  <button class="album-view-buy" id="albumViewBuyBtn" type="button">BUY NOW</button>
+  <button class="album-view-cart" id="albumViewCartBtn" type="button">ADD TO CART</button>
+</div>
             </div>
 
             <div class="album-view-details-side">
@@ -1271,7 +1611,10 @@ function getAppMarkupMobile() {
                 LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT.
               </p>
 
-              <button class="album-view-buy" id="albumViewBuyBtn" type="button">BUY NOW</button>
+              <div class="album-view-actions">
+  <button class="album-view-buy" id="albumViewBuyBtn" type="button">BUY NOW</button>
+  <button class="album-view-cart" id="albumViewCartBtn" type="button">ADD TO CART</button>
+</div>
             </div>
 
             <div class="album-view-details-side">
@@ -1303,6 +1646,10 @@ function mountAppShell() {
   if (!app) return;
 
   app.insertAdjacentHTML("beforeend", getAppMarkup());
+
+  injectCartShell();
+  renderCartUI();
+  bindCartUI();
 }
 
 /* =========================
@@ -1532,6 +1879,7 @@ function initAlbumViewDesktop() {
   const descEl = document.getElementById("albumViewDesc");
   const detailsEl = document.getElementById("albumViewDetails");
   const buyBtn = document.getElementById("albumViewBuyBtn");
+  const cartBtn = document.getElementById("albumViewCartBtn");
 
   const audio = document.getElementById("albumViewAudio");
 
@@ -1624,6 +1972,28 @@ function initAlbumViewDesktop() {
     },
   });
 };
+
+if (cartBtn) {
+  cartBtn.onclick = () => {
+    if (!beat.product) {
+      alert("This product is not configured yet.");
+      return;
+    }
+
+    try {
+      addToCart(beat.product, beat);
+      renderCartUI();
+      cartBtn.textContent = "ADDED";
+
+      setTimeout(() => {
+        cartBtn.textContent = "ADD TO CART";
+      }, 900);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add to cart");
+    }
+  };
+}
 
     currentEl.textContent = "00:00";
     setPlayedProgress(0);
@@ -3486,6 +3856,7 @@ function initAlbumViewMobile() {
   const descEl = document.getElementById("albumViewDesc");
   const detailsEl = document.getElementById("albumViewDetails");
   const buyBtn = document.getElementById("albumViewBuyBtn");
+  const cartBtn = document.getElementById("albumViewCartBtn");
 
   const audio = document.getElementById("albumViewAudio");
 
@@ -3578,6 +3949,28 @@ function initAlbumViewMobile() {
     },
   });
 };
+
+if (cartBtn) {
+  cartBtn.onclick = () => {
+    if (!beat.product) {
+      alert("This product is not configured yet.");
+      return;
+    }
+
+    try {
+      addToCart(beat.product, beat);
+      renderCartUI();
+      cartBtn.textContent = "ADDED";
+
+      setTimeout(() => {
+        cartBtn.textContent = "ADD TO CART";
+      }, 900);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add to cart");
+    }
+  };
+}
 
     currentEl.textContent = "00:00";
     setPlayedProgressMobile(0);

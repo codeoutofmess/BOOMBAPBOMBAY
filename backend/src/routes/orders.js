@@ -58,21 +58,24 @@ router.get("/:internalOrderId", async (req, res) => {
     }
 
     return res.json({
-      internalOrderId: order.internalOrderId,
-      productId: order.productId,
-      productType: order.productType,
-      title: order.title,
-      amount: order.amount,
-      currency: order.currency,
-      status: order.status,
-      razorpayOrderId: order.razorpayOrderId,
-      razorpayPaymentId: order.razorpayPaymentId,
-      createdAt: order.createdAt,
-      paidAt: order.paidAt,
-      downloadCount: order.downloadCount,
-firstDownloadedAt: order.firstDownloadedAt,
-lastDownloadedAt: order.lastDownloadedAt,
-    });
+  internalOrderId: order.internalOrderId,
+  productId: order.productId,
+  productType: order.productType,
+  title: order.title,
+  amount: order.amount,
+  currency: order.currency,
+  status: order.status,
+  razorpayOrderId: order.razorpayOrderId,
+  razorpayPaymentId: order.razorpayPaymentId,
+  createdAt: order.createdAt,
+  paidAt: order.paidAt,
+  downloadCount: order.downloadCount,
+  firstDownloadedAt: order.firstDownloadedAt,
+  lastDownloadedAt: order.lastDownloadedAt,
+  itemCount: order.itemCount,
+  isCartOrder: order.isCartOrder,
+  items: order.items,
+});
   } catch (error) {
     console.error("Get order failed:", error);
     return res.status(500).json({ error: "Failed to fetch order" });
