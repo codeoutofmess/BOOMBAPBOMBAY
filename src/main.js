@@ -1328,7 +1328,7 @@ function getAppMarkupMobile() {
   return `
     <main class="app">
     <div id="mobile-cinematic-root">
-      <section class="page landing revolver-only" id="home">
+      <section class="page landing" id="home">
         <div class="bg-layer"></div>
 
         <div class="scene-layer">
@@ -1399,10 +1399,10 @@ function getAppMarkupMobile() {
         </div>
       </section>
 
-      <section class="page music-page" id="music">
-        <div class="beat-store-bg"></div>
+            <section class="page music-page" id="music">
+        <div class="music-bg"></div>
 
-        <div class="beat-store-content">
+        <div class="music-content">
           <div class="bs-music-left" id="mobileMusicLeftStatic">
             <div class="reveal bs-music-title-reveal">
               <h2 class="bs-music-title reveal__inner">MUSIC</h2>
@@ -1414,6 +1414,7 @@ function getAppMarkupMobile() {
                 FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI
                 PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA
                 TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS.
+                IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.
               </p>
             </div>
           </div>
@@ -1422,49 +1423,38 @@ function getAppMarkupMobile() {
             <div class="arc-title">GUNS CARS AND BARS</div>
 
             <div class="arc-pointer" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
+              <div class="arc-pointer-line"></div>
+              <div class="arc-pointer-dot"></div>
             </div>
 
-            <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.webp" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.webp" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.webp" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.webp" alt="" />
-            </div>
+            <button class="bs-arc-item" type="button" data-index="0"></button>
+            <button class="bs-arc-item" type="button" data-index="1"></button>
+            <button class="bs-arc-item" type="button" data-index="2"></button>
+            <button class="bs-arc-item" type="button" data-index="3"></button>
           </div>
         </div>
-      </section>
+            </section>
 
-<section class="page beat-store" id="beat-store">
-  <div class="beat-store-bg"></div>
+      <section class="page beat-store" id="beat-store">
+        <div class="beat-store-bg"></div>
 
-  <div class="beat-store-content">
-    <div class="bs-mobile-left">
-      <div class="reveal bs-title-reveal">
-        <h2 class="bs-title reveal__inner">BEAT STORE</h2>
-      </div>
+        <div class="beat-store-content">
+          <div class="bs-mobile-left">
+            <div class="reveal bs-title-reveal">
+              <h2 class="bs-title reveal__inner">BEAT STORE</h2>
+            </div>
 
-      <div class="reveal bs-copy-reveal">
-        <p class="bs-copy reveal__inner">
-          KSHAH, AS A SEASONED PRODUCER, CRAFTS BESPOKE BEATS FOR YOUR SPECIFIC NEEDS USING THE WEAPONS MENTIONED BELOW.
+            <div class="reveal bs-copy-reveal">
+              <p class="bs-copy reveal__inner">
+                KSHAH, AS A SEASONED PRODUCER, CRAFTS BESPOKE BEATS FOR YOUR SPECIFIC NEEDS USING THE WEAPONS MENTIONED BELOW.
 
-          HIRE US IF YOU NEED SOME BEATS!
-        </p>
-      </div>
+                HIRE US IF YOU NEED SOME BEATS!
+              </p>
+            </div>
 
-      <button class="bs-btn">GET IN TOUCH</button>
-    </div>
+            <button class="bs-btn">GET IN TOUCH</button>
+          </div>
+
 
     <div class="bs-mobile-visual">
       <div class="bs-mobile-grid-stage">
@@ -4732,14 +4722,14 @@ function initCinematicScrollMobile() {
     "cinematicMusicMobile",
     "cinematicBeatStoreMobile",
     "cinematicMobileMaster",
+    "mobileMusicPin",
+    "mobileBeatStorePin",
+    "aboutMobileNatural",
   ].forEach((id) => {
     const st = ScrollTrigger.getById(id);
     if (st) st.kill(true);
   });
 
-  const cinematicRoot = document.querySelector("#mobile-cinematic-root");
-  if (!cinematicRoot) return;
-  
   const landing = document.querySelector("#home");
   const musicSection = document.querySelector("#music");
   const beatStore = document.querySelector("#beat-store");
@@ -4759,83 +4749,8 @@ function initCinematicScrollMobile() {
   const bsBtn = beatStore?.querySelector(".bs-btn");
   const bsGrid = beatStore?.querySelector(".bs-grid");
   const bsArc = beatStore?.querySelector("#bs-arc");
-
-    const bsTitleReveal = beatStore?.querySelector(".bs-title-reveal");
-  const bsCopyReveal = beatStore?.querySelector(".bs-copy-reveal");
-
-  let mobilePhase = "";
-
-  const aboutTransitionMap = document.querySelector("#aboutTransitionMap");
-  const aboutTransitionImg = aboutTransitionMap?.querySelector("img");
-  const aboutMapWrap = aboutSection?.querySelector("#aboutMapWrap");
-  const aboutTitleReveal = aboutSection?.querySelector(".about-title-reveal");
-  const aboutCopyReveal = aboutSection?.querySelector(".about-copy-reveal");
-  const aboutBtnReveal = aboutSection?.querySelector(".about-btn-reveal");
-  const aboutLinks = aboutSection?.querySelector(".about-links");
-
-  const nav = document.querySelector(".nav");
-const menuBtn = document.querySelector(".menu-btn");
-
-const navHome = nav ? { parent: nav.parentNode, next: nav.nextSibling } : null;
-const menuHome = menuBtn
-  ? { parent: menuBtn.parentNode, next: menuBtn.nextSibling }
-  : null;
-
-function moveNavToBodyMobile(on) {
-  if (!nav || !navHome) return;
-
-  if (on) {
-    // NAV
-    if (nav.parentNode !== document.body) {
-      document.body.appendChild(nav);
-    }
-
-    // MENU BUTTON
-    if (menuBtn && menuBtn.parentNode !== document.body) {
-      document.body.appendChild(menuBtn);
-    }
-
-    gsap.set(nav, { autoAlpha: 1, pointerEvents: "none" });
-    if (menuBtn) gsap.set(menuBtn, { autoAlpha: 1 });
-
-    nav.style.position = "fixed";
-    nav.style.top = "0";
-    nav.style.left = "0";
-    nav.style.width = "100%";
-    nav.style.zIndex = "999998";
-
-    if (menuBtn) {
-      menuBtn.style.position = "fixed";
-      menuBtn.style.zIndex = "1000000";
-    }
-
-  } else {
-    // restore NAV
-    nav.style.position = "";
-    nav.style.top = "";
-    nav.style.left = "";
-    nav.style.width = "";
-    nav.style.zIndex = "";
-
-    if (navHome.next && navHome.next.parentNode === navHome.parent) {
-      navHome.parent.insertBefore(nav, navHome.next);
-    } else {
-      navHome.parent.appendChild(nav);
-    }
-
-    // restore MENU
-    if (menuBtn && menuHome) {
-      menuBtn.style.position = "";
-      menuBtn.style.zIndex = "";
-
-      if (menuHome.next && menuHome.next.parentNode === menuHome.parent) {
-        menuHome.parent.insertBefore(menuBtn, menuHome.next);
-      } else {
-        menuHome.parent.appendChild(menuBtn);
-      }
-    }
-  }
-}
+  const bsGridStage = beatStore?.querySelector(".bs-mobile-grid-stage");
+const bsArcStage = beatStore?.querySelector(".bs-mobile-arc-stage");
 
   if (
     !landing ||
@@ -4852,12 +4767,28 @@ function moveNavToBodyMobile(on) {
     !bsCopy ||
     !bsBtn ||
     !bsGrid ||
+    !bsGridStage ||
+    !bsArcStage ||
     !bsArc
   ) {
     return;
   }
 
-  gsap.set(sceneComposite, { transformOrigin: "51.9% 66.5%" });
+  gsap.set([landing, musicSection, beatStore, aboutSection], {
+  autoAlpha: 1,
+  pointerEvents: "auto",
+  zIndex: "auto",
+});
+
+  gsap.set(sceneComposite, {
+    clearProps: "x,y,scale,autoAlpha,left,bottom,transformOrigin,force3D",
+  });
+
+  gsap.set(textLayer, { clearProps: "autoAlpha" });
+  gsap.set(webgl, { clearProps: "autoAlpha" });
+
+  gsap.set(beatContent, { clearProps: "autoAlpha" });
+  if (beatBg) gsap.set(beatBg, { clearProps: "autoAlpha" });
 
   const musicArc =
     window.__musicArcMobile ||
@@ -4875,1067 +4806,211 @@ function moveNavToBodyMobile(on) {
     data: BEATS,
   });
 
-    const beatArcItems = gsap.utils.toArray(bsArc.querySelectorAll(".bs-arc-item"));
-  const beatArcTitle = bsArc.querySelector(".arc-title");
-  const beatArcPointer = bsArc.querySelector(".arc-pointer");
-
-  const ARC_H_MOBILE = 86;
-  const ARC_GAP_Y_MOBILE = 32;
-  const ARC_STEP_X_MOBILE = 72;
-  const ARC_STEP_Y_MOBILE = ARC_H_MOBILE * 0.7 + ARC_GAP_Y_MOBILE;
-
-  const ARC_SLOT_0_MOBILE = {
-    x: ARC_STEP_X_MOBILE * 2,
-    y: ARC_STEP_Y_MOBILE * 2,
-    opacity: 0.2,
-    scale: 0.8,
-  };
-
-  const ARC_SLOT_1_MOBILE = {
-    x: ARC_STEP_X_MOBILE * 1,
-    y: ARC_STEP_Y_MOBILE * 1,
-    opacity: 0.5,
-    scale: 0.9,
-  };
-
-  const ARC_SLOT_2_MOBILE = {
-    x: 0,
-    y: 0,
-    opacity: 1,
-    scale: 1,
-  };
-
-  function setBeatStoreArcIntroProgressMobile(rawT) {
-    const t = clamp01Mobile(rawT);
-    const e = easeOutCubicMobile(t);
-
-    setBeatStoreArcStateMobile();
-
-    // keep later arc items hidden during intro
-    beatArcItems.forEach((el, i) => {
-      el.style.pointerEvents = "none";
-      el.style.zIndex = 0;
-      gsap.set(el, { autoAlpha: 0 });
-    });
-
-    // title/pointer reveal slightly after items begin moving
-    const labelT = clamp01Mobile((t - 0.18) / 0.42);
-
-    if (beatArcTitle) gsap.set(beatArcTitle, { autoAlpha: labelT });
-    if (beatArcPointer) gsap.set(beatArcPointer, { autoAlpha: labelT });
-
-    // item 1 : slot[0] -> slot[2]
-    if (beatArcItems[0]) {
-      beatArcItems[0].style.zIndex = 40;
-      gsap.set(beatArcItems[0], {
-        x: lerpMobile(ARC_SLOT_0_MOBILE.x, ARC_SLOT_2_MOBILE.x, e),
-        y: lerpMobile(ARC_SLOT_0_MOBILE.y, ARC_SLOT_2_MOBILE.y, e),
-        scale: lerpMobile(ARC_SLOT_0_MOBILE.scale, ARC_SLOT_2_MOBILE.scale, e),
-        autoAlpha: lerpMobile(0, ARC_SLOT_2_MOBILE.opacity, e),
-      });
-    }
-
-    // item 2 : slot[0] -> slot[1]
-    if (beatArcItems[1]) {
-      beatArcItems[1].style.zIndex = 30;
-      gsap.set(beatArcItems[1], {
-        x: lerpMobile(ARC_SLOT_0_MOBILE.x, ARC_SLOT_1_MOBILE.x, e),
-        y: lerpMobile(ARC_SLOT_0_MOBILE.y, ARC_SLOT_1_MOBILE.y, e),
-        scale: lerpMobile(ARC_SLOT_0_MOBILE.scale, ARC_SLOT_1_MOBILE.scale, e),
-        autoAlpha: lerpMobile(0, ARC_SLOT_1_MOBILE.opacity, e),
-      });
-    }
-
-    // item 3 : settles into slot[0]
-    if (beatArcItems[2]) {
-      beatArcItems[2].style.zIndex = 20;
-      gsap.set(beatArcItems[2], {
-        x: ARC_SLOT_0_MOBILE.x,
-        y: lerpMobile(ARC_SLOT_0_MOBILE.y + 22, ARC_SLOT_0_MOBILE.y, e),
-        scale: lerpMobile(0.72, ARC_SLOT_0_MOBILE.scale, e),
-        autoAlpha: lerpMobile(0, ARC_SLOT_0_MOBILE.opacity, e),
-      });
-    }
-  }
-
-  function clamp01Mobile(v) {
-    return Math.max(0, Math.min(1, v));
-  }
-
-  function lerpMobile(a, b, t) {
-    return a + (b - a) * t;
-  }
-
-  function easeOutCubicMobile(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-    const MOBILE_LANDING_SCENE_SCALE = 12;
-
-function measureLandingZoomScaleMobile() {
-  return MOBILE_LANDING_SCENE_SCALE;
-}
-
-  function getRevealInnerMobile(el) {
-    return el?.querySelector(".reveal__inner") || null;
-  }
-
-  function setLandingStateMobile() {
-
-    mobileRevolverRenderer?.start();
-    stopBoxViewersMobile();
-
-    gsap.set(landing, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 5,
-    });
-
-gsap.set(sceneComposite, {
-  left: "50%",
-  bottom: 0,
-  xPercent: -50,
-  x: 0,
-  y: 0,
-  scale: 1,
-  autoAlpha: 1,
-  transformOrigin: "51.9% 66.5%",
-  force3D: true,
-});
-
-    gsap.set(textLayer, { autoAlpha: 1 });
-    gsap.set(webgl, { autoAlpha: 1 });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 20,
-    });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
-
-    function setLandingToMusicProgressMobile(rawT) {
-  const t = clamp01Mobile(rawT);
-  const e = easeOutCubicMobile(t);
-
-  const textFade = clamp01Mobile((t - 0.08) / 0.16);
-  const sceneFade = clamp01Mobile((t - 0.42) / 0.18);
-  const musicFade = clamp01Mobile((t - 0.36) / 0.4);
-
-  gsap.set(landing, {
-    autoAlpha: 1,
-    pointerEvents: "none",
-    zIndex: 10,
-  });
-
-  gsap.set(sceneComposite, {
-    left: "50%",
-    bottom: 0,
-    xPercent: -50,
-    x: 0,
-    y: lerpMobile(0, getMobileViewportHeight() * 0.035, e),
-    scale: lerpMobile(1, 9.2, e),
-    autoAlpha: 1 - sceneFade,
-    transformOrigin: "51.9% 66.5%",
-    force3D: true,
-  });
-
-  gsap.set(textLayer, {
-    autoAlpha: 1 - textFade,
-  });
-
-  gsap.set(webgl, {
-    autoAlpha: 1 - textFade,
-  });
-
-  gsap.set(musicSection, {
-  autoAlpha: musicFade,
-  pointerEvents: musicFade > 0.05 ? "auto" : "none",
-  zIndex: 20,
-});
-
-  gsap.set(mobileMusicLeft, {
-    autoAlpha: musicFade,
-    y: 16 - 16 * musicFade,
-    visibility: musicFade > 0.001 ? "visible" : "hidden",
-    pointerEvents: "none",
-  });
-
-  const mobileMusicTitleInner = mobileMusicLeft?.querySelector(".bs-music-title-reveal .reveal__inner");
-const mobileMusicCopyInner = mobileMusicLeft?.querySelector(".bs-music-copy-reveal .reveal__inner");
-
-if (mobileMusicTitleInner) gsap.set(mobileMusicTitleInner, { yPercent: 0 });
-if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
-
-  gsap.set(mobileMusicArcRoot, {
-  autoAlpha: musicFade,
-  y: 18 - 18 * musicFade,
-  visibility: musicFade > 0.001 ? "visible" : "hidden",
-  pointerEvents: musicFade > 0.05 ? "auto" : "none",
-});
-
-  gsap.set(beatStore, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-    zIndex: 30,
-  });
-
-  gsap.set(beatContent, { autoAlpha: 0 });
-
-  gsap.set(aboutSection, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-    zIndex: 40,
-  });
-
-  gsap.set([
-  ".landing .scene-layer",
-  ".landing .text-layer",
-  ".landing .bg-layer",
-  ".landing .webgl"
-], {
-  pointerEvents: "none"
-});
-
-gsap.set("#mobile-music", {
-  pointerEvents: "auto",
-  zIndex: 30
-});
-
-gsap.set("#mobile-music-arc", {
-  pointerEvents: "auto",
-  zIndex: 31
-});
-
-gsap.set(".bs-mobile-grid-stage", {
-  autoAlpha: 0,
-  visibility: "hidden",
-  pointerEvents: "none",
-});
-
-gsap.set("#beat-store .bs-mobile-visual", {
-  pointerEvents: "none",
-});
-
-
-}
-
-function setMusicBaseStateMobile() {
-  
-  mobileRevolverRenderer?.stop();
+  mobileRevolverRenderer?.start();
   stopBoxViewersMobile();
-
-  gsap.set(landing, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-  });
-
-  gsap.set(musicSection, {
-    autoAlpha: 1,
-    pointerEvents: "auto",
-    zIndex: 10,
-  });
+  ensureBeatStoreModelsMobile();
 
   gsap.set(mobileMusicLeft, {
     autoAlpha: 1,
     visibility: "visible",
+    y: 0,
     pointerEvents: "none",
   });
 
   gsap.set(mobileMusicArcRoot, {
     autoAlpha: 1,
     visibility: "visible",
+    y: 0,
     pointerEvents: "auto",
   });
 
-  gsap.set(".bs-mobile-grid-stage", {
+  gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
+  gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
+  gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
+  gsap.set(bsGrid, { autoAlpha: 1 });
+  gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "auto" });
+
+  gsap.set(bsGridStage, {
+  autoAlpha: 1,
+  pointerEvents: "auto",
+});
+
+gsap.set(bsArcStage, {
   autoAlpha: 0,
-  visibility: "hidden",
   pointerEvents: "none",
 });
 
-gsap.set("#beat-store .bs-mobile-visual", {
-  pointerEvents: "none",
+  gsap.set(
+  [
+    "#music .reveal__inner",
+    "#beat-store .reveal__inner",
+    "#about .reveal__inner",
+  ],
+  {
+    yPercent: 0,
+    y: 0,
+    autoAlpha: 1,
+  }
+);
+
+gsap.set("#music, #beat-store", {
+  backgroundColor: "#000",
 });
 
-  const mobileMusicTitleInner = mobileMusicLeft?.querySelector(".bs-music-title-reveal .reveal__inner");
-  const mobileMusicCopyInner = mobileMusicLeft?.querySelector(".bs-music-copy-reveal .reveal__inner");
+  if (musicArc) musicArc.snap(0);
+  if (beatArc) beatArc.snap(0);
 
-  if (mobileMusicTitleInner) gsap.set(mobileMusicTitleInner, { yPercent: 0 });
-  if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
-
-  gsap.set(beatStore, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-    zIndex: 20,
+  ScrollTrigger.create({
+    id: "cinematicLandingMobile",
+    trigger: landing,
+    start: "top top",
+    end: "bottom top",
+    onEnter: () => {
+      mobileRevolverRenderer?.start();
+      stopBoxViewersMobile();
+    },
+    onLeave: () => {
+      mobileRevolverRenderer?.stop();
+    },
+    onEnterBack: () => {
+      mobileRevolverRenderer?.start();
+      stopBoxViewersMobile();
+    },
+    onLeaveBack: () => {
+      mobileRevolverRenderer?.start();
+    },
   });
 
-  gsap.set(beatContent, { autoAlpha: 0 });
 
-  gsap.set(aboutSection, {
-    autoAlpha: 0,
-    pointerEvents: "none",
-    zIndex: 30,
+ScrollTrigger.create({
+  id: "mobileMusicPin",
+  trigger: musicSection,
+  start: "top top",
+  end: () => `+=${getMobileViewportHeight() * 2.5}`,
+  pin: "#music .music-content",
+  pinSpacing: true,
+  scrub: 0.2,
+  anticipatePin: 1,
+  invalidateOnRefresh: true,
+  onUpdate: (self) => {
+    if (!musicArc) return;
+    musicArc.layoutProgress(self.progress * musicArc.maxStep);
+  },
+});
+
+  ScrollTrigger.create({
+  id: "mobileBeatStorePin",
+  trigger: beatStore,
+  start: "top top",
+  end: () => `+=${getMobileViewportHeight() * 3}`,
+  pin: "#beat-store .beat-store-content",
+  pinSpacing: true,
+  scrub: 0.2,
+  anticipatePin: 1,
+  invalidateOnRefresh: true,
+
+  onEnter: () => {
+    mobileRevolverRenderer?.stop();
+    startBoxViewersMobile();
+  },
+
+  onEnterBack: () => {
+    mobileRevolverRenderer?.stop();
+    startBoxViewersMobile();
+  },
+
+  onUpdate: (self) => {
+    if (!beatArc) return;
+
+    const p = self.progress;
+
+    // First part: show the grid
+    // Middle: fade grid out and arc in
+    // Last part: scroll the arc
+    const fadeToArc = gsap.utils.clamp(0, 1, (p - 0.28) / 0.14);
+    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.38) / 0.62);
+
+    gsap.set(bsGridStage, {
+      autoAlpha: 1 - fadeToArc,
+      pointerEvents: fadeToArc < 0.5 ? "auto" : "none",
+    });
+
+    gsap.set(bsArcStage, {
+      autoAlpha: fadeToArc,
+      pointerEvents: fadeToArc >= 0.5 ? "auto" : "none",
+    });
+
+    beatArc.layoutProgress(arcProgress * beatArc.maxStep);
+  },
+
+  onLeave: () => {
+    if (beatArc) beatArc.snap(beatArc.maxStep);
+    stopBoxViewersMobile();
+  },
+
+  onLeaveBack: () => {
+    if (beatArc) beatArc.snap(0);
+
+    gsap.set(bsGridStage, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+    });
+
+    gsap.set(bsArcStage, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+  },
+});
+
+  ScrollTrigger.create({
+    id: "cinematicBeatStoreMobile",
+    trigger: beatStore,
+    start: "top bottom",
+    end: "bottom top",
+    onEnter: () => {
+      stopBoxViewersMobile();
+    },
+    onLeave: () => {
+      stopBoxViewersMobile();
+    },
+    onEnterBack: () => {
+      stopBoxViewersMobile();
+    },
+    onLeaveBack: () => {
+      stopBoxViewersMobile();
+    },
   });
+
+  ScrollTrigger.create({
+    id: "aboutMobileNatural",
+    trigger: aboutSection,
+    start: "top bottom",
+    end: "bottom top",
+    onEnter: () => {
+      mobileRevolverRenderer?.stop();
+      stopBoxViewersMobile();
+    },
+    onEnterBack: () => {
+      mobileRevolverRenderer?.stop();
+      stopBoxViewersMobile();
+    },
+  });
+
+  ScrollTrigger.refresh();
 }
 
-  function setBeatStoreBaseStateMobile() {
-    setBeatStoreGridStateMobile();
-  }
 
-    function setBeatStoreGridStateMobile() {
 
-      mobileRevolverRenderer?.stop();
+function initMobileApp() {
+  bindMobileViewportTracking();
+  document.body.classList.remove("mobile-cinematic-lock");
 
-      ensureBeatStoreModelsMobile();
-startBoxViewersMobile();
-
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 20,
-    });
-
-    gsap.set(beatContent, { autoAlpha: 1 });
-
-    gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
-    gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
-    gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
-
-    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
-    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
-
-    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
-    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
-
-    gsap.set(".bs-mobile-grid-stage", {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "auto",
-    });
-
-    gsap.set(".bs-mobile-arc-stage", {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(".bs-mobile-grid-stage", {
+gsap.set(["#music", "#beat-store", "#about"], {
   autoAlpha: 1,
   visibility: "visible",
   pointerEvents: "auto",
 });
-
-gsap.set("#beat-store .bs-mobile-visual", {
-  pointerEvents: "auto",
-});
-
-    gsap.set(bsGrid, { autoAlpha: 1 });
-    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "none" });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
-
-  function setBeatStoreArcStateMobile() {
-
-    stopBoxViewersMobile();
-    
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 20,
-    });
-
-    gsap.set(beatContent, { autoAlpha: 1 });
-
-    gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
-    gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
-    gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
-
-    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
-    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
-
-    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
-    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
-
-    gsap.set(".bs-mobile-grid-stage", {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(".bs-mobile-arc-stage", {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "auto",
-    });
-
-    gsap.set(bsGrid, { autoAlpha: 1 });
-    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "auto" });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
-
-  function setBeatStoreArcPreIntroStateMobile() {
-  setBeatStoreArcStateMobile();
-
-  if (beatArcTitle) gsap.set(beatArcTitle, { autoAlpha: 0 });
-  if (beatArcPointer) gsap.set(beatArcPointer, { autoAlpha: 0 });
-
-  beatArcItems.forEach((el) => {
-    el.style.pointerEvents = "none";
-    el.style.zIndex = 0;
-
-    gsap.set(el, {
-      x: ARC_SLOT_0_MOBILE.x,
-      y: ARC_SLOT_0_MOBILE.y + 22,
-      scale: 0.72,
-      autoAlpha: 0,
-    });
-  });
-}
-
-  function setBeatStoreGridToArcProgressMobile(rawT) {
-    const t = clamp01Mobile(rawT);
-    const e = easeOutCubicMobile(t);
-
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 20,
-    });
-
-    gsap.set(beatContent, { autoAlpha: 1 });
-
-    gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
-    gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
-    gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
-
-    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
-    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
-
-    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
-    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
-
-    gsap.set(".bs-mobile-grid-stage", {
-      autoAlpha: 1 - e,
-      visibility: 1 - e > 0.001 ? "visible" : "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(".bs-mobile-arc-stage", {
-      autoAlpha: e,
-      visibility: e > 0.001 ? "visible" : "hidden",
-      pointerEvents: e > 0.85 ? "auto" : "none",
-    });
-
-    gsap.set(bsGrid, { autoAlpha: 1 });
-    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: e > 0.85 ? "auto" : "none" });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
-
-  function setMusicToBeatHandoffMobile(rawT) {
-    const t = clamp01Mobile(rawT);
-    const e = easeOutCubicMobile(t);
-
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 1 - e,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(mobileMusicLeft, {
-      autoAlpha: 1 - e,
-      visibility: 1 - e > 0.001 ? "visible" : "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(mobileMusicArcRoot, {
-      autoAlpha: 1 - e,
-      visibility: 1 - e > 0.001 ? "visible" : "hidden",
-      pointerEvents: "none",
-    });
-
-    const show = e > 0.2 ? 1 : 0;
-
-gsap.set(beatStore, {
-  autoAlpha: show,
-  pointerEvents: show ? "auto" : "none",
-  zIndex: 20,
-});
-
-    gsap.set(beatContent, { autoAlpha: 1 });
-
-    gsap.set(bsTitle, {
-      autoAlpha: e,
-      y: 20 - 20 * e,
-    });
-
-    gsap.set(bsCopy, {
-      autoAlpha: e,
-      y: 20 - 20 * e,
-    });
-
-    gsap.set(bsBtn, {
-      autoAlpha: e,
-      y: 12 - 12 * e,
-    });
-
-    gsap.set(bsGrid, {
-      autoAlpha: e,
-    });
-
-    gsap.set(bsArc, {
-      autoAlpha: e,
-      pointerEvents: "none",
-    });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
-
-  function setAboutOverlayModeMobile(on) {
-  if (!aboutSection) return;
-
-  const liveH = getLiveViewportHeightMobile();
-
-  if (on) {
-    gsap.set(aboutSection, {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: liveH,
-      zIndex: 30,
-    });
-
-    if (aboutTransitionMap) {
-      gsap.set(aboutTransitionMap, {
-        position: "fixed",
-        inset: 0,
-        width: "100vw",
-        height: liveH,
-        zIndex: 40,
-        pointerEvents: "none",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      });
-    }
-  } else {
-    gsap.set(aboutSection, {
-      clearProps: "position,top,left,width,height,zIndex",
-    });
-
-    if (aboutTransitionMap) {
-      gsap.set(aboutTransitionMap, {
-        clearProps:
-          "position,inset,width,height,zIndex,pointerEvents,display,alignItems,justifyContent",
-      });
-    }
-  }
-}
-
-  function getAboutTargetTransformMobile() {
-    if (!aboutTransitionImg || !aboutMapWrap) {
-      return { x: 0, y: 0, startScale: 3.2, endScale: 1 };
-    }
-
-    const targetRect = aboutMapWrap.getBoundingClientRect();
-    const viewportCX = window.innerWidth / 2;
-    const viewportCY = getLiveViewportHeightMobile() / 2;
-
-    const targetCX = targetRect.left + targetRect.width / 2;
-    const targetCY = targetRect.top + targetRect.height / 2;
-
-    const naturalWidth =
-      aboutTransitionImg.naturalWidth || aboutTransitionImg.clientWidth || 1;
-    const naturalHeight =
-      aboutTransitionImg.naturalHeight || aboutTransitionImg.clientHeight || 1;
-
-    const fitScale = Math.min(
-      (window.innerWidth * 0.82) / naturalWidth,
-      (getLiveViewportHeightMobile() * 0.82) / naturalHeight
-    );
-
-    const targetScale = targetRect.width / naturalWidth;
-
-    return {
-      x: targetCX - viewportCX,
-      y: targetCY - viewportCY,
-      startScale: fitScale * 3.2,
-      endScale: targetScale,
-    };
-  }
-
-  function setAboutHiddenStateMobile() {
-    setAboutOverlayModeMobile(false);
-
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-
-    gsap.set(aboutTransitionMap, {
-      autoAlpha: 0,
-    });
-
-    if (aboutTransitionImg) {
-      gsap.set(aboutTransitionImg, {
-        x: 0,
-        y: 0,
-        scale: 3.2,
-        autoAlpha: 1,
-        transformOrigin: "50% 50%",
-      });
-    }
-
-    const aboutTitleInner = getRevealInnerMobile(aboutTitleReveal);
-    const aboutCopyInner = getRevealInnerMobile(aboutCopyReveal);
-    const aboutBtnInner = getRevealInnerMobile(aboutBtnReveal);
-
-    if (aboutTitleInner) gsap.set(aboutTitleInner, { yPercent: 120 });
-    if (aboutCopyInner) gsap.set(aboutCopyInner, { yPercent: 120 });
-    if (aboutBtnInner) gsap.set(aboutBtnInner, { yPercent: 120 });
-
-    if (aboutLinks) {
-      gsap.set(aboutLinks, {
-        autoAlpha: 0,
-        y: 20,
-      });
-    }
-
-    if (aboutMapWrap) {
-      gsap.set(aboutMapWrap, { autoAlpha: 0 });
-    }
-  }
-
-  function setAboutTransitionProgressMobile(rawT) {
-    const t = clamp01Mobile(rawT);
-    const e = easeOutCubicMobile(t);
-    const tf = getAboutTargetTransformMobile();
-
-    if (beatArc) beatArc.snap(beatArc.maxStep);
-    setAboutOverlayModeMobile(true);
-
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 10,
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 1,
-      pointerEvents: "none",
-      zIndex: 20,
-    });
-
-    const storeFade = clamp01Mobile(1 - t * 1.25);
-
-    gsap.set(bsTitle, { autoAlpha: storeFade, y: -20 * t });
-    gsap.set(bsCopy, { autoAlpha: storeFade, y: -20 * t });
-    gsap.set(bsBtn, { autoAlpha: storeFade, y: -10 * t });
-
-    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
-    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
-
-    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: -110 * t });
-    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: -110 * t });
-
-    gsap.set(".bs-mobile-grid-stage", {
-      autoAlpha: 0,
-      visibility: "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(".bs-mobile-arc-stage", {
-      autoAlpha: storeFade,
-      visibility: storeFade > 0.001 ? "visible" : "hidden",
-      pointerEvents: "none",
-    });
-
-    gsap.set(bsGrid, { autoAlpha: 1 });
-    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "none" });
-
-    if (beatBg) gsap.set(beatBg, { autoAlpha: 1 - e });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 1,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-
-    gsap.set(aboutTransitionMap, { autoAlpha: 1 });
-
-    if (aboutTransitionImg) {
-      gsap.set(aboutTransitionImg, {
-        transformOrigin: "50% 50%",
-        x: lerpMobile(0, tf.x, e),
-        y: lerpMobile(0, tf.y, e),
-        scale: lerpMobile(tf.startScale, tf.endScale, e),
-        autoAlpha: 1,
-      });
-    }
-
-    const titleT = clamp01Mobile((t - 0.48) / 0.18);
-    const copyT = clamp01Mobile((t - 0.58) / 0.18);
-    const btnT = clamp01Mobile((t - 0.7) / 0.14);
-    const linksT = clamp01Mobile((t - 0.64) / 0.16);
-
-    const aboutTitleInner = getRevealInnerMobile(aboutTitleReveal);
-    const aboutCopyInner = getRevealInnerMobile(aboutCopyReveal);
-    const aboutBtnInner = getRevealInnerMobile(aboutBtnReveal);
-
-    if (aboutTitleInner) gsap.set(aboutTitleInner, { yPercent: 120 - 120 * titleT });
-    if (aboutCopyInner) gsap.set(aboutCopyInner, { yPercent: 120 - 120 * copyT });
-    if (aboutBtnInner) gsap.set(aboutBtnInner, { yPercent: 120 - 120 * btnT });
-
-    if (aboutLinks) {
-      gsap.set(aboutLinks, {
-        autoAlpha: linksT,
-        y: 20 - 20 * linksT,
-      });
-    }
-
-    if (aboutMapWrap) {
-      gsap.set(aboutMapWrap, {
-        autoAlpha: clamp01Mobile((t - 0.55) / 0.3),
-      });
-    }
-  }
-
-  function setAboutStateMobile() {
-
-    mobileRevolverRenderer?.stop();
-
-    stopBoxViewersMobile();
-    setAboutOverlayModeMobile(false);
-
-    if (beatBg) gsap.set(beatBg, { autoAlpha: 0 });
-
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(musicSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(beatStore, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
-
-    gsap.set(aboutSection, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 30,
-    });
-
-    gsap.set(aboutTransitionMap, { autoAlpha: 0 });
-
-    if (aboutTransitionImg) {
-      gsap.set(aboutTransitionImg, {
-        clearProps: "x,y,scale,opacity,transformOrigin",
-      });
-    }
-
-    if (aboutMapWrap) gsap.set(aboutMapWrap, { autoAlpha: 1 });
-
-    const aboutTitleInner = getRevealInnerMobile(aboutTitleReveal);
-    const aboutCopyInner = getRevealInnerMobile(aboutCopyReveal);
-    const aboutBtnInner = getRevealInnerMobile(aboutBtnReveal);
-
-    if (aboutTitleInner) gsap.set(aboutTitleInner, { yPercent: 0 });
-    if (aboutCopyInner) gsap.set(aboutCopyInner, { yPercent: 0 });
-    if (aboutBtnInner) gsap.set(aboutBtnInner, { yPercent: 0 });
-
-    if (aboutLinks) {
-      gsap.set(aboutLinks, {
-        autoAlpha: 1,
-        y: 0,
-      });
-    }
-  }
-
-  function setMobilePhase(nextPhase) {
-  if (mobilePhase === nextPhase) return false;
-  mobilePhase = nextPhase;
-  return true;
-}
-
-  setLandingStateMobile();
-  if (musicArc) musicArc.snap(0);
-  if (beatArc) beatArc.snap(0);
-  setAboutHiddenStateMobile();
-  gsap.set(beatContent, { autoAlpha: 0 });
-  
-
-  mobileMasterTrigger = ScrollTrigger.create({
-  id: "cinematicMobileMaster",
-  trigger: cinematicRoot,
-  start: "top top",
-  end: "+=420%",
-  pin: true,
-  pinSpacing: true,
-  scrub: 0.18,
-  anticipatePin: 1,
-  invalidateOnRefresh: true,
-  fastScrollEnd: false,
-
-
-    onEnter: () => {
-  document.documentElement.classList.add("nav-blend");
-  moveNavToBodyMobile(true);
-},
-
-    onEnterBack: () => {
-  document.documentElement.classList.add("nav-blend");
-  moveNavToBodyMobile(true);
-},
-
-        onUpdate: (self) => {
-      const p = self.progress;
-
-      if (p > 0.42) {
-        ensureBeatStoreModelsMobile();
-      }
-
-      const LANDING_END = 0.22;
-      const MUSIC_END = 0.44;
-      const HANDOFF_END = 0.46;
-      const BEAT_GRID_END = 0.56;
-      const BEAT_ARC_END = 0.90;
-      const ABOUT_END = 0.94;
-
-      if (p <= LANDING_END) {
-        if (setMobilePhase("landing")) {
-          mobileRevolverRenderer?.start();
-          setAboutHiddenStateMobile();
-        }
-
-        const local = clamp01Mobile(p / LANDING_END);
-        setLandingToMusicProgressMobile(local);
-        return;
-      }
-
-      if (p <= MUSIC_END) {
-        if (setMobilePhase("music")) {
-          mobileRevolverRenderer?.stop();
-          setMusicBaseStateMobile();
-          setAboutHiddenStateMobile();
-        }
-
-        const local = clamp01Mobile((p - LANDING_END) / (MUSIC_END - LANDING_END));
-
-        if (musicArc) {
-          musicArc.layoutProgress(local * musicArc.maxStep);
-        }
-
-        return;
-      }
-
-      if (p <= HANDOFF_END) {
-        if (setMobilePhase("handoff")) {
-          mobileRevolverRenderer?.stop();
-          if (musicArc) musicArc.snap(musicArc.maxStep);
-          setAboutHiddenStateMobile();
-        }
-
-        const local = clamp01Mobile((p - MUSIC_END) / (HANDOFF_END - MUSIC_END));
-        setMusicToBeatHandoffMobile(local);
-        return;
-      }
-
-      if (p <= BEAT_GRID_END) {
-        if (setMobilePhase("beat-grid")) {
-          mobileRevolverRenderer?.stop();
-          setBeatStoreGridStateMobile();
-          setAboutHiddenStateMobile();
-          startBoxViewersMobile();
-        }
-        return;
-      }
-
-      if (p <= BEAT_ARC_END) {
-        const local = clamp01Mobile((p - BEAT_GRID_END) / (BEAT_ARC_END - BEAT_GRID_END));
-
-        const FADE_PORTION = 0.18;
-        const INTRO_PORTION = 0.28;
-
-        if (local <= FADE_PORTION) {
-          if (setMobilePhase("beat-arc-fade")) {
-            mobileRevolverRenderer?.stop();
-            setAboutHiddenStateMobile();
-            stopBoxViewersMobile();
-          }
-
-          const fadeT = local / FADE_PORTION;
-          setBeatStoreGridToArcProgressMobile(fadeT);
-          setBeatStoreArcPreIntroStateMobile();
-          return;
-        }
-
-        if (local <= FADE_PORTION + INTRO_PORTION) {
-          if (setMobilePhase("beat-arc-intro")) {
-            mobileRevolverRenderer?.stop();
-            setAboutHiddenStateMobile();
-            stopBoxViewersMobile();
-          }
-
-          const introT = (local - FADE_PORTION) / INTRO_PORTION;
-          setBeatStoreArcIntroProgressMobile(introT);
-          return;
-        }
-
-        if (setMobilePhase("beat-arc")) {
-          mobileRevolverRenderer?.stop();
-          setAboutHiddenStateMobile();
-          stopBoxViewersMobile();
-          setBeatStoreArcStateMobile();
-        }
-
-        const arcT =
-          (local - FADE_PORTION - INTRO_PORTION) / (1 - FADE_PORTION - INTRO_PORTION);
-
-        const arcProgress = clamp01Mobile(arcT);
-
-        if (beatArc) {
-          beatArc.layoutProgress(arcProgress * beatArc.maxStep);
-        }
-
-        return;
-      }
-
-      if (p <= ABOUT_END) {
-        if (setMobilePhase("about-transition")) {
-          mobileRevolverRenderer?.stop();
-          stopBoxViewersMobile();
-          if (beatArc) beatArc.snap(beatArc.maxStep);
-          setBeatStoreArcStateMobile();
-        }
-
-        const local = clamp01Mobile((p - BEAT_ARC_END) / (ABOUT_END - BEAT_ARC_END));
-        setAboutTransitionProgressMobile(local);
-        return;
-      }
-
-      if (setMobilePhase("about")) {
-        mobileRevolverRenderer?.stop();
-        stopBoxViewersMobile();
-        setAboutStateMobile();
-      }
-    },
-
-    onLeave: (self) => {
-      self.scroll(self.end - 1);
-    },
-
-        onLeaveBack: () => {
-      document.documentElement.classList.remove("nav-blend");
-      moveNavToBodyMobile(false);
-
-      mobilePhase = "";
-      mobileRevolverRenderer?.start();
-      stopBoxViewersMobile();
-
-      setLandingStateMobile();
-      if (musicArc) musicArc.snap(0);
-      if (beatArc) beatArc.snap(0);
-      setAboutHiddenStateMobile();
-      gsap.set(beatContent, { autoAlpha: 0 });
-
-      gsap.set(".bs-mobile-grid-stage", { autoAlpha: 1, visibility: "visible", pointerEvents: "auto" });
-      gsap.set(".bs-mobile-arc-stage", { autoAlpha: 0, visibility: "hidden", pointerEvents: "none" });
-    },
-  });
-
-  ScrollTrigger.refresh(true);
-}
-
-function initMobileApp() {
-  bindMobileViewportTracking();
-  document.body.classList.add("mobile-cinematic-lock");
-
-  gsap.set("#beat-store", {
-    autoAlpha: 0,
-    pointerEvents: "none",
-  });
-
-  gsap.set("#beat-store .beat-store-content", { autoAlpha: 0 });
 
   document.querySelectorAll(".nav .nav-item").forEach(ensureFinalTextMobile);
 
@@ -5963,12 +5038,6 @@ function initMobileApp() {
 
   setMobileViewportVars();
 
-  document.body.style.overflow = "hidden";
-  document.body.style.touchAction = "none";
-
-  document.documentElement.style.overflow = "hidden";
-  document.documentElement.style.touchAction = "none";
-
   const mobileSceneComposite = document.querySelector(".scene-composite");
 
   if (mobileSceneComposite) {
@@ -5992,6 +5061,7 @@ function initMobileApp() {
     landing?.classList.remove("revolver-only");
 
     const introTl = startLandingIntroMobile();
+    document.querySelector("#home")?.classList.remove("revolver-only");
 
     introTl.eventCallback("onComplete", () => {
       document.body.style.overflow = "auto";
@@ -6010,7 +5080,7 @@ function initMobileApp() {
         app.style.overflow = "visible";
       }
 
-      window.scrollTo(0, 0);
+      requestAnimationFrame(() => window.scrollTo(0, 0));
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
