@@ -4,6 +4,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip.js";
 
+/* BBB FIX: Lenis powers the smooth "weighted" scroll on desktop.
+   Install with:  npm install lenis  */
+import Lenis from "lenis";
+
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -28,6 +32,48 @@ if (IS_MOBILE) {
     ignoreMobileResize: true,
     autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
   });
+
+  /* BBB FIX — the mobile glitch fix.
+     Pinned ScrollTriggers jitter on phones because native touch scrolling
+     runs on a separate thread from JS, so the pinned content visibly lags
+     each frame. normalizeScroll makes GSAP drive the scroll itself, which
+     removes the jitter AND stops the address-bar show/hide resize jumps.
+     If anything misbehaves, set BBB_NORMALIZE_SCROLL to false to compare. */
+  const BBB_NORMALIZE_SCROLL = true;
+  if (BBB_NORMALIZE_SCROLL) {
+    ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+  }
+}
+
+/* BBB FIX — Lenis smooth scroll (desktop only).
+   Gives the weighted, premium glide on wheel input. Mobile keeps native
+   touch scrolling (handled by normalizeScroll above), so no phone jank. */
+let lenis = null;
+
+function initLenisDesktop() {
+  if (IS_MOBILE || lenis) return;
+
+  lenis = new Lenis({
+    lerp: 0.1,          // lower = floatier, higher = snappier (0.07–0.14)
+    smoothWheel: true,
+    wheelMultiplier: 1,
+  });
+
+  // Keep ScrollTrigger perfectly in sync with Lenis
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* All programmatic scrolls route through here so they use Lenis when active */
+function smoothScrollToY(y) {
+  if (lenis) {
+    lenis.scrollTo(y, { duration: 1.4 });
+  } else {
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
 }
 
 
@@ -2710,12 +2756,37 @@ function initCinematicScrollDesktop() {
 
   const END_DIST = 1600;
 
+  /* BBB FIX — the blurry-zoom fix.
+     The scene is an SVG, but the browser rasterizes it ONCE at its layout
+     size (100vw) and then GPU-scales that bitmap up to 150× during the
+     zoom — hence the blur. Vectorizing more won't help; the raster size is
+     the ceiling. So we lay the SVG out RASTER_BOOST× bigger and counter-
+     scale it down: visually identical at rest, but the rasterized bitmap
+     is RASTER_BOOST× sharper, pushing blur that much deeper into the zoom
+     (by which point the beat store has already crossfaded in).
+     Try 3 first; 4 if you want it even crisper (costs a bit of memory). */
+  const RASTER_BOOST = 3;
+  const ORIGIN_X = 0.519; // matches the 51.9% / 66.5% transform origin
+  const ORIGIN_Y = 0.665;
+
+  gsap.set(sceneComposite, { width: `${100 * RASTER_BOOST}vw` });
+
+  // Offsets that make the boosted layout line up pixel-perfect with the old one
+  const compX = () =>
+    -((RASTER_BOOST - 1) / RASTER_BOOST) *
+    sceneComposite.offsetWidth *
+    (ORIGIN_X - 0.5);
+  const compY = () =>
+    ((RASTER_BOOST - 1) / RASTER_BOOST) *
+    sceneComposite.offsetHeight *
+    (1 - ORIGIN_Y);
+
   gsap.set(sceneComposite, {
-    transformOrigin: "51.9% 66.5%",
+    transformOrigin: `${ORIGIN_X * 100}% ${ORIGIN_Y * 100}%`,
     xPercent: -50,
-    x: 0,
-    y: 0,
-    scale: 1,
+    x: compX(),
+    y: compY(),
+    scale: 1 / RASTER_BOOST,
     willChange: "transform",
   });
 
@@ -3302,7 +3373,9 @@ function initCinematicScrollDesktop() {
           start: "top top",
           end: `+=${END_DIST}%`,
           pin: true,
-          scrub: 1.5,
+          /* BBB FIX: was 1.5 — Lenis now adds its own smoothing, so 1.5 on
+             top felt laggy. Tune between 0.8 and 1.2 to taste. */
+          scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
 
@@ -3433,9 +3506,10 @@ if (p < ABOUT_START) {
   gsap.set(sceneComposite, {
     left: "50%",
     xPercent: -50,
-    x: 0,
-    y: 0,
-    scale: 1,
+    /* BBB FIX: reset to the boosted base state, not scale 1 */
+    x: compX(),
+    y: compY(),
+    scale: 1 / RASTER_BOOST,
   });
 
   gsap.set(textLayer, { autoAlpha: 1 });
@@ -3469,8 +3543,11 @@ if (p < ABOUT_START) {
         .to(
           sceneComposite,
           {
-            scale: 150,
-            y: window.innerHeight * 0.18,
+            /* BBB FIX: same visual zoom as before (1 → 150×), expressed in
+               boosted terms. Function-based so invalidateOnRefresh recalcs
+               correctly on resize. */
+            scale: () => 150 / RASTER_BOOST,
+            y: () => compY() + window.innerHeight * 0.18,
             ease: "none",
           },
           0
@@ -3510,10 +3587,8 @@ function setupDesktopPhaseNav() {
     const p = Math.max(0, Math.min(1, progress));
     const y = st.start + (st.end - st.start) * p;
 
-    window.scrollTo({
-      top: y,
-      behavior: "smooth",
-    });
+    /* BBB FIX: route through Lenis so nav clicks glide instead of jumping */
+    smoothScrollToY(y);
   }
 
   links.forEach((link) => {
@@ -3524,10 +3599,7 @@ function setupDesktopPhaseNav() {
 
       // Desktop nav maps to cinematic phases, not normal anchors
       if (href === "#home") {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        smoothScrollToY(0);
         return;
       }
 
@@ -3586,7 +3658,9 @@ function initDesktopApp() {
       if (!target) return;
 
       e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth" });
+      /* BBB FIX: scrollIntoView bypasses Lenis; compute the Y and glide */
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
+      smoothScrollToY(targetY);
     });
   });
 
@@ -3607,6 +3681,7 @@ function initDesktopApp() {
 
       introTl.eventCallback("onComplete", () => {
   document.body.style.overflow = "";
+  initLenisDesktop(); /* BBB FIX: start smooth scroll once scrolling unlocks */
   initCinematicScrollDesktop();
   setupDesktopPhaseNav();
 });
@@ -4948,7 +5023,8 @@ ScrollTrigger.create({
   end: () => `+=${getMobileViewportHeight() * 2.5}`,
   pin: "#music .music-content",
   pinSpacing: true,
-  scrub: 0.35,
+  /* BBB FIX: was 0.35 — a touch more smoothing feels less twitchy on touch */
+  scrub: 0.55,
   anticipatePin: 1,
   invalidateOnRefresh: true,
   onUpdate: (self) => {
