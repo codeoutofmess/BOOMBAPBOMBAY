@@ -1088,7 +1088,7 @@ function getAppMarkupDesktop() {
         <div class="bg-layer"></div>
 
         <div class="scene-layer">
-          <img class="scene-composite" src="/assets/scene-composite.svg" alt="" />
+          <img class="scene-composite" src="/assets/scene-composite.webp" alt="" />
         </div>
 
         <canvas class="webgl"></canvas>
@@ -1254,19 +1254,19 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.svg" alt="" />
+              <img src="/assets/music-art1.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.svg" alt="" />
+              <img src="/assets/music-art2.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.svg" alt="" />
+              <img src="/assets/music-art3.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.svg" alt="" />
+              <img src="/assets/music-art4.webp" alt="" />
             </div>
           </div>
         </div>
@@ -1385,7 +1385,7 @@ function getAppMarkupMobile() {
         <div class="bg-layer"></div>
 
         <div class="scene-layer">
-          <img class="scene-composite" src="/assets/scene-composite.svg" alt="" />
+          <img class="scene-composite" src="/assets/scene-composite.webp" alt="" />
         </div>
 
         <canvas class="webgl"></canvas>
