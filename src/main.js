@@ -4943,20 +4943,39 @@ ScrollTrigger.create({
   },
 });
 
-  ScrollTrigger.create({
+  let beatStorePhase = "grid";
+
+ScrollTrigger.create({
   id: "mobileBeatStorePin",
   trigger: beatStore,
   start: "top top",
-  end: () => `+=${getMobileViewportHeight() * 2}`,
+
+  // Longer Beat Store scroll
+  end: () => `+=${getMobileViewportHeight() * 6}`,
+
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
-  scrub: 0.75,
+  scrub: 0.9,
   anticipatePin: 1,
   invalidateOnRefresh: true,
 
   onEnter: () => {
     mobileRevolverRenderer?.stop();
     startBoxViewersMobile();
+
+    beatStorePhase = "grid";
+
+    gsap.set(bsGridStage, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+    });
+
+    gsap.set(bsArcStage, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+
+    if (beatArc) beatArc.snap(0);
   },
 
   onEnterBack: () => {
@@ -4969,32 +4988,85 @@ ScrollTrigger.create({
 
     const p = self.progress;
 
-    // First part: show the grid
-    // Middle: fade grid out and arc in
-    // Last part: scroll the arc
-    const fadeToArc = gsap.utils.clamp(0, 1, (p - 0.28) / 0.14);
-    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.38) / 0.62);
+    /*
+      0.00 → 0.22 = grid fully visible
+      0.22 → 0.30 = grid fades out, arc fades in
+      0.30 → 1.00 = arc scrolls
+    */
 
-    gsap.set(bsGridStage, {
-      autoAlpha: 1 - fadeToArc,
-      pointerEvents: fadeToArc < 0.5 ? "auto" : "none",
-    });
+    const gridFade = gsap.utils.clamp(0, 1, (p - 0.22) / 0.08);
+    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.30) / 0.70);
 
-    gsap.set(bsArcStage, {
-      autoAlpha: fadeToArc,
-      pointerEvents: fadeToArc >= 0.5 ? "auto" : "none",
-    });
+    // Phase switch only happens once, not every frame.
+    // This avoids choppy repeated start/stop behavior during handoff.
+    if (p < 0.30 && beatStorePhase !== "grid") {
+      beatStorePhase = "grid";
+      startBoxViewersMobile();
 
+      gsap.set(bsGridStage, {
+        pointerEvents: "auto",
+      });
+
+      gsap.set(bsArcStage, {
+        pointerEvents: "none",
+      });
+    }
+
+    if (p >= 0.30 && beatStorePhase !== "arc") {
+      beatStorePhase = "arc";
+      stopBoxViewersMobile();
+
+      gsap.set(bsGridStage, {
+        autoAlpha: 0,
+        pointerEvents: "none",
+      });
+
+      gsap.set(bsArcStage, {
+        autoAlpha: 1,
+        pointerEvents: "auto",
+      });
+
+      beatArc.snap(0);
+    }
+
+    // Smooth visual handoff before arc movement starts
+    if (p < 0.30) {
+      gsap.set(bsGridStage, {
+        autoAlpha: 1 - gridFade,
+      });
+
+      gsap.set(bsArcStage, {
+        autoAlpha: gridFade,
+      });
+
+      beatArc.layoutProgress(0);
+      return;
+    }
+
+    // Arc only moves after grid is completely gone
     beatArc.layoutProgress(arcProgress * beatArc.maxStep);
   },
 
   onLeave: () => {
     if (beatArc) beatArc.snap(beatArc.maxStep);
     stopBoxViewersMobile();
+
+    gsap.set(bsGridStage, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+
+    gsap.set(bsArcStage, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+    });
   },
 
   onLeaveBack: () => {
     if (beatArc) beatArc.snap(0);
+
+    beatStorePhase = "grid";
+    startBoxViewersMobile();
 
     gsap.set(bsGridStage, {
       autoAlpha: 1,
