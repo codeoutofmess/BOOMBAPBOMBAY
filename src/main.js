@@ -3471,11 +3471,24 @@ function createAlbumArcWidgetMobile({
   snap(0);
 
   items.forEach((btn, idx) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (window.__albumViewMobile) window.__albumViewMobile.open(idx, data);
-    });
-  });
+  const openBeat = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.__albumViewMobile) {
+      window.__albumViewMobile.open(idx, data);
+    }
+  };
+
+  btn.addEventListener("click", openBeat);
+  btn.addEventListener("pointerup", openBeat);
+  btn.addEventListener(
+    "touchend",
+    (e) => {
+      openBeat(e);
+    },
+    { passive: false }
+  );
+});
 
   return { layoutProgress, snap, maxStep, root, data };
 }
