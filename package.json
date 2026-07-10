@@ -11,7 +11,6 @@
   "devDependencies": {
     "@gltf-transform/cli": "^4.3.0",
     "sharp": "^0.35.2",
-    "svgo": "^4.0.1",
     "vite": "^7.3.1"
   },
   "dependencies": {

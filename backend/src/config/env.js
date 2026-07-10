@@ -12,6 +12,9 @@ export const env = {
   razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || "",
 
   databaseUrl: process.env.DATABASE_URL || "",
+  // Only disable certificate validation when explicitly opted into (e.g. a
+  // local Postgres with a self-signed cert). Defaults to secure.
+  dbSslRejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false",
 
   supabaseUrl: process.env.SUPABASE_URL || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
