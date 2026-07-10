@@ -1201,19 +1201,19 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="GUNS CARS AND BARS">
-              <img src="/assets/music-art1.webp" alt="" />
+              <img src="/assets/music-art1.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="SECOND DROP">
-              <img src="/assets/music-art2.webp" alt="" />
+              <img src="/assets/music-art2.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="THIRD CUT">
-              <img src="/assets/music-art3.webp" alt="" />
+              <img src="/assets/music-art3.svg" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="FOURTH CUT">
-              <img src="/assets/music-art4.webp" alt="" />
+              <img src="/assets/music-art4.svg" alt="" />
             </div>
           </div>
         </div>
