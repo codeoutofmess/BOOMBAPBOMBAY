@@ -14,17 +14,28 @@ gsap.registerPlugin(Flip);
 const IS_MOBILE = window.innerWidth <= 768;
 
 let mobileScenePanLoop = null;
-
 let mobileBeatStoreModelsInitialized = false;
 
-function setMobileViewportVars() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--app-vh", `${vh}px`);
-  document.documentElement.style.setProperty("--app-dvh", `${window.innerHeight}px`);
+let mobileMasterTrigger = null;
+let mobileViewportRaf = null;
+let mobileViewportTrackingBound = false;
+let mobileResizeRefreshRaf = null;
+
+function getLiveViewportHeightMobile() {
+  if (window.visualViewport && window.visualViewport.height) {
+    return window.visualViewport.height;
+  }
+  return window.innerHeight || document.documentElement.clientHeight || 0;
 }
 
 function getMobileViewportHeight() {
-  return window.innerHeight || document.documentElement.clientHeight || 0;
+  return getLiveViewportHeightMobile();
+}
+
+function setMobileViewportVars() {
+  const liveH = getLiveViewportHeightMobile();
+  document.documentElement.style.setProperty("--app-dvh", `${liveH}px`);
+  document.documentElement.style.setProperty("--app-vh", `${liveH * 0.01}px`);
 }
 
 function ensureBeatStoreModelsMobile() {
@@ -3172,6 +3183,8 @@ function initAlbumViewMobile() {
 
     view.classList.add("is-open");
     view.setAttribute("aria-hidden", "false");
+
+    setMobileViewportVars();
     document.body.style.overflow = "hidden";
 
     gsap.killTweensOf(view);
@@ -3789,8 +3802,44 @@ gunGroup.quaternion.slerp(targetQuat, 0.08);
   });
 }
 
+function handleMobileViewportChange() {
+  if (mobileViewportRaf) cancelAnimationFrame(mobileViewportRaf);
+
+  mobileViewportRaf = requestAnimationFrame(() => {
+    setMobileViewportVars();
+
+    if (mobileResizeRefreshRaf) cancelAnimationFrame(mobileResizeRefreshRaf);
+
+    mobileResizeRefreshRaf = requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+    });
+  });
+}
+
+function bindMobileViewportTracking() {
+  if (mobileViewportTrackingBound) return;
+  mobileViewportTrackingBound = true;
+
+  setMobileViewportVars();
+
+  window.addEventListener("resize", handleMobileViewportChange, { passive: true });
+  window.addEventListener("orientationchange", handleMobileViewportChange, { passive: true });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", handleMobileViewportChange, {
+      passive: true,
+    });
+  }
+}
 
 function initCinematicScrollMobile() {
+  if (mobileMasterTrigger) {
+    mobileMasterTrigger.kill();
+    mobileMasterTrigger = null;
+  }
+
+  setMobileViewportVars();
+
   [
     "cinematicLandingMobile",
     "cinematicMusicMobile",
@@ -4456,7 +4505,7 @@ gsap.set(beatStore, {
   function setAboutOverlayModeMobile(on) {
   if (!aboutSection) return;
 
-  const vh = getMobileViewportHeight();
+  const liveH = getLiveViewportHeightMobile();
 
   if (on) {
     gsap.set(aboutSection, {
@@ -4464,7 +4513,7 @@ gsap.set(beatStore, {
       top: 0,
       left: 0,
       width: "100%",
-      height: vh,
+      height: liveH,
       zIndex: 30,
     });
 
@@ -4473,7 +4522,7 @@ gsap.set(beatStore, {
         position: "fixed",
         inset: 0,
         width: "100vw",
-        height: vh,
+        height: liveH,
         zIndex: 40,
         pointerEvents: "none",
         display: "flex",
@@ -4502,7 +4551,7 @@ gsap.set(beatStore, {
 
     const targetRect = aboutMapWrap.getBoundingClientRect();
     const viewportCX = window.innerWidth / 2;
-    const viewportCY = window.innerHeight / 2;
+    const viewportCY = getLiveViewportHeightMobile() / 2;
 
     const targetCX = targetRect.left + targetRect.width / 2;
     const targetCY = targetRect.top + targetRect.height / 2;
@@ -4514,7 +4563,7 @@ gsap.set(beatStore, {
 
     const fitScale = Math.min(
       (window.innerWidth * 0.82) / naturalWidth,
-      (window.innerHeight * 0.82) / naturalHeight
+      (getLiveViewportHeightMobile() * 0.82) / naturalHeight
     );
 
     const targetScale = targetRect.width / naturalWidth;
@@ -4728,14 +4777,14 @@ gsap.set(beatStore, {
   gsap.set(beatContent, { autoAlpha: 0 });
   
 
-  ScrollTrigger.create({
+  mobileMasterTrigger = ScrollTrigger.create({
   id: "cinematicMobileMaster",
   trigger: cinematicRoot,
   start: "top top",
   end: "+=560%",
   pin: true,
   pinSpacing: true,
-  scrub: 0.55,
+  scrub: 0.65,
   anticipatePin: 0,
   invalidateOnRefresh: true,
   fastScrollEnd: true,
@@ -4872,24 +4921,12 @@ const ABOUT_END = 0.94;
     },
   });
 
-  window.addEventListener("resize", () => {
-    ScrollTrigger.refresh();
-  });
-
-  ScrollTrigger.refresh();
+  ScrollTrigger.refresh(true);
 }
 
 function initMobileApp() {
-
-  setMobileViewportVars();
-
-window.addEventListener("resize", setMobileViewportVars, { passive: true });
-window.addEventListener("orientationchange", () => {
-  setTimeout(() => {
-    setMobileViewportVars();
-    ScrollTrigger.refresh(true);
-  }, 120);
-}, { passive: true });
+  bindMobileViewportTracking();
+  document.body.classList.add("mobile-cinematic-lock");
 
   gsap.set("#beat-store", {
     autoAlpha: 0,
@@ -4921,6 +4958,8 @@ window.addEventListener("orientationchange", () => {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
+
+  setMobileViewportVars();
 
   document.body.style.overflow = "hidden";
   document.body.style.touchAction = "none";

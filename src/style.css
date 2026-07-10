@@ -1,5 +1,7 @@
 :root {
-  --bg:   transparent;
+  --bg: #ab1212;
+  --app-vh: 1vh;
+  --app-dvh: 100vh;
 
   /* desktop / laptop fluid scale */
   --page-pad-x: clamp(48px, 5vw, 80px);
@@ -1301,26 +1303,22 @@ body {
     --m-safe-top: max(env(safe-area-inset-top), 0px);
     --m-safe-bottom: max(env(safe-area-inset-bottom), 0px);
 
-    --app-dvh: 100dvh;
+    --app-dvh: 100vh;
 
-    /* spacing */
     --m-side: clamp(22px, 5.6vw, 32px);
     --m-content-w: calc(100vw - (var(--m-side) * 2));
 
-    /* top spacing */
     --m-nav-top: clamp(18px, 2.2vh, 26px);
     --m-menu-top: clamp(22px, 3vh, 30px);
 
-    /* layout rhythm */
     --m-landing-top: clamp(118px, 16vh, 168px);
+    --m-landing-right-top: clamp(500px, 60vh, 580px);
     --m-section-top: clamp(96px, 12vh, 124px);
     --m-copy-gap: clamp(18px, 2.4vh, 24px);
     --m-block-gap: clamp(22px, 3vh, 32px);
 
-    /* visual positioning */
     --m-visual-top: clamp(380px, 52vh, 470px);
 
-    /* type */
     --m-meta-size: clamp(10px, 2.8vw, 12px);
     --m-copy-size: clamp(12px, 3.6vw, 14px);
     --m-landing-desc-size: clamp(14px, 4.2vw, 16px);
@@ -1330,21 +1328,17 @@ body {
     --m-title-bold: clamp(78px, 22vw, 96px);
     --m-arc-title-size: clamp(14px, 4vw, 16px);
 
-    /* controls */
     --m-btn-h: 58px;
 
-    /* grid */
     --m-grid-gap: 1px;
     --m-grid-col: calc((var(--m-content-w) - (var(--m-grid-gap) * 2)) / 3);
     --m-grid-big-h: calc((var(--m-grid-col) * 2) + var(--m-grid-gap));
 
-    /* arc */
     --m-arc-w: min(78vw, 288px);
     --m-arc-h: calc(var(--m-arc-w) * 1.01);
     --m-arc-item-w: calc(var(--m-arc-w) * 0.5);
     --m-arc-item-h: calc(var(--m-arc-item-w) * 0.6);
 
-    /* about */
     --m-about-map-w: clamp(150px, 42vw, 210px);
   }
 
@@ -1360,6 +1354,11 @@ body {
   body {
     position: static !important;
     touch-action: auto !important;
+  }
+
+  body.mobile-cinematic-lock {
+    overflow-y: auto !important;
+    overscroll-behavior-y: none !important;
   }
 
   #app,
@@ -1378,6 +1377,8 @@ body {
     height: var(--app-dvh);
     overflow: clip;
     background: var(--bg);
+    overscroll-behavior: none;
+    touch-action: pan-y;
   }
 
   #home,
@@ -1386,16 +1387,16 @@ body {
   #about {
     position: absolute !important;
     inset: 0 !important;
-    min-height: var(--app-dvh) !important;
     height: var(--app-dvh) !important;
+    min-height: var(--app-dvh) !important;
   }
 
   #home {
-    overflow: clip !important;
+    overflow: visible !important;
   }
 
   #home .scene-layer {
-    overflow: clip !important;
+    overflow: visible !important;
   }
 
   #music,
@@ -1407,9 +1408,9 @@ body {
   .page.landing,
   .landing {
     position: relative;
-    min-height: var(--app-dvh);
     height: var(--app-dvh);
-    overflow: clip;
+    min-height: var(--app-dvh);
+    overflow: hidden;
     background: var(--bg);
   }
 
@@ -1482,8 +1483,6 @@ body {
     display: block;
   }
 
-  /* LANDING */
-
   .landing .text-layer {
     position: relative;
     z-index: 20;
@@ -1492,9 +1491,6 @@ body {
     padding-left: var(--m-side);
     padding-right: var(--m-side);
     padding-top: calc(var(--m-landing-top) + var(--m-safe-top));
-    display: flex;
-    flex-direction: column;
-    gap: var(--m-block-gap);
   }
 
   .landing .left-block,
@@ -1540,10 +1536,10 @@ body {
   }
 
   .landing .desc {
-    margin-top: var(--m-copy-gap);
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
     max-width: 100%;
   }
@@ -1554,12 +1550,16 @@ body {
 
   .landing .desc-line .reveal__inner {
     font-size: var(--m-landing-desc-size);
-    line-height: 1.05;
+    line-height: 1;
     white-space: nowrap;
   }
 
   .landing .right-block {
-    margin-top: clamp(8px, 2vh, 18px) !important;
+    position: absolute !important;
+    left: var(--m-side) !important;
+    top: var(--m-landing-right-top) !important;
+    width: var(--m-content-w);
+    max-width: var(--m-content-w);
   }
 
   .landing .latest {
@@ -1569,7 +1569,7 @@ body {
   }
 
   .landing .drop-reveal {
-    margin-top: 12px;
+    margin-top: 16px;
   }
 
   .landing .drop-row {
@@ -1589,7 +1589,7 @@ body {
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    overflow: clip !important;
+    overflow: visible !important;
     z-index: 6 !important;
     pointer-events: none !important;
   }
@@ -1616,12 +1616,12 @@ body {
   ========================= */
 
   #music.music-page {
-    display: block !important;
-    height: var(--app-dvh) !important;
-    min-height: var(--app-dvh) !important;
-    overflow: hidden !important;
-    background: #000 !important;
-  }
+  display: block !important;
+  height: var(--app-dvh) !important;
+  min-height: var(--app-dvh) !important;
+  overflow: hidden !important;
+  background: #000 !important;
+}
 
   #music .beat-store-bg,
   #beat-store .beat-store-bg {
@@ -1724,12 +1724,12 @@ body {
   ========================= */
 
   #beat-store {
-    display: block !important;
-    height: var(--app-dvh) !important;
-    min-height: var(--app-dvh) !important;
-    overflow: hidden !important;
-    background: #000 !important;
-  }
+  display: block !important;
+  height: var(--app-dvh) !important;
+  min-height: var(--app-dvh) !important;
+  overflow: hidden !important;
+  background: #000 !important;
+}
 
   #beat-store .bs-mobile-left {
     position: absolute !important;
@@ -1986,12 +1986,10 @@ body {
   left: 0 !important;
   padding-left: var(--m-side) !important;
   bottom: calc(clamp(28px, 5vh, 54px) + var(--m-safe-bottom)) !important;
-
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
   justify-content: flex-start !important;
-
   gap: 20px !important;
   z-index: 5 !important;
   text-align: left !important;
