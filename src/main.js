@@ -20,6 +20,13 @@ const ROT_FIX = {
   "mpc_one.glb": { x: Math.PI / 2, y: 0, z: 0 },
 };
 
+const MOBILE_MODEL_FIT = {
+  "WAVES.glb": { y: -0.08, zoom: 1.32 },
+  "fl_studio_logo.glb": { y: -0.02, zoom: 1.18 },
+  "arturia_minilab_mkii_model.glb": { y: -0.06, zoom: 1.28 },
+  "mpc_one.glb": { y: -0.03, zoom: 1.22 },
+};
+
 const PRELOAD_ASSETS = [
   "/assets/noise.svg",
   "/assets/beat-store-bg.svg",
@@ -326,9 +333,10 @@ function getAppMarkupDesktop() {
             <span class="nav-item hover-scramble">[ UPDATES ]</span>
           </div>
 
-          <img src="/assets/B.svg" class="nav-glyph hover-scramble nav-glyph-B-right" alt="B" />
-          <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
-        </nav>
+
+        <button class="menu-btn" type="button" aria-label="Open menu">
+  <img src="/assets/menu-btn.svg" alt="" />
+</button>
 
         <div class="text-layer">
           <div class="left-block">
@@ -622,6 +630,10 @@ function getAppMarkupMobile() {
           <img src="/assets/ब.svg" class="nav-glyph hover-scramble nav-glyph-b-right" alt="ब" />
         </nav>
 
+        <button class="menu-btn" type="button" aria-label="Open menu">
+  <img src="/assets/menu-btn.svg" alt="" />
+</button>
+
         <div class="text-layer">
           <div class="left-block">
             <div class="meta-row">
@@ -711,82 +723,91 @@ function getAppMarkupMobile() {
         </div>
       </section>
 
-      <section class="page beat-store" id="beat-store">
-        <div class="beat-store-bg"></div>
+<section class="page beat-store" id="beat-store">
+  <div class="beat-store-bg"></div>
 
-        <div class="beat-store-content">
-          <div class="reveal bs-title-reveal">
-            <h2 class="bs-title reveal__inner">BEAT STORE</h2>
+  <div class="beat-store-content">
+    <div class="bs-mobile-left">
+      <div class="reveal bs-title-reveal">
+        <h2 class="bs-title reveal__inner">BEAT STORE</h2>
+      </div>
+
+      <div class="reveal bs-copy-reveal">
+        <p class="bs-copy reveal__inner">
+          KSHAH, AS A SEASONED PRODUCER, CRAFTS BESPOKE BEATS FOR YOUR SPECIFIC NEEDS USING THE WEAPONS MENTIONED BELOW.
+
+          HIRE US IF YOU NEED SOME BEATS!
+        </p>
+      </div>
+
+      <button class="bs-btn">GET IN TOUCH</button>
+    </div>
+
+    <div class="bs-mobile-visual">
+      <div class="bs-mobile-grid-stage">
+        <div class="bs-grid">
+          <div class="bs-row">
+            <div class="bs-box bs-small" data-grid="img-2">
+              <canvas class="bs-canvas" data-model="/models/WAVES.glb"></canvas>
+            </div>
+
+            <div class="bs-box bs-small" data-grid="img-3">
+              <canvas class="bs-canvas" data-model="/models/fl_studio_logo.glb"></canvas>
+            </div>
+
+            <div class="bs-box bs-small" data-grid="img-4">
+              <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.glb"></canvas>
+            </div>
           </div>
 
-          <div class="reveal bs-copy-reveal">
-            <p class="bs-copy reveal__inner">
-              KSHAH, AS A SEASONED PRODUCER, CRAFTS BESPOKE BEATS FOR YOUR SPECIFIC NEEDS USING THE WEAPONS MENTIONED BELOW.
-              HIRE US IF YOU NEED SOME BEATS!
-            </p>
-          </div>
-
-          <button class="bs-btn">GET IN TOUCH</button>
-
-          <div class="bs-grid">
-            <div class="bs-row">
-              <div class="bs-box bs-small" data-grid="img-2">
-                <canvas class="bs-canvas" data-model="/models/WAVES.glb"></canvas>
-              </div>
-
-              <div class="bs-box bs-small" data-grid="img-3">
-                <canvas class="bs-canvas" data-model="/models/fl_studio_logo.glb"></canvas>
-              </div>
-
-              <div class="bs-box bs-small" data-grid="img-4">
-                <canvas class="bs-canvas" data-model="/models/arturia_minilab_mkii_model.glb"></canvas>
-              </div>
-            </div>
-
-            <div class="bs-box bs-big bs-aim" data-grid="img-1">
-              <canvas class="bs-canvas" data-model="/models/mpc_one.glb"></canvas>
-            </div>
-          </div>
-
-          <div id="bs-arc">
-            <div id="bsArcTitle" class="arc-title">BEAT NAME</div>
-
-            <div id="bsArcPointer" class="arc-pointer" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-
-            <div class="bs-arc-item" data-title="GUNS">
-              <img src="/assets/album-art1.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="CARS">
-              <img src="/assets/album-art2.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="BARS">
-              <img src="/assets/album-art3.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="GREENS">
-              <img src="/assets/album-art4.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="SMOKES">
-              <img src="/assets/album-art5.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="PILLS">
-              <img src="/assets/album-art6.svg" alt="" />
-            </div>
-
-            <div class="bs-arc-item" data-title="DRINKS">
-              <img src="/assets/album-art7.svg" alt="" />
-            </div>
+          <div class="bs-box bs-big bs-aim" data-grid="img-1">
+            <canvas class="bs-canvas" data-model="/models/mpc_one.glb"></canvas>
           </div>
         </div>
-      </section>
+      </div>
+
+      <div class="bs-mobile-arc-stage">
+        <div id="bs-arc">
+          <div id="bsArcTitle" class="arc-title">BEAT NAME</div>
+
+          <div id="bsArcPointer" class="arc-pointer" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="bs-arc-item" data-title="GUNS">
+            <img src="/assets/album-art1.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="CARS">
+            <img src="/assets/album-art2.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="BARS">
+            <img src="/assets/album-art3.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="GREENS">
+            <img src="/assets/album-art4.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="SMOKES">
+            <img src="/assets/album-art5.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="PILLS">
+            <img src="/assets/album-art6.svg" alt="" />
+          </div>
+
+          <div class="bs-arc-item" data-title="DRINKS">
+            <img src="/assets/album-art7.svg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       <section class="page about-page" id="about">
         <div class="about-bg"></div>
@@ -3211,8 +3232,8 @@ function createAlbumArcWidgetMobile({
 
   if (!titleEl || items.length < 1) return null;
 
-  const H = 134;
-  const GAP_Y = 12;
+  const H = 86;
+  const GAP_Y = 32;
   const STEP_X = 72;
   const STEP_Y = H * 0.7 + GAP_Y;
 
@@ -3371,6 +3392,8 @@ function createBoxViewerMobile(canvas) {
     group.rotation.set(0, 0, 0);
   }
 
+    let currentModelFile = "";
+
   function fitCameraToObjectMobile(obj) {
     const box = new THREE.Box3().setFromObject(obj);
     const sphere = new THREE.Sphere();
@@ -3378,9 +3401,11 @@ function createBoxViewerMobile(canvas) {
 
     const radius = Math.max(0.001, sphere.radius);
     const fov = THREE.MathUtils.degToRad(camera.fov);
-    const dist = radius / Math.sin(fov / 2);
+    const baseDist = radius / Math.sin(fov / 2);
 
-    camera.position.set(0, radius * 0.1, dist * 1.15);
+    const preset = MOBILE_MODEL_FIT[currentModelFile] || { y: 0, zoom: 1.2 };
+
+    camera.position.set(0, radius * preset.y, baseDist * preset.zoom);
     camera.lookAt(0, 0, 0);
   }
 
@@ -3410,10 +3435,12 @@ function createBoxViewerMobile(canvas) {
 
         loader.load(
           url,
-          (gltf) => {
+                    (gltf) => {
             const modelRoot = gltf.scene;
 
             const fileName = decodeURIComponent(url).split("/").pop().split("?")[0];
+            currentModelFile = fileName;
+
             const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
             modelRoot.rotation.set(fix.x, fix.y, fix.z);
 
@@ -3432,11 +3459,16 @@ function createBoxViewerMobile(canvas) {
         );
       }),
 
-    tick: (dt) => {
+        tick: (dt) => {
       t += dt;
-      group.rotation.y += (0.18 * t - group.rotation.y) * 0.06;
-      group.rotation.x += (0 - group.rotation.x) * 0.08;
+
+      const idleRotY = 0.1 * t;
+      const idleRotX = -0.04;
+
+      group.rotation.y += (idleRotY - group.rotation.y) * 0.05;
+      group.rotation.x += (idleRotX - group.rotation.x) * 0.08;
       group.position.y += (0 - group.position.y) * 0.08;
+
       renderer.render(scene, camera);
     },
 
@@ -3456,6 +3488,58 @@ function initBeatStoreModelsMobile() {
     const url = c.getAttribute("data-model");
     viewer.load(url).catch((err) => {
       console.error("BeatStore GLB load failed:", url, err);
+    });
+  });
+
+  function resetViewerForBoxMobile(boxEl) {
+    const c = boxEl.querySelector(".bs-canvas");
+    if (!c) return;
+
+    const all = Array.from(document.querySelectorAll(".bs-canvas"));
+    const idx = all.indexOf(c);
+
+    if (idx >= 0 && boxViewers[idx]) boxViewers[idx].resetRotation();
+  }
+
+  const bsBoxes = gsap.utils.toArray("#beat-store .bs-grid .bs-box");
+  let activeBox = document.querySelector('#beat-store .bs-grid .bs-box[data-grid="img-1"]');
+
+  function scheduleViewersResizeMobile() {
+    if (scheduleViewersResizeMobile._raf) return;
+
+    scheduleViewersResizeMobile._raf = requestAnimationFrame(() => {
+      scheduleViewersResizeMobile._raf = null;
+      for (const v of boxViewers) v.resize();
+    });
+  }
+
+  bsBoxes.forEach((box) => {
+    box.style.pointerEvents = "auto";
+    box.style.touchAction = "manipulation";
+
+    box.addEventListener("click", () => {
+      if (box === activeBox) return;
+
+      const state = Flip.getState(bsBoxes);
+      const nextGrid = box.dataset.grid;
+
+      activeBox.dataset.grid = nextGrid;
+      box.dataset.grid = "img-1";
+
+      activeBox.classList.remove("bs-aim");
+      box.classList.add("bs-aim");
+
+      activeBox = box;
+
+      resetViewerForBoxMobile(activeBox);
+
+      Flip.from(state, {
+        duration: 0.32,
+        ease: "power1.inOut",
+        absolute: true,
+        onUpdate: scheduleViewersResizeMobile,
+        onComplete: scheduleViewersResizeMobile,
+      });
     });
   });
 
@@ -3652,6 +3736,9 @@ function initCinematicScrollMobile() {
   const bsGrid = beatStore?.querySelector(".bs-grid");
   const bsArc = beatStore?.querySelector("#bs-arc");
 
+    const bsTitleReveal = beatStore?.querySelector(".bs-title-reveal");
+  const bsCopyReveal = beatStore?.querySelector(".bs-copy-reveal");
+
   const aboutTransitionMap = document.querySelector("#aboutTransitionMap");
   const aboutTransitionImg = aboutTransitionMap?.querySelector("img");
   const aboutMapWrap = aboutSection?.querySelector("#aboutMapWrap");
@@ -3697,6 +3784,89 @@ function initCinematicScrollMobile() {
     itemSelector: ".bs-arc-item",
     data: BEATS,
   });
+
+    const beatArcItems = gsap.utils.toArray(bsArc.querySelectorAll(".bs-arc-item"));
+  const beatArcTitle = bsArc.querySelector(".arc-title");
+  const beatArcPointer = bsArc.querySelector(".arc-pointer");
+
+  const ARC_H_MOBILE = 86;
+  const ARC_GAP_Y_MOBILE = 32;
+  const ARC_STEP_X_MOBILE = 72;
+  const ARC_STEP_Y_MOBILE = ARC_H_MOBILE * 0.7 + ARC_GAP_Y_MOBILE;
+
+  const ARC_SLOT_0_MOBILE = {
+    x: ARC_STEP_X_MOBILE * 2,
+    y: ARC_STEP_Y_MOBILE * 2,
+    opacity: 0.2,
+    scale: 0.8,
+  };
+
+  const ARC_SLOT_1_MOBILE = {
+    x: ARC_STEP_X_MOBILE * 1,
+    y: ARC_STEP_Y_MOBILE * 1,
+    opacity: 0.5,
+    scale: 0.9,
+  };
+
+  const ARC_SLOT_2_MOBILE = {
+    x: 0,
+    y: 0,
+    opacity: 1,
+    scale: 1,
+  };
+
+  function setBeatStoreArcIntroProgressMobile(rawT) {
+    const t = clamp01Mobile(rawT);
+    const e = easeOutCubicMobile(t);
+
+    setBeatStoreArcStateMobile();
+
+    // keep later arc items hidden during intro
+    beatArcItems.forEach((el, i) => {
+      el.style.pointerEvents = "none";
+      el.style.zIndex = 0;
+      gsap.set(el, { autoAlpha: 0 });
+    });
+
+    // title/pointer reveal slightly after items begin moving
+    const labelT = clamp01Mobile((t - 0.18) / 0.42);
+
+    if (beatArcTitle) gsap.set(beatArcTitle, { autoAlpha: labelT });
+    if (beatArcPointer) gsap.set(beatArcPointer, { autoAlpha: labelT });
+
+    // item 1 : slot[0] -> slot[2]
+    if (beatArcItems[0]) {
+      beatArcItems[0].style.zIndex = 40;
+      gsap.set(beatArcItems[0], {
+        x: lerpMobile(ARC_SLOT_0_MOBILE.x, ARC_SLOT_2_MOBILE.x, e),
+        y: lerpMobile(ARC_SLOT_0_MOBILE.y, ARC_SLOT_2_MOBILE.y, e),
+        scale: lerpMobile(ARC_SLOT_0_MOBILE.scale, ARC_SLOT_2_MOBILE.scale, e),
+        autoAlpha: lerpMobile(0, ARC_SLOT_2_MOBILE.opacity, e),
+      });
+    }
+
+    // item 2 : slot[0] -> slot[1]
+    if (beatArcItems[1]) {
+      beatArcItems[1].style.zIndex = 30;
+      gsap.set(beatArcItems[1], {
+        x: lerpMobile(ARC_SLOT_0_MOBILE.x, ARC_SLOT_1_MOBILE.x, e),
+        y: lerpMobile(ARC_SLOT_0_MOBILE.y, ARC_SLOT_1_MOBILE.y, e),
+        scale: lerpMobile(ARC_SLOT_0_MOBILE.scale, ARC_SLOT_1_MOBILE.scale, e),
+        autoAlpha: lerpMobile(0, ARC_SLOT_1_MOBILE.opacity, e),
+      });
+    }
+
+    // item 3 : settles into slot[0]
+    if (beatArcItems[2]) {
+      beatArcItems[2].style.zIndex = 20;
+      gsap.set(beatArcItems[2], {
+        x: ARC_SLOT_0_MOBILE.x,
+        y: lerpMobile(ARC_SLOT_0_MOBILE.y + 22, ARC_SLOT_0_MOBILE.y, e),
+        scale: lerpMobile(0.72, ARC_SLOT_0_MOBILE.scale, e),
+        autoAlpha: lerpMobile(0, ARC_SLOT_0_MOBILE.opacity, e),
+      });
+    }
+  }
 
   function clamp01Mobile(v) {
     return Math.max(0, Math.min(1, v));
@@ -3808,6 +3978,12 @@ gsap.set(sceneComposite, {
     pointerEvents: "none",
   });
 
+  const mobileMusicTitleInner = mobileMusicLeft?.querySelector(".bs-music-title-reveal .reveal__inner");
+const mobileMusicCopyInner = mobileMusicLeft?.querySelector(".bs-music-copy-reveal .reveal__inner");
+
+if (mobileMusicTitleInner) gsap.set(mobileMusicTitleInner, { yPercent: 0 });
+if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
+
   gsap.set(mobileMusicArcRoot, {
     autoAlpha: musicFade,
     y: 18 - 18 * musicFade,
@@ -3830,46 +4006,56 @@ gsap.set(sceneComposite, {
   });
 }
 
-  function setMusicBaseStateMobile() {
-    gsap.set(landing, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-    });
+function setMusicBaseStateMobile() {
+  gsap.set(landing, {
+    autoAlpha: 0,
+    pointerEvents: "none",
+  });
 
-    gsap.set(musicSection, {
-      autoAlpha: 1,
-      pointerEvents: "auto",
-      zIndex: 10,
-    });
+  gsap.set(musicSection, {
+    autoAlpha: 1,
+    pointerEvents: "auto",
+    zIndex: 10,
+  });
 
-    gsap.set(mobileMusicLeft, {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "none",
-    });
+  gsap.set(mobileMusicLeft, {
+    autoAlpha: 1,
+    visibility: "visible",
+    pointerEvents: "none",
+  });
 
-    gsap.set(mobileMusicArcRoot, {
-      autoAlpha: 1,
-      visibility: "visible",
-      pointerEvents: "auto",
-    });
+  gsap.set(mobileMusicArcRoot, {
+    autoAlpha: 1,
+    visibility: "visible",
+    pointerEvents: "auto",
+  });
 
-    gsap.set(beatStore, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 20,
-    });
+  const mobileMusicTitleInner = mobileMusicLeft?.querySelector(".bs-music-title-reveal .reveal__inner");
+  const mobileMusicCopyInner = mobileMusicLeft?.querySelector(".bs-music-copy-reveal .reveal__inner");
 
-    gsap.set(beatContent, { autoAlpha: 0 });
+  if (mobileMusicTitleInner) gsap.set(mobileMusicTitleInner, { yPercent: 0 });
+  if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
 
-    gsap.set(aboutSection, {
-      autoAlpha: 0,
-      pointerEvents: "none",
-      zIndex: 30,
-    });
-  }
+  gsap.set(beatStore, {
+    autoAlpha: 0,
+    pointerEvents: "none",
+    zIndex: 20,
+  });
+
+  gsap.set(beatContent, { autoAlpha: 0 });
+
+  gsap.set(aboutSection, {
+    autoAlpha: 0,
+    pointerEvents: "none",
+    zIndex: 30,
+  });
+}
 
   function setBeatStoreBaseStateMobile() {
+    setBeatStoreGridStateMobile();
+  }
+
+    function setBeatStoreGridStateMobile() {
     gsap.set(landing, {
       autoAlpha: 0,
       pointerEvents: "none",
@@ -3889,12 +4075,156 @@ gsap.set(sceneComposite, {
 
     gsap.set(beatContent, { autoAlpha: 1 });
 
-    
     gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
     gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
     gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
+
+    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
+    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
+
+    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
+    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
+
+    gsap.set(".bs-mobile-grid-stage", {
+      autoAlpha: 1,
+      visibility: "visible",
+      pointerEvents: "auto",
+    });
+
+    gsap.set(".bs-mobile-arc-stage", {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(bsGrid, { autoAlpha: 1 });
+    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "none" });
+
+    gsap.set(aboutSection, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+      zIndex: 30,
+    });
+  }
+
+  function setBeatStoreArcStateMobile() {
+    gsap.set(landing, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+
+    gsap.set(musicSection, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+      zIndex: 10,
+    });
+
+    gsap.set(beatStore, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+      zIndex: 20,
+    });
+
+    gsap.set(beatContent, { autoAlpha: 1 });
+
+    gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
+    gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
+    gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
+
+    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
+    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
+
+    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
+    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
+
+    gsap.set(".bs-mobile-grid-stage", {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(".bs-mobile-arc-stage", {
+      autoAlpha: 1,
+      visibility: "visible",
+      pointerEvents: "auto",
+    });
+
     gsap.set(bsGrid, { autoAlpha: 1 });
     gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "auto" });
+
+    gsap.set(aboutSection, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+      zIndex: 30,
+    });
+  }
+
+  function setBeatStoreArcPreIntroStateMobile() {
+  setBeatStoreArcStateMobile();
+
+  if (beatArcTitle) gsap.set(beatArcTitle, { autoAlpha: 0 });
+  if (beatArcPointer) gsap.set(beatArcPointer, { autoAlpha: 0 });
+
+  beatArcItems.forEach((el) => {
+    el.style.pointerEvents = "none";
+    el.style.zIndex = 0;
+
+    gsap.set(el, {
+      x: ARC_SLOT_0_MOBILE.x,
+      y: ARC_SLOT_0_MOBILE.y + 22,
+      scale: 0.72,
+      autoAlpha: 0,
+    });
+  });
+}
+
+  function setBeatStoreGridToArcProgressMobile(rawT) {
+    const t = clamp01Mobile(rawT);
+    const e = easeOutCubicMobile(t);
+
+    gsap.set(landing, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
+
+    gsap.set(musicSection, {
+      autoAlpha: 0,
+      pointerEvents: "none",
+      zIndex: 10,
+    });
+
+    gsap.set(beatStore, {
+      autoAlpha: 1,
+      pointerEvents: "auto",
+      zIndex: 20,
+    });
+
+    gsap.set(beatContent, { autoAlpha: 1 });
+
+    gsap.set(bsTitle, { autoAlpha: 1, y: 0 });
+    gsap.set(bsCopy, { autoAlpha: 1, y: 0 });
+    gsap.set(bsBtn, { autoAlpha: 1, y: 0 });
+
+    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
+    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
+
+    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: 0 });
+    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: 0 });
+
+    gsap.set(".bs-mobile-grid-stage", {
+      autoAlpha: 1 - e,
+      visibility: 1 - e > 0.001 ? "visible" : "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(".bs-mobile-arc-stage", {
+      autoAlpha: e,
+      visibility: e > 0.001 ? "visible" : "hidden",
+      pointerEvents: e > 0.85 ? "auto" : "none",
+    });
+
+    gsap.set(bsGrid, { autoAlpha: 1 });
+    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: e > 0.85 ? "auto" : "none" });
 
     gsap.set(aboutSection, {
       autoAlpha: 0,
@@ -4116,8 +4446,27 @@ gsap.set(beatStore, {
     gsap.set(bsTitle, { autoAlpha: storeFade, y: -20 * t });
     gsap.set(bsCopy, { autoAlpha: storeFade, y: -20 * t });
     gsap.set(bsBtn, { autoAlpha: storeFade, y: -10 * t });
-    gsap.set(bsGrid, { autoAlpha: storeFade });
-    gsap.set(bsArc, { autoAlpha: storeFade, pointerEvents: "none" });
+
+    const bsTitleInner = getRevealInnerMobile(bsTitleReveal);
+    const bsCopyInner = getRevealInnerMobile(bsCopyReveal);
+
+    if (bsTitleInner) gsap.set(bsTitleInner, { yPercent: -110 * t });
+    if (bsCopyInner) gsap.set(bsCopyInner, { yPercent: -110 * t });
+
+    gsap.set(".bs-mobile-grid-stage", {
+      autoAlpha: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(".bs-mobile-arc-stage", {
+      autoAlpha: storeFade,
+      visibility: storeFade > 0.001 ? "visible" : "hidden",
+      pointerEvents: "none",
+    });
+
+    gsap.set(bsGrid, { autoAlpha: 1 });
+    gsap.set(bsArc, { autoAlpha: 1, pointerEvents: "none" });
 
     if (beatBg) gsap.set(beatBg, { autoAlpha: 1 - e });
 
@@ -4229,7 +4578,7 @@ gsap.set(beatStore, {
     id: "cinematicMobileMaster",
     trigger: cinematicRoot,
     start: "top top",
-    end: "+=520%",
+    end: "+=800%",
     pin: true,
     pinSpacing: true,
     scrub: 1,
@@ -4252,8 +4601,9 @@ gsap.set(beatStore, {
 
 const LANDING_END = 0.36;
 const MUSIC_END = 0.56;
-const HANDOFF_END = 0.70;
-const BEAT_END = 0.88;
+const HANDOFF_END = 0.58;
+const BEAT_GRID_END = 0.62;
+const BEAT_ARC_END = 0.90;
 const ABOUT_END = 1.0;
 
             if (p <= LANDING_END) {
@@ -4286,23 +4636,58 @@ const ABOUT_END = 1.0;
         return;
       }
 
-      if (p <= BEAT_END) {
-        setBeatStoreBaseStateMobile();
+            if (p <= BEAT_GRID_END) {
+        setBeatStoreGridStateMobile();
         setAboutHiddenStateMobile();
-
-        const local = clamp01Mobile((p - HANDOFF_END) / (BEAT_END - HANDOFF_END));
-
-        if (beatArc) {
-          beatArc.layoutProgress(local * beatArc.maxStep);
-        }
-
         return;
       }
 
+      if (p <= BEAT_ARC_END) {
+  setAboutHiddenStateMobile();
+
+  const local = clamp01Mobile((p - BEAT_GRID_END) / (BEAT_ARC_END - BEAT_GRID_END));
+
+  const FADE_PORTION = 0.18;
+  const INTRO_PORTION = 0.28;
+
+  // 1. grid fades out, arc stage fades in
+  if (local <= FADE_PORTION) {
+    const fadeT = local / FADE_PORTION;
+
+    setBeatStoreGridToArcProgressMobile(fadeT);
+
+    setBeatStoreArcPreIntroStateMobile();
+
+    return;
+  }
+
+  // 2. arc intro build animation
+  if (local <= FADE_PORTION + INTRO_PORTION) {
+    const introT = (local - FADE_PORTION) / INTRO_PORTION;
+    setBeatStoreArcIntroProgressMobile(introT);
+    return;
+  }
+
+  // 3. now normal arc scrolling begins
+  setBeatStoreArcStateMobile();
+
+  const arcT =
+    (local - FADE_PORTION - INTRO_PORTION) / (1 - FADE_PORTION - INTRO_PORTION);
+
+  const arcProgress = clamp01Mobile(arcT);
+
+  if (beatArc) {
+    beatArc.layoutProgress(arcProgress * beatArc.maxStep);
+  }
+
+  return;
+}
+
       if (p <= ABOUT_END) {
         if (beatArc) beatArc.snap(beatArc.maxStep);
+        setBeatStoreArcStateMobile();
 
-        const local = clamp01Mobile((p - BEAT_END) / (ABOUT_END - BEAT_END));
+        const local = clamp01Mobile((p - BEAT_ARC_END) / (ABOUT_END - BEAT_ARC_END));
         setAboutTransitionProgressMobile(local);
         return;
       }
@@ -4322,6 +4707,9 @@ const ABOUT_END = 1.0;
       if (beatArc) beatArc.snap(0);
       setAboutHiddenStateMobile();
       gsap.set(beatContent, { autoAlpha: 0 });
+
+            gsap.set(".bs-mobile-grid-stage", { autoAlpha: 1, visibility: "visible", pointerEvents: "auto" });
+      gsap.set(".bs-mobile-arc-stage", { autoAlpha: 0, visibility: "hidden", pointerEvents: "none" });
     },
   });
 
