@@ -2039,6 +2039,24 @@ body {
    layout only — desktop untouched
 ========================= */
 
+body.album-view-lock {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+body.album-view-lock #mobile-cinematic-root {
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+body.album-view-lock .album-view {
+  touch-action: none !important;
+}
+
 .album-view {
   position: fixed !important;
   inset: 0 !important;
