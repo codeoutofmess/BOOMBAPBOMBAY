@@ -4951,7 +4951,7 @@ ScrollTrigger.create({
   start: "top top",
 
   // Longer Beat Store scroll
-  end: () => `+=${getMobileViewportHeight() * 6}`,
+  end: () => `+=${getMobileViewportHeight() * 4}`,
 
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
