@@ -1,5 +1,5 @@
 :root {
-  --bg: #transparent;
+  --bg:   transparent;
 
   /* desktop / laptop fluid scale */
   --page-pad-x: clamp(48px, 5vw, 80px);
@@ -114,6 +114,7 @@ body {
   display: block;
   user-select: none;
   pointer-events: none;
+  transform: translateX(-50%);
 }
 
 .landing canvas.webgl {
@@ -1901,9 +1902,6 @@ body {
     height: var(--m-arc-item-h) !important;
   }
 
-/* =========================
-   ABOUT
-========================= */
 
 /* =========================
    ABOUT
@@ -1970,7 +1968,7 @@ body {
   line-height: 1.28 !important;
   color: rgba(255, 255, 255, 0.92) !important;
   text-transform: uppercase !important;
-  white-space: pre-line !important;
+  
   letter-spacing: 0.01em !important;
 }
 
