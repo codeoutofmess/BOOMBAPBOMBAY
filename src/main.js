@@ -104,6 +104,19 @@ function getMobileViewportHeight() {
   return getLiveViewportHeightMobile();
 }
 
+/* BBB FIX: shared ease for every pinned mobile carousel's scroll-to-reveal
+   mapping. A flat linear mapping means the very first pixel of scroll into
+   a pin produces exactly as little motion as any other pixel — right when
+   you cross from fast native scroll into a pin, that reads as "scrolling
+   suddenly stopped working". This front-loads the response (derivative is
+   1.6x steeper at t=0, tapering to normal by the end) so entry feels
+   responsive immediately, then settles into the deliberate pace. Applied
+   identically to Music and Beat Store so neither feels different. */
+function easeScrollRevealMobile(t) {
+  const clamped = Math.max(0, Math.min(1, t));
+  return 1 - Math.pow(1 - clamped, 1.6);
+}
+
 function setMobileViewportVars() {
   const liveH = getLiveViewportHeightMobile();
   document.documentElement.style.setProperty("--app-dvh", `${liveH}px`);
@@ -4983,7 +4996,7 @@ gsap.set(bsArcStage, {
 );
 
 gsap.set("#music, #beat-store", {
-  backgroundColor: "#000",
+  backgroundColor: "var(--bg)",
 });
 
   if (musicArc) musicArc.snap(0);
@@ -5018,13 +5031,14 @@ ScrollTrigger.create({
   end: () => `+=${getMobileViewportHeight() * 2.5}`,
   pin: "#music .music-content",
   pinSpacing: true,
-  /* BBB FIX: was 0.35 — a touch more smoothing feels less twitchy on touch */
-  scrub: 0.55,
+  /* BBB FIX: tightened from 0.55 — less lag between finger and reveal reads
+     as more consistent, especially with real (non-uniform) touch scrolling. */
+  scrub: 0.35,
   anticipatePin: 1,
   invalidateOnRefresh: true,
   onUpdate: (self) => {
     if (!musicArc) return;
-    musicArc.layoutProgress(self.progress * musicArc.maxStep);
+    musicArc.layoutProgress(easeScrollRevealMobile(self.progress) * musicArc.maxStep);
   },
 });
 
@@ -5036,14 +5050,14 @@ ScrollTrigger.create({
   start: "top top",
 
   // Sized so the arc's per-item scroll distance matches the Music arc's
-  // pace below (~0.83 viewport-heights/item) instead of blowing past it.
-  end: () => `+=${getMobileViewportHeight() * 5.5}`,
+  // pace (~0.83 viewport-heights/item) instead of racing through it.
+  end: () => `+=${getMobileViewportHeight() * 5}`,
 
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
-  /* BBB FIX: unified with the Music pin's scrub — different lag values
-     between the two pinned sections made Beat Store feel draggier. */
-  scrub: 0.55,
+  /* BBB FIX: matches the Music pin's scrub exactly (was 0.9) — different lag
+     values between the two pinned sections made Beat Store feel draggier. */
+  scrub: 0.35,
   anticipatePin: 1,
   invalidateOnRefresh: true,
 
@@ -5077,69 +5091,40 @@ ScrollTrigger.create({
     const p = self.progress;
 
     /*
-      BBB FIX: the grid hold used to eat 22% of a 4x-viewport pin (~0.9
-      screens of scrolling with zero visual feedback), then the arc raced
-      through all 7 items in the remaining 70% — almost twice as fast per
-      screen-height as the Music arc. That mismatch is what made the scroll
-      feel like it suddenly sped up. Shrunk the hold to a brief beat and
-      lengthened the pin (see `end` above) so the arc's pace now matches.
+      BBB FIX: this used to hold the grid fully static for the first ~22%
+      of the pin (nearly a full screen of scrolling with zero feedback),
+      then snap into the arc — the "grid" and "arc" were two genuinely
+      different phases with a hard switch between them. That's what made
+      Beat Store feel uneven both entering it and while scrolling through
+      it, compared to Music's single continuous reveal.
 
-      0.000 → 0.055 = grid fully visible (brief pause to register it)
-      0.055 → 0.085 = grid fades out, arc fades in
-      0.085 → 1.000 = arc scrolls, ~0.84 viewport-heights per item
+      Now the arc responds to scroll from the very first pixel, exactly
+      like Music — only the grid's cosmetic cross-fade is confined to a
+      short opening window, and it's just a fade, not a gate.
     */
 
-    const gridFade = gsap.utils.clamp(0, 1, (p - 0.055) / 0.03);
-    const arcProgress = gsap.utils.clamp(0, 1, (p - 0.085) / 0.915);
+    const CROSSFADE_WINDOW = 0.05;
+    const gridFade = gsap.utils.clamp(0, 1, p / CROSSFADE_WINDOW);
+    const eased = easeScrollRevealMobile(p);
 
-    // Phase switch only happens once, not every frame.
-    // This avoids choppy repeated start/stop behavior during handoff.
-    if (p < 0.085 && beatStorePhase !== "grid") {
+    if (p < CROSSFADE_WINDOW && beatStorePhase !== "grid") {
       beatStorePhase = "grid";
       startBoxViewersMobile();
-
-      gsap.set(bsGridStage, {
-        pointerEvents: "auto",
-      });
-
-      gsap.set(bsArcStage, {
-        pointerEvents: "none",
-      });
+      gsap.set(bsGridStage, { pointerEvents: "auto" });
+      gsap.set(bsArcStage, { pointerEvents: "none" });
     }
 
-    if (p >= 0.085 && beatStorePhase !== "arc") {
+    if (p >= CROSSFADE_WINDOW && beatStorePhase !== "arc") {
       beatStorePhase = "arc";
       stopBoxViewersMobile();
-
-      gsap.set(bsGridStage, {
-        autoAlpha: 0,
-        pointerEvents: "none",
-      });
-
-      gsap.set(bsArcStage, {
-        autoAlpha: 1,
-        pointerEvents: "auto",
-      });
-
-      beatArc.snap(0);
+      gsap.set(bsGridStage, { pointerEvents: "none" });
+      gsap.set(bsArcStage, { pointerEvents: "auto" });
     }
 
-    // Smooth visual handoff before arc movement starts
-    if (p < 0.085) {
-      gsap.set(bsGridStage, {
-        autoAlpha: 1 - gridFade,
-      });
+    gsap.set(bsGridStage, { autoAlpha: 1 - gridFade });
+    gsap.set(bsArcStage, { autoAlpha: gridFade });
 
-      gsap.set(bsArcStage, {
-        autoAlpha: gridFade,
-      });
-
-      beatArc.layoutProgress(0);
-      return;
-    }
-
-    // Arc only moves after grid is completely gone
-    beatArc.layoutProgress(arcProgress * beatArc.maxStep);
+    beatArc.layoutProgress(eased * beatArc.maxStep);
   },
 
   onLeave: () => {

@@ -360,7 +360,7 @@ body {
 ------------------------- */
 
 .beat-store {
-  background: #000;
+  background: var(--bg);
 }
 
 .beat-store-bg {
@@ -515,7 +515,7 @@ body {
 }
 
 .music-page {
-  background: #000;
+  background: var(--bg);
 }
 
 .music-content {
@@ -1625,7 +1625,7 @@ body {
   height: var(--app-dvh) !important;
   min-height: var(--app-dvh) !important;
   overflow: hidden !important;
-  background: #000 !important;
+  background: var(--bg) !important;
 }
 
   #music .beat-store-bg,
@@ -1743,7 +1743,7 @@ body {
   height: auto !important;
   min-height: var(--app-dvh) !important;
   overflow: visible !important;
-  background: #000 !important;
+  background: var(--bg) !important;
 }
 
   #beat-store .bs-mobile-left {
@@ -2647,7 +2647,7 @@ body.cart-open {
     height: auto !important;
     min-height: var(--app-dvh) !important;
     overflow: visible !important;
-    background: #000 !important;
+    background: var(--bg) !important;
   }
 
   /* IMPORTANT: no !important here because ScrollTrigger must control this */
