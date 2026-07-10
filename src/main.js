@@ -342,7 +342,7 @@ const BEATS = [
     date: "02/03/2026",
     time: "19:07:29",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "A HEAVY BOOM BAP LOOP WITH A SNARE LIKE A COCKED HAMMER AND A BASSLINE THAT WON'T LET UP. BUILT FOR ARTISTS WHO RAP LIKE THEY'VE GOT NOTHING TO LOSE.",
     details:
       "12/09/2026 / 19:07:29\n\nBY KSHAH & PSYESH / BOOM BAP\n\n84 BPM / E#m KEY",
     art: "/assets/album-art1.webp",
@@ -363,7 +363,7 @@ const BEATS = [
     date: "03/03/2026",
     time: "11:22:10",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "SMOKY, DUST-CAKED KEYS OVER A SLOW NODDING GROOVE. THE KIND OF BEAT THAT SOUNDTRACKS A COMEDOWN AND A COMEBACK IN THE SAME FOUR BARS.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
     art: "/assets/album-art2.webp",
     preview: "/assets/previews/beat2.mp3",
@@ -383,7 +383,7 @@ const BEATS = [
     date: "04/03/2026",
     time: "09:14:55",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "FRANTIC HI-HATS AND A PITCHED-UP VOCAL CHOP RUNNING ON NO SLEEP. MADE FOR BARS THAT COME OUT FASTER THAN THEY SHOULD.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art3.webp",
     preview: "/assets/previews/beat3.mp3",
@@ -403,7 +403,7 @@ const BEATS = [
     date: "05/03/2026",
     time: "14:40:18",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "CINEMATIC STRINGS OVER A ROLLING 808, BUILT FOR A SLOW DRIVE THROUGH BOMBAY AT 3AM WITH THE WINDOWS DOWN.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / BOOM BAP\n\n67 BPM / F# KEY",
     art: "/assets/album-art4.webp",
     preview: "/assets/previews/beat4.mp3",
@@ -423,7 +423,7 @@ const BEATS = [
     date: "06/03/2026",
     time: "17:02:31",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "A HAZY LOOP WRAPPED IN VINYL CRACKLE, LOW AND UNBOTHERED. LIGHT ONE AND LET THE BEAT DO THE TALKING.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art5.webp",
     preview: "/assets/previews/beat5.mp3",
@@ -443,7 +443,7 @@ const BEATS = [
     date: "07/03/2026",
     time: "13:28:49",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "HARD-HITTING DRUMS AND A BRASS STAB THAT SOUNDS LIKE COUNTING MONEY IN A BACK ROOM. BUILT FOR BARS THAT FLEX.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art6.webp",
     preview: "/assets/previews/beat6.mp3",
@@ -463,7 +463,7 @@ const BEATS = [
     date: "08/03/2026",
     time: "20:15:00",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
+      "A LAID-BACK GUITAR LOOP AND DUSTY BREAKS FOR A TRACK THAT REWARDS PATIENCE. SLOW BURN, HEAVY POCKET.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
     art: "/assets/album-art7.webp",
     preview: "/assets/previews/beat7.mp3",
@@ -486,7 +486,7 @@ const MUSIC_BEATS = [
     date: "02/03/2026",
     time: "19:07:29",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS.",
+      "KSHAH'S DEBUT BEAT TAPE — SEVEN TRACKS OF BOOM BAP GRIT SOUNDTRACKING BOMBAY'S BACK ALLEYS, ONE LOOP AT A TIME.",
     details: "12/09/2026 / 19:07:29\n\nBY KSHAH / MUSIC\n\n94 BPM / Em KEY",
     art: "/assets/music-art1.webp",
     preview: "/assets/previews/beat1.mp3",
@@ -506,7 +506,7 @@ const MUSIC_BEATS = [
     date: "03/03/2026",
     time: "11:22:10",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
+      "THE FOLLOW-UP CUT. DARKER KEYS, HEAVIER LOW END, SAME UNAPOLOGETIC BOOM BAP DNA.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n88 BPM / Dm KEY",
     art: "/assets/music-art2.webp",
     preview: "/assets/previews/beat2.mp3",
@@ -526,7 +526,7 @@ const MUSIC_BEATS = [
     date: "04/03/2026",
     time: "09:14:55",
     description:
-      "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT.",
+      "A FRANTIC, HIGH-BPM DETOUR FROM THE USUAL POCKET — PROOF KSHAH DOESN'T STAY IN ONE LANE.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / MUSIC\n\n140 BPM / C#m KEY",
     art: "/assets/music-art3.webp",
     preview: "/assets/previews/beat3.mp3",
@@ -545,7 +545,7 @@ const MUSIC_BEATS = [
     bpm: "102 BPM",
     date: "05/03/2026",
     time: "14:40:18",
-    description: "LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT.",
+    description: "SHORT, SHARP AND STRAIGHT TO THE POINT. NO HOOK, NO FILLER, JUST THE LOOP.",
     details: "14/03/2026 / 21:32:56\n\nBY KSHAH / MUSIC\n\n102 BPM / Fm KEY",
     art: "/assets/music-art4.webp",
     preview: "/assets/previews/beat4.mp3",
@@ -1236,10 +1236,7 @@ function getAppMarkupDesktop() {
 
             <div class="reveal bs-music-copy-reveal">
               <p class="bs-music-copy reveal__inner">
-                LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE
-                FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI
-                PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA
-                TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS.
+                KSHAH'S OWN CATALOG — BEAT TAPES AND FULL RECORDS BUILT FROM THE SAME BOOM BAP FOUNDATION AS THE BEATS FOR SALE, JUST TAKEN FURTHER. START WITH GUNS, CARS AND BARS AND WORK BACKWARDS FROM THERE.
               </p>
             </div>
           </div>
@@ -1304,10 +1301,10 @@ function getAppMarkupDesktop() {
           <div class="about-side">
             <div class="reveal about-copy-reveal">
               <p class="about-copy reveal__inner">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.
+                Boom Bap Bombay is a creative studio out of Mumbai, built around one producer, KSHAH, and a crate of dusty drum breaks. We make boom bap instrumentals and original records that pair hip-hop's golden-era grit with the pulp, noise and chaos of the city outside the window.
 
                 <br />
-                Dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.
+                If you rap, sing, or just need something that hits — this is where the beats come from.
               </p>
             </div>
 
@@ -1349,7 +1346,7 @@ function getAppMarkupDesktop() {
 
             <div class="album-view-center">
               <p class="album-view-desc" id="albumViewDesc">
-                LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT.
+                A HEAVY BOOM BAP LOOP WITH A SNARE LIKE A COCKED HAMMER AND A BASSLINE THAT WON'T LET UP.
               </p>
 
               <div class="album-view-actions">
@@ -1463,11 +1460,9 @@ function getAppMarkupMobile() {
 
             <div class="reveal bs-music-copy-reveal">
               <p class="bs-music-copy reveal__inner">
-                LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. QUISQUE
-                FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI
-                PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA
-                TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS.
-                IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.
+                KSHAH'S OWN CATALOG — BEAT TAPES AND FULL RECORDS BUILT FROM THE
+                SAME BOOM BAP FOUNDATION AS THE BEATS FOR SALE, JUST TAKEN FURTHER.
+                START WITH GUNS, CARS AND BARS AND WORK BACKWARDS FROM THERE.
               </p>
             </div>
           </div>
@@ -1607,9 +1602,9 @@ function getAppMarkupMobile() {
           <div class="about-side">
             <div class="reveal about-copy-reveal">
               <p class="about-copy reveal__inner">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.
+                Boom Bap Bombay is a creative studio out of Mumbai, built around one producer, KSHAH, and a crate of dusty drum breaks. We make boom bap instrumentals and original records that pair hip-hop's golden-era grit with the pulp, noise and chaos of the city outside the window.
                 <br><br>
-                Dolor sit amet consectetur adipisicing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.
+                If you rap, sing, or just need something that hits — this is where the beats come from.
               </p>
             </div>
 
@@ -1651,7 +1646,7 @@ function getAppMarkupMobile() {
 
             <div class="album-view-center">
               <p class="album-view-desc" id="albumViewDesc">
-                LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT.
+                A HEAVY BOOM BAP LOOP WITH A SNARE LIKE A COCKED HAMMER AND A BASSLINE THAT WON'T LET UP.
               </p>
 
               <div class="album-view-actions">
