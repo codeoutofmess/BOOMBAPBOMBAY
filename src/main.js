@@ -298,7 +298,7 @@ const BEATS = [
     product: {
   id: "beat_guns",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -318,7 +318,7 @@ const BEATS = [
     product: {
   id: "beat_drugs",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -338,7 +338,7 @@ const BEATS = [
     product: {
   id: "beat_pills",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -358,7 +358,7 @@ const BEATS = [
     product: {
   id: "beat_cars",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -378,7 +378,7 @@ const BEATS = [
     product: {
   id: "beat_smokes",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -398,7 +398,7 @@ const BEATS = [
     product: {
   id: "beat_stacks",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -418,7 +418,7 @@ const BEATS = [
     product: {
   id: "beat_greens",
   type: "beat",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
@@ -481,7 +481,7 @@ const MUSIC_BEATS = [
     product: {
   id: "album_third_cut",
   type: "album",
-  priceInr: 499,
+  priceInr: 5,
   currency: "INR"
 }
   },
