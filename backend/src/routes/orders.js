@@ -1,8 +1,12 @@
 import { Router } from "express";
 import { razorpay } from "../config/razorpay.js";
 import { env } from "../config/env.js";
-import { products } from "../data/products.js";
-import { createLocalOrder, setRazorpayOrderId } from "../services/orderStore.js";
+import { getProductById } from "../services/productStore.js";
+import {
+  createLocalOrder,
+  setRazorpayOrderId,
+  getOrderByInternalId,
+} from "../services/orderStore.js";
 
 const router = Router();
 
@@ -10,12 +14,12 @@ router.post("/create", async (req, res) => {
   try {
     const { productId } = req.body;
 
-    const product = products[productId];
-    if (!product) {
+    const product = await getProductById(productId);
+    if (!product || !product.isActive) {
       return res.status(400).json({ error: "Invalid productId" });
     }
 
-    const localOrder = createLocalOrder(product);
+    const localOrder = await createLocalOrder(product);
 
     const razorpayOrder = await razorpay.orders.create({
       amount: product.amount,
@@ -29,7 +33,7 @@ router.post("/create", async (req, res) => {
       },
     });
 
-    setRazorpayOrderId(localOrder.internalOrderId, razorpayOrder.id);
+    await setRazorpayOrderId(localOrder.internalOrderId, razorpayOrder.id);
 
     return res.json({
       keyId: env.razorpayKeyId,
@@ -41,6 +45,37 @@ router.post("/create", async (req, res) => {
   } catch (error) {
     console.error("Create order failed:", error);
     return res.status(500).json({ error: "Failed to create order" });
+  }
+});
+
+router.get("/:internalOrderId", async (req, res) => {
+  try {
+    const { internalOrderId } = req.params;
+    const order = await getOrderByInternalId(internalOrderId);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    return res.json({
+      internalOrderId: order.internalOrderId,
+      productId: order.productId,
+      productType: order.productType,
+      title: order.title,
+      amount: order.amount,
+      currency: order.currency,
+      status: order.status,
+      razorpayOrderId: order.razorpayOrderId,
+      razorpayPaymentId: order.razorpayPaymentId,
+      createdAt: order.createdAt,
+      paidAt: order.paidAt,
+      downloadCount: order.downloadCount,
+firstDownloadedAt: order.firstDownloadedAt,
+lastDownloadedAt: order.lastDownloadedAt,
+    });
+  } catch (error) {
+    console.error("Get order failed:", error);
+    return res.status(500).json({ error: "Failed to fetch order" });
   }
 });
 
