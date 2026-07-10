@@ -20,6 +20,13 @@ let mobileMasterTrigger = null;
 let mobileViewportRaf = null;
 let mobileViewportTrackingBound = false;
 let mobileResizeRefreshRaf = null;
+let mobileBeatStoreViewersRunning = false;
+let mobileBeatStoreRaf = null;
+let mobileBeatStoreLastTime = 0;
+let mobileBoxViewers = [];
+let mobileRevolverRaf = null;
+let mobileRevolverRunning = false;
+let mobileRevolverRenderer = null;
 
 function getLiveViewportHeightMobile() {
   if (window.visualViewport && window.visualViewport.height) {
@@ -42,6 +49,36 @@ function ensureBeatStoreModelsMobile() {
   if (mobileBeatStoreModelsInitialized) return;
   mobileBeatStoreModelsInitialized = true;
   initBeatStoreModelsMobile();
+}
+
+function startBoxViewersMobile() {
+  if (mobileBeatStoreViewersRunning) return;
+  if (!mobileBoxViewers.length) return;
+
+  mobileBeatStoreViewersRunning = true;
+  mobileBeatStoreLastTime = performance.now();
+
+  const loop = (now) => {
+    if (!mobileBeatStoreViewersRunning) return;
+
+    const dt = Math.min(0.05, (now - mobileBeatStoreLastTime) / 1000);
+    mobileBeatStoreLastTime = now;
+
+    for (const v of mobileBoxViewers) v.tick(dt);
+
+    mobileBeatStoreRaf = requestAnimationFrame(loop);
+  };
+
+  mobileBeatStoreRaf = requestAnimationFrame(loop);
+}
+
+function stopBoxViewersMobile() {
+  mobileBeatStoreViewersRunning = false;
+
+  if (mobileBeatStoreRaf) {
+    cancelAnimationFrame(mobileBeatStoreRaf);
+    mobileBeatStoreRaf = null;
+  }
 }
 
 const ROT_FIX = {
@@ -156,7 +193,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/assets/album-art6.svg",
+    art: "/assets/album-art6.webp",
     preview: "/assets/previews/beat6.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "02:49",
@@ -171,7 +208,7 @@ const BEATS = [
     description:
       "LOREM IPSUM DOLOR SIT AMET CONSETCTETUR ADIPISICING ELIT. QUISQUE FAUCIBUS EX SAPIEN VITAE PELLENTESQUE SEM PLACERAT. IN ID CURSUS MI PRETIUM TELLUS DUIS CONVALLIS. TEMPUS LEO EU AENEAN SED DIAM URNA TEMPOR. PULVINAR VIVAMUS FRINGILLA LACUS NEC METUS BIBENDUM EGESTAS. IACULIS MASSA NISL MALESUADA LACINIA INTEGER NUNC POSUERE.",
     details: "03/12/2026 / 05:37:13\n\nBY KSHAH / BOOM BAP\n\n93 BPM / B KEY",
-    art: "/assets/album-art7.svg",
+    art: "/assets/album-art7.webp",
     preview: "/assets/previews/beat7.mp3",
     buyUrl: "https://www.beatstars.com/",
     duration: "03:21",
@@ -470,11 +507,11 @@ function getAppMarkupDesktop() {
             </div>
 
             <div class="bs-arc-item" data-title="PILLS">
-              <img src="/assets/album-art6.svg" alt="" />
+              <img src="/assets/album-art6.webp" alt="" />
             </div>
 
             <div class="bs-arc-item" data-title="DRINKS">
-              <img src="/assets/album-art7.svg" alt="" />
+              <img src="/assets/album-art7.webp" alt="" />
             </div>
           </div>
 
@@ -819,11 +856,11 @@ function getAppMarkupMobile() {
           </div>
 
           <div class="bs-arc-item" data-title="PILLS">
-            <img src="/assets/album-art6.svg" alt="" />
+            <img src="/assets/album-art6.webp" alt="" />
           </div>
 
           <div class="bs-arc-item" data-title="DRINKS">
-            <img src="/assets/album-art7.svg" alt="" />
+            <img src="/assets/album-art7.webp" alt="" />
           </div>
         </div>
       </div>
@@ -1734,18 +1771,6 @@ function initBeatStoreModelsDesktop() {
     });
   });
 
-  let lastTime = performance.now();
-
-  function tickBoxViewers(now) {
-    const dt = Math.min(0.05, (now - lastTime) / 1000);
-    lastTime = now;
-
-    for (const v of boxViewers) v.tick(dt);
-    requestAnimationFrame(tickBoxViewers);
-  }
-
-  requestAnimationFrame(tickBoxViewers);
-
   window.addEventListener("resize", () => {
     for (const v of boxViewers) v.resize();
   });
@@ -1839,31 +1864,61 @@ loader.load(
     (err) => console.error("GLB load failed", err)
   );
 
-  function tick() {
-    requestAnimationFrame(tick);
+  function renderRevolverFrame() {
+  const targetRotX = THREE.MathUtils.degToRad(
+    THREE.MathUtils.clamp((gyroBeta - 45) * 0.12, -10, 10)
+  );
 
-    gunGroup.position.x += (mouse.x * 1.2 - gunGroup.position.x) * 0.08;
-    gunGroup.position.y += (mouse.y * 0.7 - gunGroup.position.y) * 0.08;
+  const targetRotY = THREE.MathUtils.degToRad(
+    THREE.MathUtils.clamp(gyroGamma * 0.35, -20, 20)
+  );
 
-    tmpVec.set(mouse.x, mouse.y, 0.5).unproject(camera);
-    const dir = tmpVec.sub(camera.position).normalize();
+  const targetQuat = new THREE.Quaternion().setFromEuler(
+    new THREE.Euler(targetRotX, targetRotY, 0)
+  );
 
-    aimPoint.copy(camera.position).add(dir.multiplyScalar(180));
+  targetQuat.premultiply(baseQuat);
+  gunGroup.quaternion.slerp(targetQuat, 0.08);
 
-    gunGroup.lookAt(aimPoint);
-    gunGroup.quaternion.multiply(baseQuat);
+  renderer.render(scene, camera);
+}
 
-    renderer.render(scene, camera);
+function startRevolverMobile() {
+  if (mobileRevolverRunning) return;
+  mobileRevolverRunning = true;
+
+  const loop = () => {
+    if (!mobileRevolverRunning) return;
+    renderRevolverFrame();
+    mobileRevolverRaf = requestAnimationFrame(loop);
+  };
+
+  mobileRevolverRaf = requestAnimationFrame(loop);
+}
+
+function stopRevolverMobile() {
+  mobileRevolverRunning = false;
+
+  if (mobileRevolverRaf) {
+    cancelAnimationFrame(mobileRevolverRaf);
+    mobileRevolverRaf = null;
   }
+}
 
-  tick();
+mobileRevolverRenderer = {
+  start: startRevolverMobile,
+  stop: stopRevolverMobile,
+  renderOnce: renderRevolverFrame,
+};
 
-  window.addEventListener("resize", () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
+startRevolverMobile();
+
+window.addEventListener("resize", () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
 }
 
 function initCinematicScrollDesktop() {
@@ -3644,12 +3699,12 @@ const fix = ROT_FIX[fileName] ?? { x: 0, y: 0, z: 0 };
 }
 
 function initBeatStoreModelsMobile() {
-  const boxViewers = [];
+  mobileBoxViewers = [];
   const canvases = Array.from(document.querySelectorAll(".bs-canvas"));
 
   canvases.forEach((c) => {
     const viewer = createBoxViewerMobile(c);
-    boxViewers.push(viewer);
+    mobileBoxViewers.push(viewer);
 
     const url = c.getAttribute("data-model");
     viewer.load(url).catch((err) => {
@@ -3675,7 +3730,7 @@ function initBeatStoreModelsMobile() {
 
     scheduleViewersResizeMobile._raf = requestAnimationFrame(() => {
       scheduleViewersResizeMobile._raf = null;
-      for (const v of boxViewers) v.resize();
+      for (const v of mobileBoxViewers) v.resize();
     });
   }
 
@@ -3709,24 +3764,12 @@ function initBeatStoreModelsMobile() {
     });
   });
 
-  let lastTime = performance.now();
-
-  function tickBoxViewersMobile(now) {
-    const dt = Math.min(0.05, (now - lastTime) / 1000);
-    lastTime = now;
-
-    for (const v of boxViewers) v.tick(dt);
-    requestAnimationFrame(tickBoxViewersMobile);
-  }
-
-  requestAnimationFrame(tickBoxViewersMobile);
-
   window.addEventListener("resize", () => {
-    for (const v of boxViewers) v.resize();
+    for (const v of mobileBoxViewers) v.resize();
   });
 
   setTimeout(() => {
-    for (const v of boxViewers) v.resize();
+    for (const v of mobileBoxViewers) v.resize();
   }, 150);
 }
 
@@ -3839,27 +3882,6 @@ if (onReady) onReady();
     (err) => console.error("GLB load failed", err)
   );
 
-  function tick() {
-    requestAnimationFrame(tick);
-
-const targetRotX = THREE.MathUtils.degToRad(
-  THREE.MathUtils.clamp((gyroBeta - 45) * 0.12, -10, 10)
-);
-
-const targetRotY = THREE.MathUtils.degToRad(
-  THREE.MathUtils.clamp(gyroGamma * 0.35, -20, 20)
-);
-
-const targetQuat = new THREE.Quaternion().setFromEuler(
-  new THREE.Euler(targetRotX, targetRotY, 0)
-);
-
-targetQuat.premultiply(baseQuat);
-gunGroup.quaternion.slerp(targetQuat, 0.08);
-
-    renderer.render(scene, camera);
-  }
-
   tick();
 
   window.addEventListener("resize", () => {
@@ -3943,6 +3965,8 @@ function initCinematicScrollMobile() {
 
     const bsTitleReveal = beatStore?.querySelector(".bs-title-reveal");
   const bsCopyReveal = beatStore?.querySelector(".bs-copy-reveal");
+
+  let mobilePhase = "";
 
   const aboutTransitionMap = document.querySelector("#aboutTransitionMap");
   const aboutTransitionImg = aboutTransitionMap?.querySelector("img");
@@ -4160,6 +4184,10 @@ function measureLandingZoomScaleMobile() {
   }
 
   function setLandingStateMobile() {
+
+    mobileRevolverRenderer?.start();
+    stopBoxViewersMobile();
+
     gsap.set(landing, {
       autoAlpha: 1,
       pointerEvents: "auto",
@@ -4307,6 +4335,10 @@ gsap.set("#beat-store .bs-mobile-visual", {
 }
 
 function setMusicBaseStateMobile() {
+  
+  mobileRevolverRenderer?.stop();
+  stopBoxViewersMobile();
+
   gsap.set(landing, {
     autoAlpha: 0,
     pointerEvents: "none",
@@ -4366,6 +4398,12 @@ gsap.set("#beat-store .bs-mobile-visual", {
   }
 
     function setBeatStoreGridStateMobile() {
+
+      mobileRevolverRenderer?.stop();
+
+      ensureBeatStoreModelsMobile();
+startBoxViewersMobile();
+
     gsap.set(landing, {
       autoAlpha: 0,
       pointerEvents: "none",
@@ -4428,6 +4466,9 @@ gsap.set("#beat-store .bs-mobile-visual", {
   }
 
   function setBeatStoreArcStateMobile() {
+
+    stopBoxViewersMobile();
+    
     gsap.set(landing, {
       autoAlpha: 0,
       pointerEvents: "none",
@@ -4838,6 +4879,10 @@ gsap.set(beatStore, {
   }
 
   function setAboutStateMobile() {
+
+    mobileRevolverRenderer?.stop();
+
+    stopBoxViewersMobile();
     setAboutOverlayModeMobile(false);
 
     if (beatBg) gsap.set(beatBg, { autoAlpha: 0 });
@@ -4889,6 +4934,12 @@ gsap.set(beatStore, {
     }
   }
 
+  function setMobilePhase(nextPhase) {
+  if (mobilePhase === nextPhase) return false;
+  mobilePhase = nextPhase;
+  return true;
+}
+
   setLandingStateMobile();
   if (musicArc) musicArc.snap(0);
   if (beatArc) beatArc.snap(0);
@@ -4900,13 +4951,13 @@ gsap.set(beatStore, {
   id: "cinematicMobileMaster",
   trigger: cinematicRoot,
   start: "top top",
-  end: "+=560%",
+  end: "+=420%",
   pin: true,
   pinSpacing: true,
-  scrub: 0.65,
-  anticipatePin: 0,
+  scrub: 0.18,
+  anticipatePin: 1,
   invalidateOnRefresh: true,
-  fastScrollEnd: true,
+  fastScrollEnd: false,
 
 
     onEnter: () => {
@@ -4919,30 +4970,37 @@ gsap.set(beatStore, {
   moveNavToBodyMobile(true);
 },
 
-    onUpdate: (self) => {
+        onUpdate: (self) => {
       const p = self.progress;
+
       if (p > 0.42) {
-  ensureBeatStoreModelsMobile();
-}
+        ensureBeatStoreModelsMobile();
+      }
 
-const LANDING_END = 0.22;
-const MUSIC_END = 0.44;
-const HANDOFF_END = 0.46;
-const BEAT_GRID_END = 0.56;
-const BEAT_ARC_END = 0.90;
-const ABOUT_END = 0.94;
+      const LANDING_END = 0.22;
+      const MUSIC_END = 0.44;
+      const HANDOFF_END = 0.46;
+      const BEAT_GRID_END = 0.56;
+      const BEAT_ARC_END = 0.90;
+      const ABOUT_END = 0.94;
 
-            if (p <= LANDING_END) {
+      if (p <= LANDING_END) {
+        if (setMobilePhase("landing")) {
+          mobileRevolverRenderer?.start();
+          setAboutHiddenStateMobile();
+        }
+
         const local = clamp01Mobile(p / LANDING_END);
-
-        setAboutHiddenStateMobile();
         setLandingToMusicProgressMobile(local);
         return;
       }
 
       if (p <= MUSIC_END) {
-        setMusicBaseStateMobile();
-        setAboutHiddenStateMobile();
+        if (setMobilePhase("music")) {
+          mobileRevolverRenderer?.stop();
+          setMusicBaseStateMobile();
+          setAboutHiddenStateMobile();
+        }
 
         const local = clamp01Mobile((p - LANDING_END) / (MUSIC_END - LANDING_END));
 
@@ -4954,88 +5012,116 @@ const ABOUT_END = 0.94;
       }
 
       if (p <= HANDOFF_END) {
-        if (musicArc) musicArc.snap(musicArc.maxStep);
+        if (setMobilePhase("handoff")) {
+          mobileRevolverRenderer?.stop();
+          if (musicArc) musicArc.snap(musicArc.maxStep);
+          setAboutHiddenStateMobile();
+        }
 
         const local = clamp01Mobile((p - MUSIC_END) / (HANDOFF_END - MUSIC_END));
         setMusicToBeatHandoffMobile(local);
-        setAboutHiddenStateMobile();
         return;
       }
 
-            if (p <= BEAT_GRID_END) {
-        setBeatStoreGridStateMobile();
-        setAboutHiddenStateMobile();
+      if (p <= BEAT_GRID_END) {
+        if (setMobilePhase("beat-grid")) {
+          mobileRevolverRenderer?.stop();
+          setBeatStoreGridStateMobile();
+          setAboutHiddenStateMobile();
+          startBoxViewersMobile();
+        }
         return;
       }
 
       if (p <= BEAT_ARC_END) {
-  setAboutHiddenStateMobile();
+        const local = clamp01Mobile((p - BEAT_GRID_END) / (BEAT_ARC_END - BEAT_GRID_END));
 
-  const local = clamp01Mobile((p - BEAT_GRID_END) / (BEAT_ARC_END - BEAT_GRID_END));
+        const FADE_PORTION = 0.18;
+        const INTRO_PORTION = 0.28;
 
-  const FADE_PORTION = 0.18;
-  const INTRO_PORTION = 0.28;
+        if (local <= FADE_PORTION) {
+          if (setMobilePhase("beat-arc-fade")) {
+            mobileRevolverRenderer?.stop();
+            setAboutHiddenStateMobile();
+            stopBoxViewersMobile();
+          }
 
-  // 1. grid fades out, arc stage fades in
-  if (local <= FADE_PORTION) {
-    const fadeT = local / FADE_PORTION;
+          const fadeT = local / FADE_PORTION;
+          setBeatStoreGridToArcProgressMobile(fadeT);
+          setBeatStoreArcPreIntroStateMobile();
+          return;
+        }
 
-    setBeatStoreGridToArcProgressMobile(fadeT);
+        if (local <= FADE_PORTION + INTRO_PORTION) {
+          if (setMobilePhase("beat-arc-intro")) {
+            mobileRevolverRenderer?.stop();
+            setAboutHiddenStateMobile();
+            stopBoxViewersMobile();
+          }
 
-    setBeatStoreArcPreIntroStateMobile();
+          const introT = (local - FADE_PORTION) / INTRO_PORTION;
+          setBeatStoreArcIntroProgressMobile(introT);
+          return;
+        }
 
-    return;
-  }
+        if (setMobilePhase("beat-arc")) {
+          mobileRevolverRenderer?.stop();
+          setAboutHiddenStateMobile();
+          stopBoxViewersMobile();
+          setBeatStoreArcStateMobile();
+        }
 
-  // 2. arc intro build animation
-  if (local <= FADE_PORTION + INTRO_PORTION) {
-    const introT = (local - FADE_PORTION) / INTRO_PORTION;
-    setBeatStoreArcIntroProgressMobile(introT);
-    return;
-  }
+        const arcT =
+          (local - FADE_PORTION - INTRO_PORTION) / (1 - FADE_PORTION - INTRO_PORTION);
 
-  // 3. now normal arc scrolling begins
-  setBeatStoreArcStateMobile();
+        const arcProgress = clamp01Mobile(arcT);
 
-  const arcT =
-    (local - FADE_PORTION - INTRO_PORTION) / (1 - FADE_PORTION - INTRO_PORTION);
+        if (beatArc) {
+          beatArc.layoutProgress(arcProgress * beatArc.maxStep);
+        }
 
-  const arcProgress = clamp01Mobile(arcT);
-
-  if (beatArc) {
-    beatArc.layoutProgress(arcProgress * beatArc.maxStep);
-  }
-
-  return;
-}
+        return;
+      }
 
       if (p <= ABOUT_END) {
-        if (beatArc) beatArc.snap(beatArc.maxStep);
-        setBeatStoreArcStateMobile();
+        if (setMobilePhase("about-transition")) {
+          mobileRevolverRenderer?.stop();
+          stopBoxViewersMobile();
+          if (beatArc) beatArc.snap(beatArc.maxStep);
+          setBeatStoreArcStateMobile();
+        }
 
         const local = clamp01Mobile((p - BEAT_ARC_END) / (ABOUT_END - BEAT_ARC_END));
         setAboutTransitionProgressMobile(local);
         return;
       }
 
-      setAboutStateMobile();
+      if (setMobilePhase("about")) {
+        mobileRevolverRenderer?.stop();
+        stopBoxViewersMobile();
+        setAboutStateMobile();
+      }
     },
 
     onLeave: (self) => {
       self.scroll(self.end - 1);
     },
 
-    onLeaveBack: () => {
+        onLeaveBack: () => {
       document.documentElement.classList.remove("nav-blend");
-  moveNavToBodyMobile(false);
-      
+      moveNavToBodyMobile(false);
+
+      mobilePhase = "";
+      mobileRevolverRenderer?.start();
+      stopBoxViewersMobile();
+
       setLandingStateMobile();
       if (musicArc) musicArc.snap(0);
       if (beatArc) beatArc.snap(0);
       setAboutHiddenStateMobile();
       gsap.set(beatContent, { autoAlpha: 0 });
 
-            gsap.set(".bs-mobile-grid-stage", { autoAlpha: 1, visibility: "visible", pointerEvents: "auto" });
+      gsap.set(".bs-mobile-grid-stage", { autoAlpha: 1, visibility: "visible", pointerEvents: "auto" });
       gsap.set(".bs-mobile-arc-stage", { autoAlpha: 0, visibility: "hidden", pointerEvents: "none" });
     },
   });
