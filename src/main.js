@@ -4164,6 +4164,20 @@ function createAlbumArcWidgetMobile({
 
   const maxStep = items.length - 1;
 
+  items.forEach((el, index) => {
+  const itemData = data[index];
+
+  if (!itemData) return;
+
+  el.dataset.title = itemData.title || el.dataset.title || "";
+
+  if (!el.querySelector("img") && itemData.art) {
+    el.innerHTML = `
+      <img src="${itemData.art}" alt="${itemData.title || ""}" />
+    `;
+  }
+});
+
   function lerpMobile(a, b, t) {
     return a + (b - a) * t;
   }
