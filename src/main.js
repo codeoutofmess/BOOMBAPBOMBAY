@@ -23,6 +23,13 @@ gsap.registerPlugin(Flip);
 
 const IS_MOBILE = window.innerWidth <= 768;
 
+if (IS_MOBILE) {
+  ScrollTrigger.config({
+    ignoreMobileResize: true,
+    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+  });
+}
+
 
 
 let mobileScenePanLoop = null;
@@ -4498,9 +4505,22 @@ function initBeatStoreModelsMobile() {
     });
   });
 
-  window.addEventListener("resize", () => {
-    for (const v of mobileBoxViewers) v.resize();
-  });
+  let lastBoxViewerViewportWidth = window.innerWidth;
+
+window.addEventListener("resize", () => {
+  const nextWidth = window.innerWidth;
+
+  // Ignore mobile browser address-bar height changes.
+  if (nextWidth === lastBoxViewerViewportWidth) {
+    return;
+  }
+
+  lastBoxViewerViewportWidth = nextWidth;
+
+  for (const v of mobileBoxViewers) {
+    v.resize();
+  }
+});
 
   setTimeout(() => {
     for (const v of mobileBoxViewers) v.resize();
@@ -4670,22 +4690,47 @@ function initRevolverMobile(onReady = null) {
 
   startRevolverMobile();
 
-  window.addEventListener("resize", () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(1);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.render(scene, camera);
-  });
+  let lastRevolverViewportWidth = window.innerWidth;
+
+window.addEventListener("resize", () => {
+  const nextWidth = window.innerWidth;
+
+  // Ignore address-bar height changes on mobile.
+  if (nextWidth === lastRevolverViewportWidth) {
+    return;
+  }
+
+  lastRevolverViewportWidth = nextWidth;
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(1);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
+});
 }
 
+let lastMobileViewportWidth = window.innerWidth;
+
 function handleMobileViewportChange() {
+  const nextWidth = window.innerWidth;
+
+  // Ignore mobile browser address-bar show/hide.
+  // That changes height only and causes ScrollTrigger jumps.
+  if (nextWidth === lastMobileViewportWidth) {
+    return;
+  }
+
+  lastMobileViewportWidth = nextWidth;
+
   if (mobileViewportRaf) cancelAnimationFrame(mobileViewportRaf);
 
   mobileViewportRaf = requestAnimationFrame(() => {
     setMobileViewportVars();
 
-    if (mobileResizeRefreshRaf) cancelAnimationFrame(mobileResizeRefreshRaf);
+    if (mobileResizeRefreshRaf) {
+      cancelAnimationFrame(mobileResizeRefreshRaf);
+    }
 
     mobileResizeRefreshRaf = requestAnimationFrame(() => {
       ScrollTrigger.refresh(true);
@@ -4702,11 +4747,11 @@ function bindMobileViewportTracking() {
   window.addEventListener("resize", handleMobileViewportChange, { passive: true });
   window.addEventListener("orientationchange", handleMobileViewportChange, { passive: true });
 
-  if (window.visualViewport) {
+  /*if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", handleMobileViewportChange, {
       passive: true,
     });
-  }
+  }*/
 }
 
 function initCinematicScrollMobile() {
@@ -4889,7 +4934,7 @@ ScrollTrigger.create({
   end: () => `+=${getMobileViewportHeight() * 2.5}`,
   pin: "#music .music-content",
   pinSpacing: true,
-  scrub: 0.2,
+  scrub: 0.35,
   anticipatePin: 1,
   invalidateOnRefresh: true,
   onUpdate: (self) => {
@@ -4905,7 +4950,7 @@ ScrollTrigger.create({
   end: () => `+=${getMobileViewportHeight() * 2}`,
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
-  scrub: 0.2,
+  scrub: 0.35,
   anticipatePin: 1,
   invalidateOnRefresh: true,
 
@@ -5085,7 +5130,7 @@ gsap.set(["#music", "#beat-store", "#about"], {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           initCinematicScrollMobile();
-          ScrollTrigger.refresh(true);
+          
         });
       });
     });
