@@ -3257,7 +3257,11 @@ function unlockAlbumViewScrollMobile() {
     setMuteUIMobile();
   });
 
-  moreBtn.addEventListener("click", close);
+  moreBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  close();
+});
 
   audio.addEventListener("play", () => setPlayStateUIMobile(true));
   audio.addEventListener("pause", () => setPlayStateUIMobile(false));
@@ -3471,23 +3475,13 @@ function createAlbumArcWidgetMobile({
   snap(0);
 
   items.forEach((btn, idx) => {
-  const openBeat = (e) => {
+  btn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (window.__albumViewMobile) {
       window.__albumViewMobile.open(idx, data);
     }
-  };
-
-  btn.addEventListener("click", openBeat);
-  btn.addEventListener("pointerup", openBeat);
-  btn.addEventListener(
-    "touchend",
-    (e) => {
-      openBeat(e);
-    },
-    { passive: false }
-  );
+  });
 });
 
   return { layoutProgress, snap, maxStep, root, data };
@@ -4204,10 +4198,10 @@ gsap.set(sceneComposite, {
   });
 
   gsap.set(musicSection, {
-    autoAlpha: musicFade,
-    pointerEvents: musicFade > 0.85 ? "auto" : "none",
-    zIndex: 20,
-  });
+  autoAlpha: musicFade,
+  pointerEvents: musicFade > 0.05 ? "auto" : "none",
+  zIndex: 20,
+});
 
   gsap.set(mobileMusicLeft, {
     autoAlpha: musicFade,
@@ -4223,11 +4217,11 @@ if (mobileMusicTitleInner) gsap.set(mobileMusicTitleInner, { yPercent: 0 });
 if (mobileMusicCopyInner) gsap.set(mobileMusicCopyInner, { yPercent: 0 });
 
   gsap.set(mobileMusicArcRoot, {
-    autoAlpha: musicFade,
-    y: 18 - 18 * musicFade,
-    visibility: musicFade > 0.001 ? "visible" : "hidden",
-    pointerEvents: musicFade > 0.85 ? "auto" : "none",
-  });
+  autoAlpha: musicFade,
+  y: 18 - 18 * musicFade,
+  visibility: musicFade > 0.001 ? "visible" : "hidden",
+  pointerEvents: musicFade > 0.05 ? "auto" : "none",
+});
 
   gsap.set(beatStore, {
     autoAlpha: 0,
