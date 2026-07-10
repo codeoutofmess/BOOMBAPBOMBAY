@@ -41,7 +41,6 @@ const PRELOAD_ASSETS = [
   "/assets/blood-splatter.png",
   "/assets/scene-composite.svg",
   "/assets/boombap-logo.svg",
-  "/models/revolver.glb",
 ];
 
 const PRELOAD_ASSETS_MOBILE = [
@@ -50,7 +49,6 @@ const PRELOAD_ASSETS_MOBILE = [
   "/assets/blood-splatter.png",
   "/assets/scene-composite.svg",
   "/assets/boombap-logo.svg",
-  "/models/revolver.glb",
 ];
 
 const BEATS = [
@@ -4974,11 +4972,9 @@ if (mobileSceneComposite) {
 
   const pctTween = driver.startPercent(MIN_TIME_MS / 1000);
 
-  if (IS_MOBILE) {
-    await preloadAssetsMobile(() => {});
-  } else {
-    await preloadAssetsDesktop(() => {});
-  }
+  if (!IS_MOBILE) {
+  await preloadAssetsDesktop(() => {});
+}
 
   const elapsed = performance.now() - start;
   const remaining = Math.max(0, MIN_TIME_MS - elapsed);
