@@ -1300,41 +1300,44 @@ body {
     --m-safe-top: max(env(safe-area-inset-top), 0px);
     --m-safe-bottom: max(env(safe-area-inset-bottom), 0px);
 
-    --m-pad-x: clamp(22px, 5.6vw, 44px);
-    --m-nav-top: clamp(20px, 3vh, 28px);
-    --m-menu-top: clamp(24px, 3.5vh, 32px);
+    /* fixed rules */
+    --m-side: 44px;
+    --m-content-w: calc(100vw - 88px);
 
-    --m-content-w: calc(100vw - (var(--m-pad-x) * 2));
+    /* vertical placement */
+    --m-nav-top: 28px;
+    --m-menu-top: 32px;
+    --m-landing-top: 190px;
+    --m-landing-right-top: 568px;
+    --m-section-top: 108px;
+    --m-visual-top: 500px;
 
-    --m-landing-top: clamp(150px, 18vh, 190px);
-    --m-landing-right-top: clamp(520px, 62vh, 620px);
+    /* fixed type sizes */
+    --m-meta-size: 12px;
+    --m-copy-size: 14px;
+    --m-landing-desc-size: 16px;
+    --m-drop-size: 16px;
+    --m-latest-size: 24px;
+    --m-title-thin: 40px;
+    --m-title-bold: 96px;
+    --m-arc-title-size: 16px;
 
-    --m-section-top: clamp(108px, 12vh, 128px);
+    /* controls */
+    --m-btn-h: 64px;
 
-    --m-meta-size: clamp(10px, 2.8vw, 12px);
-    --m-body-size: clamp(14px, 4vw, 16px);
-    --m-body-leading: 1.22;
-    --m-mono-size: clamp(14px, 4vw, 16px);
-    --m-title-thin: clamp(40px, 11vw, 64px);
-    --m-title-bold: clamp(62px, 17vw, 96px);
-    --m-latest-size: clamp(28px, 7.5vw, 40px);
-
-    --m-btn-h: clamp(58px, 8vh, 64px);
-    --m-btn-w: clamp(180px, 48vw, 240px);
-
-    --m-visual-top: clamp(500px, 58vh, 590px);
-
-    --m-grid-col: clamp(84px, 27.5vw, 104px);
+    /* grid */
     --m-grid-gap: 1px;
-    --m-grid-big-h: calc(var(--m-grid-col) * 2 + var(--m-grid-gap));
+    --m-grid-col: calc((var(--m-content-w) - (var(--m-grid-gap) * 2)) / 3);
+    --m-grid-big-h: calc((var(--m-grid-col) * 2) + var(--m-grid-gap));
 
-    --m-arc-w: clamp(240px, 76vw, 320px);
-    --m-arc-h: clamp(250px, 33vh, 320px);
-    --m-arc-item-w: clamp(120px, 38vw, 144px);
-    --m-arc-item-h: clamp(72px, 23vw, 86px);
-    --m-arc-title-size: clamp(14px, 4.2vw, 16px);
+    /* arc */
+    --m-arc-w: 288px;
+    --m-arc-h: 290px;
+    --m-arc-item-w: 144px;
+    --m-arc-item-h: 86px;
 
-    --m-about-map-w: clamp(180px, 34vw, 240px);
+    /* about */
+    --m-about-map-w: 180px;
   }
 
   html,
@@ -1379,6 +1382,10 @@ body {
     overflow: visible !important;
   }
 
+  #home .scene-layer {
+    overflow: visible !important;
+  }
+
   #music,
   #beat-store,
   #about {
@@ -1420,21 +1427,21 @@ body {
   }
 
   .nav-glyph-b-left {
-    left: clamp(16px, 4vw, 20px) !important;
+    left: 16px !important;
   }
 
   .nav-glyph-B-left {
     top: 8px !important;
-    left: calc(50% - clamp(96px, 25vw, 110px)) !important;
+    left: calc(50% - 110px) !important;
   }
 
   .nav-glyph-B-right {
     top: 8px !important;
-    left: calc(50% + clamp(88px, 23vw, 100px)) !important;
+    left: calc(50% + 100px) !important;
   }
 
   .nav-glyph-b-right {
-    right: clamp(16px, 4vw, 20px) !important;
+    right: 16px !important;
     left: auto !important;
   }
 
@@ -1444,7 +1451,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000000;
-    width: clamp(46px, 13vw, 54px);
+    width: 54px;
     height: auto;
     display: flex;
     align-items: center;
@@ -1471,8 +1478,8 @@ body {
     z-index: 20;
     width: 100%;
     height: 100%;
-    padding-left: var(--m-pad-x);
-    padding-right: var(--m-pad-x);
+    padding-left: var(--m-side);
+    padding-right: var(--m-side);
     padding-top: calc(var(--m-landing-top) + var(--m-safe-top));
   }
 
@@ -1490,8 +1497,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin: 0 0 clamp(14px, 2vh, 18px) 0;
+    gap: 12px;
+    margin: 0 0 12px 0;
     width: 100%;
     max-width: 100%;
     font-size: var(--m-meta-size);
@@ -1505,7 +1512,7 @@ body {
   }
 
   .landing .hero-logo {
-    width: min(100%, 650px);
+    width: 100%;
     max-width: 100%;
     margin: 0;
   }
@@ -1519,10 +1526,10 @@ body {
   }
 
   .landing .desc {
-    margin-top: clamp(40px, 5vh, 60px);
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
-    gap: clamp(26px, 3.5vh, 38px);
+    gap: 16px;
     width: 100%;
     max-width: 100%;
   }
@@ -1532,15 +1539,14 @@ body {
   }
 
   .landing .desc-line .reveal__inner {
-    font-size: clamp(17px, 5vw, 24px);
+    font-size: var(--m-landing-desc-size);
     line-height: 1;
     white-space: nowrap;
-    font-style: italic;
   }
 
   .landing .right-block {
     position: absolute !important;
-    left: var(--m-pad-x) !important;
+    left: var(--m-side) !important;
     top: var(--m-landing-right-top) !important;
     width: var(--m-content-w);
     max-width: var(--m-content-w);
@@ -1550,16 +1556,15 @@ body {
     margin: 0;
     font-size: var(--m-latest-size);
     line-height: 1;
-    font-weight: 700;
   }
 
   .landing .drop-reveal {
-    margin-top: clamp(18px, 2.6vh, 24px);
+    margin-top: 16px;
   }
 
   .landing .drop-row {
     margin: 0;
-    font-size: clamp(14px, 4vw, 18px);
+    font-size: var(--m-drop-size);
     line-height: 1.15;
     white-space: nowrap;
     display: block;
@@ -1627,7 +1632,7 @@ body {
 
   #mobileMusicLeftStatic {
     position: absolute !important;
-    left: var(--m-pad-x) !important;
+    left: var(--m-side) !important;
     top: calc(var(--m-section-top) + var(--m-safe-top)) !important;
     width: var(--m-content-w) !important;
     max-width: var(--m-content-w) !important;
@@ -1638,16 +1643,16 @@ body {
   #mobileMusicLeftStatic .bs-music-title {
     margin: 0 !important;
     font-size: var(--m-title-thin) !important;
-    line-height: 0.95 !important;
+    line-height: 1 !important;
     font-weight: 300 !important;
     color: #fafafa !important;
   }
 
   #mobileMusicLeftStatic .bs-music-copy {
-    margin: clamp(28px, 4vh, 36px) 0 0 0 !important;
-    width: min(100%, 540px) !important;
-    max-width: min(100%, 540px) !important;
-    font-size: clamp(15px, 4.5vw, 18px) !important;
+    margin: 24px 0 0 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: var(--m-copy-size) !important;
     line-height: 1.22 !important;
     color: rgba(250, 250, 250, 0.9) !important;
     text-transform: uppercase !important;
@@ -1656,8 +1661,8 @@ body {
 
   #mobile-music-arc {
     position: absolute !important;
-    right: clamp(6px, 1.6vw, 12px) !important;
-    bottom: calc(clamp(28px, 4vh, 40px) + var(--m-safe-bottom)) !important;
+    right: 0 !important;
+    bottom: calc(16px + var(--m-safe-bottom)) !important;
     width: var(--m-arc-w) !important;
     height: var(--m-arc-h) !important;
     z-index: 21 !important;
@@ -1666,7 +1671,7 @@ body {
   #mobile-music-arc .arc-title {
     position: absolute !important;
     left: 0 !important;
-    top: clamp(-42px, -5vh, -32px) !important;
+    top: -32px !important;
     margin: 0 !important;
     font-size: var(--m-arc-title-size) !important;
     line-height: 1 !important;
@@ -1677,7 +1682,7 @@ body {
 
   #mobile-music-arc .arc-pointer {
     position: absolute !important;
-    left: clamp(-54px, -11vw, -38px) !important;
+    left: -46px !important;
     top: 0 !important;
     width: 40px !important;
     height: 18px !important;
@@ -1718,7 +1723,7 @@ body {
 
   #beat-store .bs-mobile-left {
     position: absolute !important;
-    left: var(--m-pad-x) !important;
+    left: var(--m-side) !important;
     top: calc(var(--m-section-top) + var(--m-safe-top)) !important;
     width: var(--m-content-w) !important;
     max-width: var(--m-content-w) !important;
@@ -1746,17 +1751,17 @@ body {
     display: block !important;
     margin: 0 !important;
     font-size: var(--m-title-thin) !important;
-    line-height: 0.95 !important;
+    line-height: 1 !important;
     font-weight: 300 !important;
     color: #fafafa !important;
   }
 
   #beat-store .bs-copy {
     display: block !important;
-    margin: clamp(28px, 4vh, 36px) 0 0 0 !important;
-    width: min(100%, 560px) !important;
-    max-width: min(100%, 560px) !important;
-    font-size: clamp(15px, 4.5vw, 18px) !important;
+    margin: 24px 0 0 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: var(--m-copy-size) !important;
     line-height: 1.22 !important;
     color: rgba(250, 250, 250, 0.9) !important;
     text-transform: uppercase !important;
@@ -1767,11 +1772,12 @@ body {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-top: clamp(24px, 3.5vh, 32px) !important;
-    width: var(--m-btn-w) !important;
+    margin-top: 28px !important;
+    width: var(--m-content-w) !important;
+    max-width: 200px !important;
     min-height: var(--m-btn-h) !important;
     padding: 0 20px !important;
-    font-size: clamp(14px, 4vw, 16px) !important;
+    font-size: 16px !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     border: 0.5px solid rgba(250, 250, 250, 0.85) !important;
@@ -1809,8 +1815,9 @@ body {
 
   #beat-store .bs-grid {
     position: absolute !important;
-    left: var(--m-pad-x) !important;
+    left: var(--m-side) !important;
     top: 0 !important;
+    width: var(--m-content-w) !important;
     display: grid !important;
     grid-template-columns:
       var(--m-grid-col)
@@ -1844,8 +1851,9 @@ body {
 
   #beat-store .bs-mobile-arc-stage #bs-arc {
     position: absolute !important;
-    right: clamp(6px, 1.6vw, 12px) !important;
-    top: 0 !important;
+    right: 0 !important;
+    bottom: calc(16px + var(--m-safe-bottom)) !important;
+    top: auto !important;
     width: var(--m-arc-w) !important;
     height: var(--m-arc-h) !important;
     z-index: 21 !important;
@@ -1855,7 +1863,7 @@ body {
   #beat-store .bs-mobile-arc-stage #bs-arc .arc-title {
     position: absolute !important;
     left: 0 !important;
-    top: clamp(-42px, -5vh, -32px) !important;
+    top: -32px !important;
     margin: 0 !important;
     font-size: var(--m-arc-title-size) !important;
     line-height: 1 !important;
@@ -1866,7 +1874,7 @@ body {
 
   #beat-store .bs-mobile-arc-stage #bs-arc .arc-pointer {
     position: absolute !important;
-    left: clamp(-54px, -11vw, -38px) !important;
+    left: -46px !important;
     top: 0 !important;
     width: 40px !important;
     height: 18px !important;
@@ -1893,93 +1901,145 @@ body {
     height: var(--m-arc-item-h) !important;
   }
 
+/* =========================
+   ABOUT
+========================= */
+
+/* =========================
+   ABOUT
+========================= */
+
+#about {
+  background: #ab1212 !important;
+}
+
+#about .about-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+}
+
+#about .about-inner {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+}
+
+#about .about-title-reveal {
+  position: absolute !important;
+  left: var(--m-side) !important;
+  top: calc(144px + var(--m-safe-top)) !important;
+  width: var(--m-content-w) !important;
+  overflow: hidden !important;
+  z-index: 5 !important;
+}
+
+#about .about-title {
+  margin: 0 !important;
+  font-size: 22vw !important;
+  line-height: 0.9 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+}
+
+#about .about-side {
+  position: absolute !important;
+  left: var(--m-side) !important;
+  top: calc(240px + var(--m-safe-top)) !important;
+  width: var(--m-content-w) !important;
+  max-width: var(--m-content-w) !important;
+  z-index: 5 !important;
+}
+
+#about .about-copy-reveal {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  z-index: 5 !important;
+}
+
+#about .about-copy {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  font-size: 14px !important;
+  line-height: 1.28 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  text-transform: uppercase !important;
+  white-space: pre-line !important;
+  letter-spacing: 0.01em !important;
+}
+
+#about .about-links {
+  position: absolute !important;
+  left: 0 !important;
+  padding-left: var(--m-side) !important;
+  bottom: calc(54px + var(--m-safe-bottom)) !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+
+  gap: 20px !important;
+  z-index: 5 !important;
+  text-align: left !important;
+}
+
+#about .about-links a {
+  display: block !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: #fafafa !important;
+  text-decoration: none !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.02em !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+}
+
+#about .about-map-wrap {
+  position: absolute !important;
+  left: 50% !important;
+  top: 46% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 230px !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 3 !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+#about .about-map {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+#about .about-btn-reveal,
+#about .about-btn {
+  display: none !important;
+}
   /* =========================
-     ABOUT
+     SHORTER PHONES
   ========================= */
 
-  #about {
-    background: #ab1212 !important;
-  }
-
-  #about .about-bg {
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: 0 !important;
-  }
-
-  #about .about-inner {
-    position: relative !important;
-    z-index: 2 !important;
-    width: 100% !important;
-    height: 100% !important;
-    padding: calc(var(--m-section-top) + var(--m-safe-top)) var(--m-pad-x)
-      calc(24px + var(--m-safe-bottom)) var(--m-pad-x) !important;
-  }
-
-  #about .about-title-reveal {
-    overflow: hidden !important;
-  }
-
-  #about .about-title {
-    margin: 0 0 clamp(34px, 5vh, 44px) 0 !important;
-    font-size: var(--m-title-bold) !important;
-    line-height: 0.92 !important;
-    font-weight: 700 !important;
-    letter-spacing: 0 !important;
-    color: #fff !important;
-  }
-
-  #about .about-side {
-    position: static !important;
-    width: 100% !important;
-    max-width: none !important;
-  }
-
-  #about .about-copy {
-    margin: 0 !important;
-    font-size: clamp(15px, 4.4vw, 18px) !important;
-    line-height: 1.22 !important;
-    color: #fff !important;
-    text-transform: uppercase !important;
-    white-space: pre-line !important;
-  }
-
-  #about .about-links {
-    position: absolute !important;
-    left: var(--m-pad-x) !important;
-    bottom: calc(38px + var(--m-safe-bottom)) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: clamp(22px, 3.2vh, 30px) !important;
-    z-index: 3 !important;
-  }
-
-  #about .about-links a {
-    color: #fff !important;
-    text-decoration: none !important;
-    font-size: clamp(15px, 4.4vw, 18px) !important;
-    line-height: 1 !important;
-    letter-spacing: 0.02em !important;
-  }
-
-  #about .about-map-wrap {
-    position: absolute !important;
-    right: clamp(18px, 5vw, 36px) !important;
-    bottom: calc(18px + var(--m-safe-bottom)) !important;
-    width: var(--m-about-map-w) !important;
-    z-index: 2 !important;
-    opacity: 1 !important;
-  }
-
-  #about .about-map {
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  #about .about-btn-reveal,
-  #about .about-btn {
-    display: none !important;
+  @media (max-height: 740px) {
+    :root {
+      --m-landing-top: 160px;
+      --m-landing-right-top: 510px;
+      --m-section-top: 96px;
+      --m-visual-top: 460px;
+      --m-about-map-w: 150px;
+    }
   }
 
   /* =========================
@@ -1988,31 +2048,30 @@ body {
 
   @media (min-height: 860px) {
     :root {
-      --m-landing-right-top: clamp(560px, 64vh, 680px);
-      --m-visual-top: clamp(540px, 60vh, 640px);
+      --m-landing-right-top: 610px;
+      --m-visual-top: 540px;
+      --m-about-map-w: 210px;
     }
   }
 
   /* =========================
-     SHORTER PHONES
+     NARROWER PHONES
   ========================= */
 
-  @media (max-height: 740px) {
+  @media (max-width: 390px) {
     :root {
-      --m-landing-top: clamp(132px, 16vh, 160px);
-      --m-landing-right-top: clamp(470px, 60vh, 540px);
-      --m-section-top: clamp(92px, 11vh, 110px);
-      --m-visual-top: clamp(450px, 56vh, 520px);
+      --m-title-thin: 36px;
+      --m-title-bold: 82px;
+      --m-latest-size: 22px;
+      --m-arc-w: 270px;
+      --m-arc-h: 280px;
+      --m-arc-item-w: 136px;
+      --m-arc-item-h: 82px;
+      --m-about-map-w: 150px;
     }
 
-    .landing .desc {
-      gap: 18px;
-      margin-top: 28px;
-    }
-
-    #mobileMusicLeftStatic .bs-music-copy,
-    #beat-store .bs-copy {
-      font-size: clamp(14px, 4vw, 16px) !important;
+    .landing .drop-row {
+      font-size: 14px;
     }
   }
 }
