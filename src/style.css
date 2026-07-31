@@ -1317,7 +1317,13 @@ body {
     --m-menu-top: clamp(22px, 3vh, 30px);
 
     --m-landing-top: clamp(118px, 16vh, 168px);
-    --m-landing-right-top: clamp(500px, 60vh, 580px);
+    /* BBB FIX: pushed down from clamp(500px, 60vh, 580px) to clear the
+       revolver (full size — see initRevolverMobile's Y_OFFSET_RATIO),
+       which now sits in the gap above this block. Anchored to the
+       cart-fab's own geometry (bottom:24px, ~46px tall) rather than a
+       vh guess, so this block always lands just above it instead of
+       drifting under it on different viewport heights. */
+    --m-landing-right-top: clamp(580px, calc(100vh - 136px), 700px);
     --m-section-top: clamp(96px, 12vh, 124px);
     --m-copy-gap: clamp(18px, 2.4vh, 24px);
     --m-block-gap: clamp(22px, 3vh, 32px);

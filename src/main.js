@@ -45,6 +45,19 @@ if (IS_MOBILE) {
   }
 }
 
+/* BBB FIX — the mobile browser chrome (address bar / gesture bar) is
+   tinted via <meta name="theme-color">, which was hardcoded red. That
+   reads fine over the red Home/About sections but clashes hard once the
+   page scrolls into the black Music/Beat Store sections. Swap it to
+   track whichever section is actually on screen. */
+const THEME_COLOR_RED = "#ab1212";
+const THEME_COLOR_BLACK = "#000000";
+
+function setMobileThemeColor(color) {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", color);
+}
+
 /* BBB FIX — Lenis smooth scroll (desktop only).
    Gives the weighted, premium glide on wheel input. Mobile keeps native
    touch scrolling (handled by normalizeScroll above), so no phone jank. */
@@ -1463,9 +1476,9 @@ function getAppMarkupMobile() {
       </section>
 
             <section class="page music-page" id="music">
-        <div class="music-bg"></div>
-
         <div class="music-content">
+          <div class="music-bg"></div>
+
           <div class="bs-music-left" id="mobileMusicLeftStatic">
             <div class="reveal bs-music-title-reveal">
               <h2 class="bs-music-title reveal__inner">MUSIC</h2>
@@ -1497,9 +1510,9 @@ function getAppMarkupMobile() {
             </section>
 
       <section class="page beat-store" id="beat-store">
-        <div class="beat-store-bg"></div>
-
         <div class="beat-store-content">
+          <div class="beat-store-bg"></div>
+
           <div class="bs-mobile-left">
             <div class="reveal bs-title-reveal">
               <h2 class="bs-title reveal__inner">BEAT STORE</h2>
@@ -4724,6 +4737,27 @@ function initRevolverMobile(onReady = null) {
 
       gunGroup.quaternion.copy(baseQuat);
 
+      /* BBB FIX: mobile hero — full size is kept (do not zoom out), but
+         nudged into the gap between "BASED IN MUMBAI…" and "LATEST
+         DROPS" (that block's CSS top was pushed down to match — see
+         --m-landing-right-top). Two corrections, both expressed as a
+         fraction of camera distance so they hold if framing ever
+         changes:
+
+         X_OFFSET_RATIO — the revolver's bounding-box center isn't its
+         visual center (the grip/frame silhouette carries more weight to
+         one side than the box math accounts for), so centering on
+         box.getCenter() alone still rendered visibly off-center.
+         Empirically measured from the actual render.
+
+         Y_OFFSET_RATIO — moves the revolver down from dead-center so it
+         sits below the subtitle instead of on top of it. */
+      const camDist = dist * 1.08;
+      const X_OFFSET_RATIO = 0.0199;
+      const Y_OFFSET_RATIO = -0.131;
+      gunGroup.position.x = X_OFFSET_RATIO * camDist;
+      gunGroup.position.y = Y_OFFSET_RATIO * camDist;
+
       renderer.render(scene, camera);
 
       window.addEventListener("click", enableGyro, { once: true });
@@ -5013,10 +5047,12 @@ gsap.set("#music, #beat-store", {
     },
     onLeave: () => {
       mobileRevolverRenderer?.stop();
+      setMobileThemeColor(THEME_COLOR_BLACK);
     },
     onEnterBack: () => {
       mobileRevolverRenderer?.start();
       stopBoxViewersMobile();
+      setMobileThemeColor(THEME_COLOR_RED);
     },
     onLeaveBack: () => {
       mobileRevolverRenderer?.start();
@@ -5024,11 +5060,15 @@ gsap.set("#music, #beat-store", {
   });
 
 
+// Shared pace (viewport-heights of scroll per item) so Music and Beat
+// Store never drift apart when either list's item count changes.
+const PIN_VH_PER_ITEM = 2.5 / MUSIC_BEATS.length;
+
 ScrollTrigger.create({
   id: "mobileMusicPin",
   trigger: musicSection,
   start: "top top",
-  end: () => `+=${getMobileViewportHeight() * 2.5}`,
+  end: () => `+=${getMobileViewportHeight() * PIN_VH_PER_ITEM * MUSIC_BEATS.length}`,
   pin: "#music .music-content",
   pinSpacing: true,
   /* BBB FIX: tightened from 0.55 — less lag between finger and reveal reads
@@ -5050,8 +5090,8 @@ ScrollTrigger.create({
   start: "top top",
 
   // Sized so the arc's per-item scroll distance matches the Music arc's
-  // pace (~0.83 viewport-heights/item) instead of racing through it.
-  end: () => `+=${getMobileViewportHeight() * 5}`,
+  // pace exactly (see PIN_VH_PER_ITEM) instead of racing through it.
+  end: () => `+=${getMobileViewportHeight() * PIN_VH_PER_ITEM * BEATS.length}`,
 
   pin: "#beat-store .beat-store-content",
   pinSpacing: true,
@@ -5092,29 +5132,41 @@ ScrollTrigger.create({
 
     /*
       BBB FIX: this used to hold the grid fully static for the first ~22%
-      of the pin (nearly a full screen of scrolling with zero feedback),
-      then snap into the arc — the "grid" and "arc" were two genuinely
-      different phases with a hard switch between them. That's what made
-      Beat Store feel uneven both entering it and while scrolling through
-      it, compared to Music's single continuous reveal.
+      of the pin, then hard-snap into the arc. Later attempts made the
+      arc respond to scroll from pixel 1, with just a cosmetic fade on
+      top of the grid — but that meant the arc was silently advancing
+      through items *underneath* the grid during the whole hold, so by
+      the time it faded in it had already skipped several albums.
 
-      Now the arc responds to scroll from the very first pixel, exactly
-      like Music — only the grid's cosmetic cross-fade is confined to a
-      short opening window, and it's just a fade, not a gate.
+      BBB FIX: the arc used to start scrolling through items the moment
+      it started fading in, so the fade itself was competing with the
+      item transitions — by the time it reached full opacity it had
+      already moved on, and the first couple albums were never clearly
+      readable. Now it's a real three-phase split:
+        1. GRID_HOLD — grid fully static, arc doesn't move at all.
+        2. fade window — grid fades out / arc fades in, but the arc
+           stays parked on item 0 the whole time (nothing to read while
+           it's mid-fade).
+        3. after the fade — arc is fully opaque and only *then* starts
+           scrolling through the items, from item 0.
     */
 
-    const CROSSFADE_WINDOW = 0.05;
-    const gridFade = gsap.utils.clamp(0, 1, p / CROSSFADE_WINDOW);
-    const eased = easeScrollRevealMobile(p);
+    const GRID_HOLD = 0.28;
+    const CROSSFADE_WINDOW = 0.14;
+    const FADE_END = GRID_HOLD + CROSSFADE_WINDOW;
 
-    if (p < CROSSFADE_WINDOW && beatStorePhase !== "grid") {
+    const gridFade = gsap.utils.clamp(0, 1, (p - GRID_HOLD) / CROSSFADE_WINDOW);
+    const arcP = gsap.utils.clamp(0, 1, (p - FADE_END) / (1 - FADE_END));
+    const eased = easeScrollRevealMobile(arcP);
+
+    if (p < FADE_END && beatStorePhase !== "grid") {
       beatStorePhase = "grid";
       startBoxViewersMobile();
       gsap.set(bsGridStage, { pointerEvents: "auto" });
       gsap.set(bsArcStage, { pointerEvents: "none" });
     }
 
-    if (p >= CROSSFADE_WINDOW && beatStorePhase !== "arc") {
+    if (p >= FADE_END && beatStorePhase !== "arc") {
       beatStorePhase = "arc";
       stopBoxViewersMobile();
       gsap.set(bsGridStage, { pointerEvents: "none" });
@@ -5187,12 +5239,21 @@ ScrollTrigger.create({
     onEnter: () => {
       mobileRevolverRenderer?.stop();
       stopBoxViewersMobile();
+      setMobileThemeColor(THEME_COLOR_RED);
     },
     onEnterBack: () => {
       mobileRevolverRenderer?.stop();
       stopBoxViewersMobile();
+      setMobileThemeColor(THEME_COLOR_RED);
+    },
+    onLeaveBack: () => {
+      setMobileThemeColor(THEME_COLOR_BLACK);
     },
   });
+
+  // Scroll is reset to the top right before this runs, so Home (red) is
+  // always the correct starting state.
+  setMobileThemeColor(THEME_COLOR_RED);
 
   ScrollTrigger.refresh();
 }
