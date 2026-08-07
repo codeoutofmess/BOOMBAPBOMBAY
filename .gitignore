@@ -25,3 +25,8 @@ dist-ssr
 .env
 .env.*
 backend/.env
+
+# local AI-agent config/docs, not meant for the public repo
+.claude/
+CLAUDE.md
+AGENTS.md
